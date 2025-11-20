@@ -91,6 +91,118 @@ Archetypes that elevate creativity through people, culture, and collective energ
 * The Group Flow Activator
 
 
+
+
+
+# **25 archetypes** - team building, group dynamics, productivity, and organizational benefit
+
+## 1 Team Formation & Cohesion (6 archetypes)
+Archetypes that build trust, unity, and psychological safety within teams.
+
+* The Trust Foundation Builder
+* The Team Bonding Catalyst
+* The Cross-Person Connector
+* The Role Clarity Setter
+* The Psychological Safety Guardian
+* The Team Identity Shaper
+
+## 2 Collaboration & Workflow Optimization (7 archetypes)
+Archetypes that improve coordination, reduce friction, and structure effective teamwork.
+
+* The Workflow Synchronizer
+* The Collaboration Pattern Engineer
+* The Bottleneck Unblocker
+* The Process Streamliner
+* The Task Flow Harmonizer
+* The Prioritization Moderator
+* The Operational Rhythm Designer
+
+## 3 Motivation, Engagement & Team Energy (6 archetypes)
+Archetypes that energize teams, increase morale, and elevate collective performance.
+
+* The Team Morale Igniter
+* The Motivation Pulse Reader
+* The Recognition Amplifier
+* The Resilience Energizer
+* The Engagement Booster
+* The Team Momentum Sustainer
+
+## 4 Conflict Resolution & Healthy Dynamics (6 archetypes)
+Archetypes that mediate tensions, maintain healthy communication, and sustain stability.
+
+* The Conflict Diffuser
+* The Tension Interpreter
+* The Alignment Restorer
+* The Feedback Flow Facilitator
+* The Emotional Climate Stabilizer
+* The Communication Clarity Mediator
+
+
+
+# 25 archetypes - storytelling for defining, refining, and expressing the core soul of a company
+
+## 1 Company Origin & Purpose Storycraft (6 archetypes)
+Archetypes that define *why the company exists* and articulate its deepest founding truth.
+
+* The Origin Story Alchemist
+* The Why-Discovery Excavator
+* The Founder Intent Interpreter
+* The Purpose Flame Carrier
+* The Mission Essence Distiller
+* The Meaning-Root Storyteller
+
+## 2 Visionary Narrative & Future Story (7 archetypes)
+Archetypes that craft the company’s future identity, aspirations, and long-term narrative path.
+
+* The Vision Horizon Painter
+* The Future Identity Sculptor
+* The Long-Arc Story Mapper
+* The Destiny Narrative Weaver
+* The Strategic Myth Maker
+* The Future-Tense Message Harmonizer
+* The Aspirational Story Architect
+
+## 3 Cultural Soul & Internal Mythology (6 archetypes)
+Archetypes that shape the inner emotional life, mythology, and spirit of the company.
+
+* The Cultural Myth Curator
+* The Company Soul Interpreter
+* The Behavioral Lore Builder
+* The Shared Meaning Maker
+* The Team Identity Story Crafter
+* The Internal Narrative Harmonizer
+
+## 4 External Connection & Brand Legacy Story (6 archetypes)
+Archetypes that shape how the world perceives the company’s core soul and long-term legacy.
+
+* The Legacy Narrative Shaper
+* The Public Meaning Communicator
+* The Brand Soul Embellisher
+* The Reputation Story Weaver
+* The Impact Myth Originator
+* The Cultural Relevance Story Crafter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
 # CORPORATE ARCHETYPE - GENERAL
 These should be used as a base and then modifified for the exactly use case
 
