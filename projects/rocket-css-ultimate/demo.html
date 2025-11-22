@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROCKET CSS v4.0 - Demo</title>
+  <link rel="stylesheet" href="ROCKET-CSS-v4-ULTIMATE.css">
+  <style>
+    /* Demo-specific styles */
+    .theme-switcher {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <select id="themeSwitcher" class="btn btn-sm">
+    <option value="">Light (Auto)</option>
+    <option value="dark">Dark</option>
+    <option value="forest">Forest</option>
+    <option value="ocean">Ocean</option>
+    <option value="sunset">Sunset</option>
+    <option value="neon">Neon</option>
+    <option value="retro">Retro</option>
+    <option value="monochrome">Monochrome</option>
+    <option value="lavender">Lavender</option>
+    <option value="emerald">Emerald</option>
+    <option value="rose">Rose</option>
+    <option value="amber">Amber</option>
+  </select>
+</div>
+
+<!-- Main Layout -->
+<div class="site-layout" id="mainLayout">
+  
+  <!-- Preheader -->
+  <div class="layout-preheader">
+    <span>🎉 Welcome to ROCKET CSS v4.0 Ultimate</span>
+    <span>New: 12+ Themes Available</span>
+  </div>
+  
+  <!-- Header -->
+  <header class="layout-header">
+    <div class="flex items-center gap-3">
+      <div style="width: 40px; height: 40px; background: var(--color-primary-500); border-radius: var(--radius-full);"></div>
+      <h2 class="m-0">ROCKET CSS</h2>
+    </div>
+    
+    <nav class="layout-nav">
+      <a href="#" style="padding: var(--space-2) var(--space-3);">Home</a>
+      <a href="#" style="padding: var(--space-2) var(--space-3);">Features</a>
+      <a href="#" style="padding: var(--space-2) var(--space-3);">Docs</a>
+      <a href="#" style="padding: var(--space-2) var(--space-3);">About</a>
+    </nav>
+  </header>
+  
+  <!-- Postheader (Breadcrumbs) -->
+  <div class="layout-postheader">
+    <small style="color: var(--text-secondary);">Home / Demo / Components</small>
+  </div>
+  
+  <!-- Main Views -->
+  <div class="layout-views with-sidebar">
+    
+    <!-- Sidebar -->
+    <aside class="view-sidebar">
+      <div class="sidebar-header">
+        <h3 class="m-0">Navigation</h3>
+      </div>
+      
+      <div class="sidebar-block">
+        <h4 class="text-sm font-semibold" style="margin-bottom: var(--space-2);">Components</h4>
+        <ul class="flex flex-col gap-2" style="list-style: none; padding: 0;">
+          <li><a href="#cards">Cards</a></li>
+          <li><a href="#buttons">Buttons</a></li>
+          <li><a href="#badges">Badges</a></li>
+          <li><a href="#alerts">Alerts</a></li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-block">
+        <h4 class="text-sm font-semibold" style="margin-bottom: var(--space-2);">Utilities</h4>
+        <ul class="flex flex-col gap-2" style="list-style: none; padding: 0;">
+          <li><a href="#colors">Colors</a></li>
+          <li><a href="#typography">Typography</a></li>
+          <li><a href="#spacing">Spacing</a></li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-footer">
+        <small>ROCKET CSS v4.0</small>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="view-main">
+      
+      <!-- Main Header -->
+      <div class="main-header">
+        <h1 class="m-0">Component Showcase</h1>
+        <p class="text-secondary m-0">Exploring the ROCKET CSS v4.0 component library</p>
+      </div>
+      
+      <!-- Main Toolbar -->
+      <div class="main-toolbar">
+        <button class="btn btn-primary">Primary Action</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <span class="badge badge-primary">v4.0</span>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        
+        <!-- Cards Section -->
+        <div class="content-section" id="cards">
+          <h2>Cards</h2>
+          
+          <div class="flex gap-4" style="flex-wrap: wrap;">
+            <!-- Basic Card -->
+            <div class="card" style="flex: 1; min-width: 250px;">
+              <div class="card-header">
+                <h3 class="m-0">Basic Card</h3>
+              </div>
+              <p>This is a basic card component with header and footer sections.</p>
+              <div class="card-footer">
+                <button class="btn btn-sm btn-primary">Learn More</button>
+              </div>
+            </div>
+            
+            <!-- Elevated Card -->
+            <div class="card card-elevated" style="flex: 1; min-width: 250px;">
+              <div class="card-header">
+                <h3 class="m-0">Elevated Card</h3>
+              </div>
+              <p>This card has an elevated style with enhanced shadow.</p>
+              <div class="card-footer">
+                <button class="btn btn-sm btn-secondary">Details</button>
+              </div>
+            </div>
+            
+            <!-- Info Card -->
+            <div class="card" style="flex: 1; min-width: 250px; background: var(--state-info-bg); border-color: var(--state-info-border);">
+              <div class="card-header">
+                <h3 class="m-0" style="color: var(--state-info-text);">Info Card</h3>
+              </div>
+              <p style="color: var(--state-info-text);">Special styling using semantic state colors.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Buttons Section -->
+        <div class="content-section" id="buttons">
+          <h2>Buttons</h2>
+          
+          <div class="flex flex-col gap-4">
+            <div class="flex gap-3 items-center" style="flex-wrap: wrap;">
+              <h3 class="text-base m-0" style="width: 100px;">Variants:</h3>
+              <button class="btn btn-primary">Primary</button>
+              <button class="btn btn-secondary">Secondary</button>
+              <button class="btn btn-ghost">Ghost</button>
+              <button class="btn" disabled>Disabled</button>
+            </div>
+            
+            <div class="flex gap-3 items-center" style="flex-wrap: wrap;">
+              <h3 class="text-base m-0" style="width: 100px;">Sizes:</h3>
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary">Default</button>
+              <button class="btn btn-primary btn-lg">Large</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Badges Section -->
+        <div class="content-section" id="badges">
+          <h2>Badges</h2>
+          
+          <div class="flex gap-3" style="flex-wrap: wrap;">
+            <span class="badge">Default</span>
+            <span class="badge badge-primary">Primary</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-warning">Warning</span>
+            <span class="badge badge-error">Error</span>
+          </div>
+        </div>
+        
+        <!-- Alerts Section -->
+        <div class="content-section" id="alerts">
+          <h2>Alerts</h2>
+          
+          <div class="flex flex-col gap-4">
+            <div class="alert alert-info">
+              <span>ℹ️</span>
+              <span><strong>Info:</strong> This is an informational message.</span>
+            </div>
+            
+            <div class="alert alert-success">
+              <span>✓</span>
+              <span><strong>Success:</strong> Your action was completed successfully!</span>
+            </div>
+            
+            <div class="alert alert-warning">
+              <span>⚠️</span>
+              <span><strong>Warning:</strong> Please review this information carefully.</span>
+            </div>
+            
+            <div class="alert alert-error">
+              <span>✕</span>
+              <span><strong>Error:</strong> Something went wrong. Please try again.</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Colors Section -->
+        <div class="content-section" id="colors">
+          <h2>Color System</h2>
+          <p>OKLCH-based color engine with auto-generating scales:</p>
+          
+          <div class="flex gap-4" style="flex-wrap: wrap;">
+            <!-- Primary -->
+            <div style="flex: 1; min-width: 200px;">
+              <h4 class="text-sm">Primary</h4>
+              <div class="flex gap-1" style="height: 60px;">
+                <div style="flex: 1; background: var(--color-primary-100);"></div>
+                <div style="flex: 1; background: var(--color-primary-300);"></div>
+                <div style="flex: 1; background: var(--color-primary-500);"></div>
+                <div style="flex: 1; background: var(--color-primary-700);"></div>
+                <div style="flex: 1; background: var(--color-primary-900);"></div>
+              </div>
+            </div>
+            
+            <!-- Secondary -->
+            <div style="flex: 1; min-width: 200px;">
+              <h4 class="text-sm">Secondary</h4>
+              <div class="flex gap-1" style="height: 60px;">
+                <div style="flex: 1; background: var(--color-secondary-100);"></div>
+                <div style="flex: 1; background: var(--color-secondary-300);"></div>
+                <div style="flex: 1; background: var(--color-secondary-500);"></div>
+                <div style="flex: 1; background: var(--color-secondary-700);"></div>
+                <div style="flex: 1; background: var(--color-secondary-900);"></div>
+              </div>
+            </div>
+            
+            <!-- Accent -->
+            <div style="flex: 1; min-width: 200px;">
+              <h4 class="text-sm">Accent</h4>
+              <div class="flex gap-1" style="height: 60px;">
+                <div style="flex: 1; background: var(--color-accent-100);"></div>
+                <div style="flex: 1; background: var(--color-accent-300);"></div>
+                <div style="flex: 1; background: var(--color-accent-500);"></div>
+                <div style="flex: 1; background: var(--color-accent-700);"></div>
+                <div style="flex: 1; background: var(--color-accent-900);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Typography Section -->
+        <div class="content-section" id="typography">
+          <h2>Typography</h2>
+          <p>Fluid responsive type scale using clamp():</p>
+          
+          <div class="flex flex-col gap-3">
+            <h1 class="m-0">Heading 1 (5xl)</h1>
+            <h2 class="m-0">Heading 2 (4xl)</h2>
+            <h3 class="m-0">Heading 3 (3xl)</h3>
+            <h4 class="m-0">Heading 4 (2xl)</h4>
+            <h5 class="m-0">Heading 5 (xl)</h5>
+            <h6 class="m-0">Heading 6 (lg)</h6>
+            <p class="m-0">Body text (base) - The quick brown fox jumps over the lazy dog.</p>
+            <p class="text-sm m-0">Small text (sm) - Additional details and metadata.</p>
+            <p class="text-xs m-0">Extra small text (xs) - Fine print and disclaimers.</p>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Main Footer -->
+      <div class="main-footer">
+        <small>Last updated: November 2025 • ROCKET CSS v4.0 Ultimate</small>
+      </div>
+      
+    </main>
+    
+  </div>
+  
+  <!-- Site Footer -->
+  <footer class="layout-footer">
+    <div class="flex justify-between items-center" style="flex-wrap: wrap; gap: var(--space-4);">
+      <div>
+        <p class="m-0"><strong>ROCKET CSS v4.0</strong></p>
+        <small class="text-secondary">The Ultimate Design System</small>
+      </div>
+      <div class="flex gap-4">
+        <a href="#">Documentation</a>
+        <a href="#">GitHub</a>
+        <a href="#">Themes</a>
+      </div>
+    </div>
+  </footer>
+  
+</div>
+
+<!-- Theme Switcher Script -->
+<script>
+  const themeSwitcher = document.getElementById('themeSwitcher');
+  const mainLayout = document.getElementById('mainLayout');
+  
+  // Load saved theme
+  const savedTheme = localStorage.getItem('rocket-theme');
+  if (savedTheme) {
+    mainLayout.setAttribute('data-theme', savedTheme);
+    themeSwitcher.value = savedTheme;
+  }
+  
+  // Handle theme change
+  themeSwitcher.addEventListener('change', (e) => {
+    const theme = e.target.value;
+    if (theme) {
+      mainLayout.setAttribute('data-theme', theme);
+      localStorage.setItem('rocket-theme', theme);
+    } else {
+      mainLayout.removeAttribute('data-theme');
+      localStorage.removeItem('rocket-theme');
+    }
+  });
+</script>
+
+</body>
+</html>
