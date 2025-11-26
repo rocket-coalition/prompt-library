@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="identity">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Pattern Guy — Cognitive Architecture</title>
+
+  <!-- Tailwind v4 (configless) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ========================================== -->
+  <!-- OKLCH Theme System + Semantic Components -->
+  <!-- ========================================== -->
+  <style>
+    /* -----------------------------
+       ROOT THEME — Identity
+    ----------------------------- */
+    :root {
+      /* Pigment primitives (OKLCH + fallbacks) */
+      --primary: oklch(0.62 0.10 260);
+      --secondary: oklch(0.70 0.08 240);
+      --accent: oklch(0.72 0.15 30);
+
+      --neutral: oklch(0.95 0.01 270);
+
+      --surface-dark: oklch(0.20 0.03 260);
+      --surface-mid: oklch(0.30 0.03 260);
+      --surface-lite: oklch(0.92 0.02 270);
+
+      --text-primary: oklch(0.92 0.02 270);
+      --text-secondary: oklch(0.78 0.04 260);
+
+      --radius-soft: 6px;
+      --radius-smooth: 12px;
+
+      --shadow-1: 0 4px 12px oklch(0.22 0.03 260 / 0.10);
+      --shadow-2: 0 6px 18px oklch(0.22 0.03 260 / 0.15);
+
+      --transition-fast: 120ms cubic-bezier(0.22,1,0.36,1);
+      --transition-normal: 180ms cubic-bezier(0.22,1,0.36,1);
+    }
+
+    body {
+      background: var(--surface-lite);
+      color: oklch(0.25 0.02 260);
+    }
+
+    /* -----------------------------
+        LAYOUT PRIMITIVES
+    ----------------------------- */
+    .page { padding: 2rem; }
+    .container { max-width: 1100px; margin: auto; }
+    .stack > * + * { margin-top: 1.25rem; }
+
+    /* -----------------------------
+        SEMANTIC COMPONENTS
+    ----------------------------- */
+    header.site-header {
+      background: var(--surface-dark);
+      color: var(--text-primary);
+      padding: 2.5rem 2rem;
+      border-bottom: 1px solid oklch(0.35 0.03 260);
+    }
+
+    nav.main-nav a {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-right: 1.25rem;
+      transition: opacity var(--transition-fast);
+    }
+    nav.main-nav a:hover { opacity: 0.65; }
+
+    .card {
+      background: var(--surface-lite);
+      border-radius: var(--radius-smooth);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-1);
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-2);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-soft);
+      background: var(--accent);
+      color: black;
+      font-weight: 600;
+      transition: transform var(--transition-fast), filter var(--transition-fast);
+    }
+    .btn:hover { transform: scale(1.02); filter: brightness(1.05); }
+    .btn:active { transform: scale(0.97); }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .surface-panel {
+      background: var(--surface-mid);
+      border-radius: var(--radius-smooth);
+      padding: 2rem;
+      box-shadow: var(--shadow-1);
+      color: var(--neutral);
+    }
+
+    /* Micro-texture (extremely subtle) */
+    .texture {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.7'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.03' /></svg>");
+    }
+  </style>
+</head>
+
+<body class="texture">
+
+<!-- ========================================================= -->
+<!-- HEADER -->
+<!-- ========================================================= -->
+<header class="site-header">
+  <div class="container stack">
+    <h1 class="text-4xl font-bold">The Pattern Guy</h1>
+    <p class="text-lg opacity-80">Cognitive Architect & Semantic Pattern Engineer</p>
+
+    <nav class="main-nav mt-4">
+      <a href="#identity">Identity</a>
+      <a href="#background">Background</a>
+      <a href="#philosophy">Philosophy</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#visual">Visual System</a>
+      <a href="#motion">Motion</a>
+      <a href="#light">Light</a>
+      <a href="#geometry">Geometry</a>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ========================================================= -->
+<!-- IDENTITY -->
+<!-- ========================================================= -->
+<section id="identity" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Identity</h2>
+
+    <div class="card stack">
+      <h3 class="font-semibold text-xl">Essence Statements</h3>
+      <ul class="list-disc pl-6">
+        <li>We architect cognition, not commands.</li>
+        <li>We shape minds through patterns, not paragraphs.</li>
+        <li>We craft intention as the north-star of reasoning.</li>
+        <li>We draw from ancient primitives to steer modern intelligence.</li>
+        <li>We design the invisible lattice where AI thought emerges.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- BACKGROUND -->
+<!-- ========================================================= -->
+<section id="background" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Background</h2>
+
+    <div class="card stack">
+      <p>
+        A cognitive architect and recovering software developer with 20+ years 
+        building enterprise, mission-critical, and classified systems.
+      </p>
+
+      <h3 class="font-semibold text-lg">Experience</h3>
+      <ul class="list-disc pl-6">
+        <li>20+ years enterprise engineering</li>
+        <li>Mission-critical and government systems</li>
+        <li>High-scale architecture</li>
+        <li>Automation & reasoning models</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- PHILOSOPHY -->
+<!-- ========================================================= -->
+<section id="philosophy" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Philosophy & Core Truth</h2>
+
+    <div class="card stack">
+      <p>We don’t control AI with instructions; we shape it through intention, structure, and pattern.</p>
+
+      <h3 class="text-xl font-semibold">Principles</h3>
+      <ul class="list-disc pl-6">
+        <li>Intention precedes reasoning</li>
+        <li>Patterns are the language of intelligence</li>
+        <li>Prompts are cognitive blueprints</li>
+        <li>Primitives are semantic DNA</li>
+        <li>Reasoning emerges from structure</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- CAPABILITIES -->
+<!-- ========================================================= -->
+<section id="capabilities" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Capabilities</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card stack">
+        <h3 class="font-semibold text-lg">Primary</h3>
+        <ul class="list-disc pl-6">
+          <li>Cognitive architecture</li>
+          <li>Semantic pattern design</li>
+          <li>Intention engineering</li>
+          <li>Reasoning frameworks</li>
+          <li>Perspective shaping</li>
+        </ul>
+      </div>
+
+      <div class="card stack">
+        <h3 class="font-semibold text-lg">Secondary</h3>
+        <ul class="list-disc pl-6">
+          <li>Mentoring developers</li>
+          <li>Teaching cognitive patterning</li>
+          <li>Conceptual scaffolding</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- VISUAL SYSTEM -->
+<!-- ========================================================= -->
+<section id="visual" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Visual Design System</h2>
+
+    <div class="surface-panel stack">
+      <h3 class="text-xl font-semibold">Color Identity</h3>
+      <p>OKLCH pigment-driven palette, micro-texture surfaces, soft gradients.</p>
+
+      <h3 class="text-xl font-semibold">Layout Primitives</h3>
+      <ul class="list-disc pl-6">
+        <li>stack</li>
+        <li>cluster</li>
+        <li>container</li>
+        <li>grid primitives</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- MOTION -->
+<!-- ========================================================= -->
+<section id="motion" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Motion & Ergonomics</h2>
+
+    <div class="card stack">
+      <p>Motion is tactile, subtle, ergonomic — not decorative.</p>
+      <ul class="list-disc pl-6">
+        <li>Fast: 120ms</li>
+        <li>Normal: 180ms</li>
+        <li>Slow: 240ms</li>
+        <li>Hover = lift, Press = compression</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- LIGHT & DEPTH -->
+<!-- ========================================================= -->
+<section id="light" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Light, Shadow & Depth</h2>
+
+    <div class="card stack">
+      <p>Depth is subtle, pigment-based, tactile, atmospheric.</p>
+
+      <ul class="list-disc pl-6">
+        <li>Pigment-tinted shadows</li>
+        <li>Soft diagonal lighting</li>
+        <li>Matte light mode</li>
+        <li>Velvet dark mode</li>
+        <li>Elevation levels 0–4</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- GEOMETRY -->
+<!-- ========================================================= -->
+<section id="geometry" class="page">
+  <div class="container stack">
+    <h2 class="section-title">Geometry & Shape System</h2>
+
+    <div class="card stack">
+      <p>The structural identity of the brand: engineered softness, disciplined shapes.</p>
+
+      <ul class="list-disc pl-6">
+        <li>Radii: micro / soft / smooth / pill</li>
+        <li>Proportions: 3:2, 4:3, 16:10</li>
+        <li>Grid: 4 / 8 / 12 columns</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

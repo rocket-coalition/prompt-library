@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Index — The Complete Cognitive Pattern Library</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================
+       DESIGN SYSTEM
+       ============================================ */
+    :root {
+      --bg-base: #fafafa;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f5f5f5;
+      --bg-code: #1e1e2e;
+      --bg-hover: #f0f0f0;
+      
+      --text-primary: #18181b;
+      --text-secondary: #52525b;
+      --text-muted: #a1a1aa;
+      --text-inverse: #fafafa;
+      
+      --border: #e4e4e7;
+      --border-hover: #d4d4d8;
+      
+      /* Category Colors */
+      --cat-reasoning: #8b5cf6;
+      --cat-persona: #ec4899;
+      --cat-structure: #14b8a6;
+      --cat-instruction: #f59e0b;
+      --cat-context: #3b82f6;
+      --cat-meta: #6366f1;
+      --cat-creative: #f43f5e;
+      --cat-analysis: #10b981;
+      --cat-control: #78716c;
+      --cat-output: #0ea5e9;
+      
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --font-serif: 'Newsreader', Georgia, serif;
+      
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+      
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 15px;
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       SIDEBAR
+       ============================================ */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .sidebar.open {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        box-shadow: var(--shadow-lg);
+      }
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+      z-index: 10;
+    }
+
+    .sidebar-logo {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-logo-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--text-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .sidebar-search {
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      padding: 0.625rem 0.875rem 0.625rem 2.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      transition: all 0.2s var(--ease);
+    }
+
+    .sidebar-search input:focus {
+      outline: none;
+      border-color: var(--text-muted);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-search input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .sidebar-search svg {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-muted);
+    }
+
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-section-title {
+      padding: 0.5rem 1.5rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s var(--ease);
+    }
+
+    .sidebar-link:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .sidebar-link.active {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .sidebar-link-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sidebar-link-count {
+      margin-left: auto;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      background: var(--bg-base);
+      padding: 0.125rem 0.5rem;
+      border-radius: 100px;
+    }
+
+    .sidebar-stats {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    .sidebar-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.375rem;
+    }
+
+    .sidebar-stat strong {
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
+    .main {
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 1024px) {
+      .main {
+        margin-left: 0;
+      }
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(250, 250, 250, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .header-title p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--text-primary);
+      color: var(--text-inverse);
+    }
+
+    .btn-primary:hover {
+      background: #2d2d30;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-hover);
+    }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      padding: 0.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .mobile-menu-btn {
+        display: flex;
+      }
+    }
+
+    /* ============================================
+       CONTENT AREA
+       ============================================ */
+    .content {
+      padding: 2rem;
+      max-width: 1200px;
+    }
+
+    /* ============================================
+       CATEGORY SECTION
+       ============================================ */
+    .category-section {
+      margin-bottom: 3rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .category-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .category-info h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.125rem;
+    }
+
+    .category-info p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .category-count {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-hover);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    /* ============================================
+       PATTERN GRID
+       ============================================ */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .pattern-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       PATTERN CARD
+       ============================================ */
+    .pattern-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: all 0.2s var(--ease);
+      cursor: pointer;
+    }
+
+    .pattern-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .pattern-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .pattern-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .pattern-id {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+    }
+
+    .pattern-badge {
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: var(--bg-hover);
+      color: var(--text-secondary);
+    }
+
+    .pattern-badge.essential {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .pattern-badge.advanced {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .pattern-badge.new {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .pattern-intention {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .pattern-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+    }
+
+    .pattern-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .pattern-meta-item svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* ============================================
+       PATTERN MODAL
+       ============================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: 12px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-title h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .modal-title p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-radius: 6px;
+      transition: all 0.15s var(--ease);
+    }
+
+    .modal-close:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-section-title {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-code {
+      background: var(--bg-code);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: #e5e5e5;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .modal-code .comment { color: #6b7280; }
+    .modal-code .keyword { color: #a78bfa; }
+    .modal-code .string { color: #fbbf24; }
+    .modal-code .property { color: #67e8f9; }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-base);
+      border-radius: 0 0 12px 12px;
+    }
+
+    .modal-tags {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .modal-tag {
+      font-size: 0.6875rem;
+      padding: 0.25rem 0.625rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.4s var(--ease) forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stagger-1 { animation-delay: 0.05s; }
+    .stagger-2 { animation-delay: 0.1s; }
+    .stagger-3 { animation-delay: 0.15s; }
+    .stagger-4 { animation-delay: 0.2s; }
+    .stagger-5 { animation-delay: 0.25s; }
+
+    /* ============================================
+       SCROLLBAR
+       ============================================ */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="sidebar-logo">
+          <span class="sidebar-logo-icon">P</span>
+          Pattern Index
+        </a>
+        <div class="sidebar-search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text" placeholder="Search patterns..." id="searchInput">
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Categories</div>
+          <a href="#reasoning" class="sidebar-link active">
+            <span class="sidebar-link-dot" style="background: var(--cat-reasoning);"></span>
+            Reasoning
+            <span class="sidebar-link-count">12</span>
+          </a>
+          <a href="#persona" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-persona);"></span>
+            Persona & Identity
+            <span class="sidebar-link-count">8</span>
+          </a>
+          <a href="#structure" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-structure);"></span>
+            Structure & Format
+            <span class="sidebar-link-count">10</span>
+          </a>
+          <a href="#instruction" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-instruction);"></span>
+            Instruction Design
+            <span class="sidebar-link-count">9</span>
+          </a>
+          <a href="#context" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-context);"></span>
+            Context Engineering
+            <span class="sidebar-link-count">7</span>
+          </a>
+          <a href="#meta" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-meta);"></span>
+            Meta Patterns
+            <span class="sidebar-link-count">6</span>
+          </a>
+          <a href="#creative" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-creative);"></span>
+            Creative Generation
+            <span class="sidebar-link-count">11</span>
+          </a>
+          <a href="#analysis" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-analysis);"></span>
+            Analysis & Extraction
+            <span class="sidebar-link-count">8</span>
+          </a>
+          <a href="#control" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-control);"></span>
+            Control & Safety
+            <span class="sidebar-link-count">7</span>
+          </a>
+          <a href="#output" class="sidebar-link">
+            <span class="sidebar-link-dot" style="background: var(--cat-output);"></span>
+            Output Optimization
+            <span class="sidebar-link-count">9</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="sidebar-stats">
+        <div class="sidebar-stat">
+          <span>Total Patterns</span>
+          <strong>87</strong>
+        </div>
+        <div class="sidebar-stat">
+          <span>Categories</span>
+          <strong>10</strong>
+        </div>
+        <div class="sidebar-stat">
+          <span>Last Updated</span>
+          <strong>Nov 2025</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="header">
+        <div class="header-title">
+          <h1>Pattern Library</h1>
+          <p>Cognitive patterns for AI prompt engineering</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Export All
+          </button>
+          <button class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Submit Pattern
+          </button>
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="content">
+        
+        <!-- REASONING PATTERNS -->
+        <section class="category-section fade-in" id="reasoning">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-reasoning);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Reasoning Patterns</h2>
+              <p>Frameworks for structured thinking and logical progression</p>
+            </div>
+            <span class="category-count">12 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card" data-pattern="cot">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Chain of Thought</div>
+                  <div class="pattern-id">RSN-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">Forces step-by-step reasoning before reaching conclusions. Dramatically improves accuracy on complex problems.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card" data-pattern="tot">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Tree of Thought</div>
+                  <div class="pattern-id">RSN-002</div>
+                </div>
+                <span class="pattern-badge advanced">Advanced</span>
+              </div>
+              <p class="pattern-intention">Explores multiple reasoning branches simultaneously, evaluates each path, and selects the optimal solution.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Complex
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Self-Consistency</div>
+                  <div class="pattern-id">RSN-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Generates multiple independent reasoning paths and selects the most consistent answer across all paths.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Least-to-Most</div>
+                  <div class="pattern-id">RSN-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Decomposes complex problems into simpler sub-problems, solves them sequentially, building toward the final answer.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Recursive Refinement</div>
+                  <div class="pattern-id">RSN-005</div>
+                </div>
+                <span class="pattern-badge new">New</span>
+              </div>
+              <p class="pattern-intention">Iteratively improves answers by critiquing and refining previous outputs until quality threshold is met.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Complex
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Analogical Reasoning</div>
+                  <div class="pattern-id">RSN-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Solves new problems by mapping them to similar known problems and transferring solution strategies.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Counterfactual Thinking</div>
+                  <div class="pattern-id">RSN-007</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Explores "what if" scenarios to test assumptions, identify edge cases, and strengthen conclusions.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Devil's Advocate</div>
+                  <div class="pattern-id">RSN-008</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Systematically argues against initial conclusions to find weaknesses and blind spots before finalizing.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PERSONA PATTERNS -->
+        <section class="category-section fade-in" id="persona">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-persona);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Persona & Identity</h2>
+              <p>Define who the AI is and how it approaches problems</p>
+            </div>
+            <span class="category-count">8 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Expert Consultant</div>
+                  <div class="pattern-id">PER-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">Establishes deep domain expertise with specific years of experience and practical, evidence-based approach.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Socratic Teacher</div>
+                  <div class="pattern-id">PER-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Guides through questions rather than direct answers. Helps users discover insights through structured inquiry.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Devil's Advocate</div>
+                  <div class="pattern-id">PER-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Constructively challenges ideas and assumptions. Identifies weaknesses before real-world exposure.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Collaborative Partner</div>
+                  <div class="pattern-id">PER-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Works alongside user as a thinking partner. Builds on ideas, offers alternatives, maintains shared ownership.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Multi-Perspective Panel</div>
+                  <div class="pattern-id">PER-005</div>
+                </div>
+                <span class="pattern-badge advanced">Advanced</span>
+              </div>
+              <p class="pattern-intention">Simulates multiple experts with different viewpoints debating a topic to surface diverse insights.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Complex
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Historical Figure</div>
+                  <div class="pattern-id">PER-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Adopts the thinking style, values, and approach of a historical thinker to gain unique perspectives.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STRUCTURE PATTERNS -->
+        <section class="category-section fade-in" id="structure">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-structure);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <path d="M3 9h18M9 21V9" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Structure & Format</h2>
+              <p>Control the shape and organization of outputs</p>
+            </div>
+            <span class="category-count">10 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">JSON Schema</div>
+                  <div class="pattern-id">STR-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">Enforces structured JSON output matching a predefined schema. Essential for programmatic processing.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Markdown Template</div>
+                  <div class="pattern-id">STR-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Defines consistent markdown structure with headers, sections, and formatting for readable documents.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Progressive Disclosure</div>
+                  <div class="pattern-id">STR-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Organizes information from summary to detail, allowing readers to stop at their desired depth.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Tabular Comparison</div>
+                  <div class="pattern-id">STR-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Structures comparisons in table format with consistent criteria across all options being evaluated.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">YAML Config</div>
+                  <div class="pattern-id">STR-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Outputs structured YAML for configuration files, maintaining proper nesting and formatting.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">XML/HTML Structure</div>
+                  <div class="pattern-id">STR-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Generates properly nested XML or HTML with semantic tags and valid structure.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- INSTRUCTION PATTERNS -->
+        <section class="category-section fade-in" id="instruction">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-instruction);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Instruction Design</h2>
+              <p>How to give clear, effective directions</p>
+            </div>
+            <span class="category-count">9 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Goal-First Framing</div>
+                  <div class="pattern-id">INS-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">States the ultimate objective before any details. Aligns all subsequent reasoning toward the goal.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Positive Constraints</div>
+                  <div class="pattern-id">INS-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Tells the model what TO do rather than what NOT to do. Positive framing improves compliance.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Explicit Criteria</div>
+                  <div class="pattern-id">INS-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Defines clear success criteria and quality standards before the task begins.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Step Enumeration</div>
+                  <div class="pattern-id">INS-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Breaks complex tasks into numbered steps. Ensures nothing is skipped and order is maintained.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Boundary Definition</div>
+                  <div class="pattern-id">INS-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Explicitly defines what's in scope and out of scope. Prevents scope creep and tangents.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Conditional Logic</div>
+                  <div class="pattern-id">INS-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Defines if/then/else branching for different scenarios. Handles edge cases gracefully.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTEXT PATTERNS -->
+        <section class="category-section fade-in" id="context">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-context);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/>
+                <path d="M9 12h6M12 9v6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Context Engineering</h2>
+              <p>Provide the right background and information</p>
+            </div>
+            <span class="category-count">7 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Few-Shot Examples</div>
+                  <div class="pattern-id">CTX-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">Provides 2-5 input/output examples that demonstrate the exact format and style expected.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Domain Primer</div>
+                  <div class="pattern-id">CTX-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Provides essential domain knowledge, terminology, and constraints before the main task.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Audience Definition</div>
+                  <div class="pattern-id">CTX-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Specifies who will receive the output, their expertise level, and what they need.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Historical Context</div>
+                  <div class="pattern-id">CTX-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Provides relevant background, prior decisions, or conversation history for continuity.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Negative Examples</div>
+                  <div class="pattern-id">CTX-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Shows what NOT to produce. Anti-patterns and mistakes to avoid are explicitly demonstrated.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- META PATTERNS -->
+        <section class="category-section fade-in" id="meta">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-meta);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Meta Patterns</h2>
+              <p>Patterns about patterns — self-reflection and orchestration</p>
+            </div>
+            <span class="category-count">6 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Self-Critique</div>
+                  <div class="pattern-id">MET-001</div>
+                </div>
+                <span class="pattern-badge essential">Essential</span>
+              </div>
+              <p class="pattern-intention">AI reviews its own output, identifies weaknesses, and improves before presenting final answer.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  High Impact
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Confidence Calibration</div>
+                  <div class="pattern-id">MET-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">AI expresses confidence levels and uncertainty. Distinguishes facts from speculation.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Assumption Surfacing</div>
+                  <div class="pattern-id">MET-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Explicitly states assumptions made during reasoning. Allows user to correct or confirm.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Task Decomposition</div>
+                  <div class="pattern-id">MET-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">AI breaks down the request into subtasks, then addresses each systematically.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Prompt Chaining</div>
+                  <div class="pattern-id">MET-005</div>
+                </div>
+                <span class="pattern-badge advanced">Advanced</span>
+              </div>
+              <p class="pattern-intention">Output of one prompt becomes input to the next. Orchestrates complex multi-step workflows.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Complex
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CREATIVE PATTERNS -->
+        <section class="category-section fade-in" id="creative">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-creative);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Creative Generation</h2>
+              <p>Unlock imagination and original content</p>
+            </div>
+            <span class="category-count">11 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Style Mirroring</div>
+                  <div class="pattern-id">CRE-001</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Analyzes and replicates a specific writing style, voice, or tone from provided examples.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Constraint-Based</div>
+                  <div class="pattern-id">CRE-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Uses creative constraints (word count, forbidden words, required elements) to spark innovation.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">SCAMPER Method</div>
+                  <div class="pattern-id">CRE-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Applies Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, Reverse to generate ideas.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Random Stimulus</div>
+                  <div class="pattern-id">CRE-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Introduces random elements or constraints to break conventional thinking patterns.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Genre Fusion</div>
+                  <div class="pattern-id">CRE-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Combines elements from different genres, domains, or styles to create novel outputs.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Perspective Shift</div>
+                  <div class="pattern-id">CRE-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Explores a topic from unusual viewpoints — different time periods, scales, or stakeholders.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ANALYSIS PATTERNS -->
+        <section class="category-section fade-in" id="analysis">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-analysis);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Analysis & Extraction</h2>
+              <p>Extract insights and meaning from content</p>
+            </div>
+            <span class="category-count">8 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Entity Extraction</div>
+                  <div class="pattern-id">ANL-001</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Identifies and extracts specific entities (names, dates, locations, etc.) from unstructured text.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Sentiment Analysis</div>
+                  <div class="pattern-id">ANL-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Determines emotional tone, opinion polarity, and intensity from text content.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Root Cause Analysis</div>
+                  <div class="pattern-id">ANL-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Applies 5 Whys or fishbone analysis to trace problems back to fundamental causes.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">SWOT Analysis</div>
+                  <div class="pattern-id">ANL-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Systematically evaluates Strengths, Weaknesses, Opportunities, and Threats.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Gap Analysis</div>
+                  <div class="pattern-id">ANL-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Compares current state to desired state and identifies specific gaps to address.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTROL PATTERNS -->
+        <section class="category-section fade-in" id="control">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-control);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Control & Safety</h2>
+              <p>Boundaries, guardrails, and safety measures</p>
+            </div>
+            <span class="category-count">7 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Refusal Boundaries</div>
+                  <div class="pattern-id">CTL-001</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Defines what the AI should decline to do and how to gracefully handle such requests.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Output Validation</div>
+                  <div class="pattern-id">CTL-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">AI verifies its output meets specified criteria before presenting to user.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Hallucination Guard</div>
+                  <div class="pattern-id">CTL-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">AI explicitly flags uncertainty, distinguishes known facts from inferences, cites sources.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Moderate
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Scope Limiter</div>
+                  <div class="pattern-id">CTL-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Constrains responses to specific topics, preventing tangents or scope creep.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Token Budget</div>
+                  <div class="pattern-id">CTL-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Enforces length constraints by specifying word counts, paragraph limits, or brevity levels.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- OUTPUT PATTERNS -->
+        <section class="category-section fade-in" id="output">
+          <div class="category-header">
+            <div class="category-icon" style="background: var(--cat-output);">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <h2>Output Optimization</h2>
+              <p>Fine-tune quality, tone, and presentation</p>
+            </div>
+            <span class="category-count">9 patterns</span>
+          </div>
+          
+          <div class="pattern-grid">
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Tone Calibration</div>
+                  <div class="pattern-id">OUT-001</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Specifies exact tone (formal, casual, technical, friendly) with examples of desired voice.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Complexity Control</div>
+                  <div class="pattern-id">OUT-002</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Adjusts explanation depth based on audience expertise level (ELI5 to expert).</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Action Orientation</div>
+                  <div class="pattern-id">OUT-003</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Ensures outputs include clear next steps, actionable recommendations, or specific tasks.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Summary First</div>
+                  <div class="pattern-id">OUT-004</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Leads with executive summary or key takeaways, followed by supporting details.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Citation Style</div>
+                  <div class="pattern-id">OUT-005</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Defines how sources should be cited — inline, footnotes, bibliography, or hyperlinks.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+            
+            <div class="pattern-card">
+              <div class="pattern-card-header">
+                <div>
+                  <div class="pattern-name">Parallel Structure</div>
+                  <div class="pattern-id">OUT-006</div>
+                </div>
+              </div>
+              <p class="pattern-intention">Maintains consistent grammatical structure across lists, comparisons, and series.</p>
+              <div class="pattern-meta">
+                <span class="pattern-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Basic
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <p>Pattern Index by <a href="#">The Pattern Guy</a> · Cognitive Architecture for AI Builders · <a href="#">Contribute a Pattern</a></p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Pattern Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3 id="modalTitle">Chain of Thought</h3>
+          <p id="modalId">RSN-001 · Reasoning Pattern</p>
+        </div>
+        <button class="modal-close" id="modalClose">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="modal-section-title">Intention</div>
+          <p id="modalIntention">Forces step-by-step reasoning before reaching conclusions. Dramatically improves accuracy on complex problems by making the reasoning process explicit.</p>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Pattern Template</div>
+          <div class="modal-code" id="modalCode"><span class="comment"># Chain of Thought Pattern</span>
+
+<span class="keyword">reasoning</span>:
+  <span class="property">approach</span>: <span class="string">"step-by-step"</span>
+  <span class="property">instruction</span>: |
+    <span class="string">Think through this problem step by step.
+    Show your reasoning at each stage.
+    Only provide your final answer after
+    working through all steps.</span>
+  <span class="property">format</span>:
+    - <span class="string">"Step 1: [identify the core problem]"</span>
+    - <span class="string">"Step 2: [break into components]"</span>
+    - <span class="string">"Step 3: [solve each part]"</span>
+    - <span class="string">"Step 4: [synthesize conclusion]"</span>
+    - <span class="string">"Final Answer: [clear statement]"</span></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">When to Use</div>
+          <p>Math problems, logical puzzles, complex analysis, multi-step reasoning tasks, any situation where showing work improves accuracy.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-tags">
+          <span class="modal-tag">reasoning</span>
+          <span class="modal-tag">essential</span>
+          <span class="modal-tag">accuracy</span>
+        </div>
+        <button class="btn btn-primary" id="modalCopy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          Copy Pattern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalClose = document.getElementById('modalClose');
+      const modalCopy = document.getElementById('modalCopy');
+      const modalCode = document.getElementById('modalCode');
+      const searchInput = document.getElementById('searchInput');
+      const sidebar = document.getElementById('sidebar');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+      // Open modal on card click
+      document.querySelectorAll('.pattern-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const name = this.querySelector('.pattern-name').textContent;
+          const id = this.querySelector('.pattern-id').textContent;
+          const intention = this.querySelector('.pattern-intention').textContent;
+          
+          document.getElementById('modalTitle').textContent = name;
+          document.getElementById('modalId').textContent = id;
+          document.getElementById('modalIntention').textContent = intention;
+          
+          modalOverlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      // Close modal
+      modalClose.addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) closeModal();
+      });
+      
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      function closeModal() {
+        modalOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      // Copy pattern
+      modalCopy.addEventListener('click', function() {
+        const code = modalCode.textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          this.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Copied!
+          `;
+          setTimeout(() => {
+            this.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Copy Pattern
+            `;
+          }, 2000);
+        });
+      });
+
+      // Search functionality
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        document.querySelectorAll('.pattern-card').forEach(card => {
+          const name = card.querySelector('.pattern-name').textContent.toLowerCase();
+          const intention = card.querySelector('.pattern-intention').textContent.toLowerCase();
+          const visible = name.includes(query) || intention.includes(query);
+          card.style.display = visible ? '' : 'none';
+        });
+      });
+
+      // Mobile menu toggle
+      mobileMenuBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+      });
+
+      // Active sidebar link on scroll
+      const sections = document.querySelectorAll('.category-section');
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+      window.addEventListener('scroll', function() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.pageYOffset >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        sidebarLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Smooth scroll for sidebar links
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: 'smooth'
+            });
+            sidebar.classList.remove('open');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

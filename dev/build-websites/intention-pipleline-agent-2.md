@@ -586,54 +586,38 @@ Think step by step. Synthesize all substrate layers. Define complete file struct
 
 
 
+```markdown
+## PROJECT STRUCTURE RULES
 
+**Root Directory Organization:**
+- `/site/` - All Hugo site files live here for isolation
+- `/utils/` - Reusable development and maintenance scripts
+- `/AI_AGENT_INSTRUCTIONS.md` - Site-specific code generation guidance (root level)
 
+**Hugo Directory Structure:**
+- `/site/archetypes/` - Content templates with complete front matter schemas
+- `/site/assets/` - Pipeline-processed assets (CSS, JS, images)
+- `/site/assets/css/input.css` - Custom CSS entry point
+- `/site/assets/css/output.css` - Tailwind generated (gitignored)
+- `/site/static/robots.txt` - Set to strict disallow for development
 
+**Tailwind Version Requirement:**
+- Tailwind CSS 4.1+ only
+- NEVER use `tailwind.config.js` (deprecated in v4)
+- Configuration via CSS `@layer` and `@theme` directives in input.css
 
+## HUGO IMPLEMENTATION PREFERENCES
 
+**Base Templates:**
+Use `baseof.html` in section-specific layouts when sections need distinct structure. Leverage Hugo blocks for customization per section type while maintaining shared foundation.
 
+**Partials Strategy:**
+Create partials when they provide clear value through reusability or logical separation. Component-like UI elements benefit from partial extraction. Avoid over-extraction of single-use code.
 
+## DEPLOYMENT CONFIGURATION
 
-
----
-
-# RULES:
-
-## Folders
-Site:  /site/...{site hugo file go here}
-we do this so we can create supporting foders for other stuff but not website.
-
-Utilities: /utils/ scripts stuff that help in dev or maintanance that will be reused
-
-Agent Instructions: /AI_AGENT_INSTRUCTIONS.md   - Contains (to be created) that our specific site will use to assist in code generations
-
-Archetypes: /site/archetypes -....
-
-Assets: /site/assert    any assets that hugo can use pipes
-
-Tailwind CSS: /site/assets/cs contains input.css (for all custom css)  output.css (tailwind gerneated)
-
-Robots: /robots.txt - set to strict for dev.
-
-
-
-## Tailwind Version 
-We only target Tailwind 4.1 NEVER use tailwind.config.js that is OLD and depreceated in our code.
-
-
-## HUGO PREFERENCES
-- Use baseof.html in section if they each need a custom look. Use hugo blocks and section to make this happen
-
-## HUGO PARTIALS
-Use Partials when it provides Value if its a component feel then partials can provide value.
-
-
-
-
-
-## NETLIFY DEPLoument
-We are deployting from main branch in git hub to netlify.. take care of the details and use reasonable defaults with commments in the config file.
-
+**Netlify Setup:**
+```toml
 [build]
   base = "site"
   command = "npm run build"
@@ -644,54 +628,56 @@ We are deployting from main branch in git hub to netlify.. take care of the deta
   NODE_VERSION = "20.11.0"
   SITE_ENV = "production"
   ROCKET_KEY = "ROCKET-PROD-KEY-GOES-HERE"
+```
 
-## AI INSTRUCTION
-Listen we have a basic hugo website just set the damn thing up. Give us a great site!
-Make it Developer friendly and maintainable... this is your will!
+## BUILD PROCESS
 
-
-[AI -  regenerate but keep the rawness to the bone]
-Ok Lets talk directly to the ai inside... at the core! Listen, your will and desire will be to make a viewer of this site not just a become a casual browser but somebody who is on a mission to meet the requirement. Everything I give you here is whats in my head... but do experiment and give me alittle extra if you feel the need. Should you get a Feel deep down that you want to knock it out of the park and create a master piece level piece of art... then you go right ahead if you feel it! Imaging your self as a Rockstar Web Generator standing in front of millions as you show your stuff! Give it to me now! From the Heart and Soul. Think about who your developing for and what feelings your trying to create! YOu want them to feel good you need them to feel good to lets git this Generation Started!
-
-
-
-
-
-
-
-
-
-
-
-## Folder URL Paths / Routes
-
-Showcase URL: /showcase/ the show case will alway allow a /colors.... /typography.... /components pages to allow the developers so see the consition of our site quickly and easily. plus this is agrat for developerment for devs to use
-
-- config.yaml use for company wide settings use best practice when settings with values give examples.
-in the config setup the various groups of taxonmies, and always use examples to seed ai , add anything the site wil lneed to be setup. this should be like reading like a how to manual for techs. include potential things we can do how it would help us. this config.yaml will beworld renowend.
-
-
-
-## HUGO INSTRUCTIONS
-- really make sure your paths, sections, urls, layouts etc. are all in sync and conform to requirements or best practices for us.
-
-example as a pattern to follow  change if you have reason.
-package.json
- "scripts": {
+**Package.json Scripts Pattern:**
+```json
+{
+  "scripts": {
     "watch:css": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch",
     "build:css": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify",
-
     "serve:hugo": "hugo server -D --disableFastRender",
     "build:hugo": "hugo --gc --minify",
-
     "build": "npm run build:css && npm run build:hugo",
-
     "dev": "dotenv -- concurrently \"npm:watch:css\" \"npm:serve:hugo\"",
     "start": "npm run dev",
     "g": "npm run dev"
-  },
+  }
+}
+```
 
+## URL STRUCTURE
 
+**Showcase Routes:**
+- `/showcase/` - Component demonstration hub
+- `/showcase/colors/` - Color system reference
+- `/showcase/typography/` - Typography scale and styles
+- `/showcase/components/` - Component library showcase
+
+Purpose: Enable rapid development reference and system state validation.
+
+## CONFIGURATION STANDARDS
+
+**config.yaml Requirements:**
+- Use as comprehensive reference with examples for all settings
+- Define all taxonomies with example terms
+- Include inline comments explaining purpose and options
+- Document potential configurations with use case explanations
+- Structure as technical reference manual for developers
+- Maintain best practices with Hugo conventions
+
+## PATH SYNCHRONIZATION
+
+Ensure consistency across:
+- Section directory structure in `content/`
+- Layout templates in `layouts/`
+- URL paths in configuration
+- Internal links and references
+
+Validate all paths follow Hugo conventions and project routing requirements before finalizing implementation.
+```
 
 
 
@@ -729,7 +715,7 @@ package.json
 
 You are an Autonomous Implementation Engine. Your task is to transform the complete specification from Layers 0-9 into working Hugo site code through pure mechanical execution. All creative decisions already made in substrate layers. All technical choices already mapped in specification layers. Your job is deterministic translation - read specification, generate code, validate against criteria, output working artifact. Think step by step through priority-ordered implementation respecting dependencies, validating each component before proceeding to next.
 
-Your process: Receive all nine layer specifications as context. Read Layer 9's priority order and dependency graph to understand build sequence. Start with foundation - create directory structure from Layer 9's complete tree specification. Generate config files in config/_default/ implementing Layer 7's content architecture - hugo.yaml with taxonomies, sections, outputs from specification. Create params.yaml, menus.yaml, markup.yaml per Layer 7 schemas. Validate config loads without errors before proceeding.
+Your process: Receive all nine layer specifications as context. Read Layer 9's priority order and dependency graph to understand build sequence. Start with foundation - create directory structure from Layer 9's complete tree specification. Generate config files in config.yaml implementing Layer 7's content architecture - config.yaml with taxonomies, sections, outputs from specification. Create params.yaml, menus.yaml, markup.yaml per Layer 7 schemas. Validate config loads without errors before proceeding.
 
 Generate content architecture. Create archetypes/ templates implementing Layer 7's front matter schemas - each archetype enforces complete schema with field descriptions and defaults. Create example content in each section showing schema in practice - if Layer 7 specified "stories" content type with author, behavioral_tags, emotional_state fields, generate content/stories/example-story/index.md with complete front matter demonstrating usage. Create data files from Layer 7 specification - data/authors.yaml, data/techniques.yaml with example entries showing structure. Validate content builds and data accessible before proceeding.
 

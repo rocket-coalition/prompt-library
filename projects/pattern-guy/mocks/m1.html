@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="forge">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pattern Guy - Cognitive Architecture & Semantic Pattern Engineering</title>
+  <style>
+    /* ===== BASE LAYER - Reset & Root Variables ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* OKLCH Primitives */
+      --primary: oklch(0.62 0.10 260);
+      --secondary: oklch(0.70 0.08 240);
+      --accent: oklch(0.72 0.15 30);
+      --neutral: oklch(0.95 0.01 270);
+      --surface-dark: oklch(0.20 0.03 260);
+      --surface-mid: oklch(0.30 0.03 260);
+      --surface-lite: oklch(0.92 0.02 270);
+
+      /* Theme Variables - Forge (Dark Mode) */
+      --bg-base: oklch(0.18 0.03 260);
+      --bg-surface: oklch(0.22 0.03 260);
+      --bg-elevated: oklch(0.26 0.03 260);
+      --text-primary: oklch(0.92 0.01 270);
+      --text-secondary: oklch(0.72 0.02 270);
+      --text-muted: oklch(0.52 0.02 270);
+      --border-subtle: oklch(0.32 0.03 260);
+      --accent-glow: oklch(0.72 0.15 30);
+
+      /* Geometry Tokens */
+      --radius-micro: 2px;
+      --radius-soft: 6px;
+      --radius-smooth: 12px;
+      --radius-pill: 9999px;
+
+      /* Spacing Scale */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2rem;
+      --space-xl: 3rem;
+      --space-2xl: 4rem;
+
+      /* Elevation Shadows */
+      --shadow-ambient: 0 4px 12px oklch(0.10 0.02 260 / 0.12);
+      --shadow-lift: 0 6px 16px oklch(0.08 0.02 260 / 0.16);
+      --shadow-focus: 0 0 0 3px oklch(0.72 0.15 30 / 0.15);
+
+      /* Motion Tokens */
+      --ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --duration-fast: 120ms;
+      --duration-normal: 180ms;
+      --duration-slow: 240ms;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      
+      /* Micro-texture: Rubber microdots */
+      background-image: 
+        radial-gradient(circle at 20% 30%, oklch(0.20 0.04 260) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, oklch(0.19 0.03 265) 0%, transparent 50%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, oklch(0.19 0.02 260) 2px, oklch(0.19 0.02 260) 4px);
+      background-blend-mode: overlay;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text-primary);
+      
+      /* Soft engrave effect */
+      text-shadow: 0 1px 1px oklch(0.10 0.02 260 / 0.3);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: var(--space-md);
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      margin-bottom: var(--space-md);
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      margin-bottom: var(--space-sm);
+    }
+
+    p {
+      margin-bottom: var(--space-md);
+      color: var(--text-secondary);
+    }
+
+    a {
+      color: var(--accent-glow);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-default);
+    }
+
+    a:hover {
+      color: oklch(0.78 0.17 30);
+    }
+
+    /* ===== LAYOUT PRIMITIVES ===== */
+    .page {
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .section {
+      padding: var(--space-2xl) 0;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .grid {
+      display: grid;
+      gap: var(--space-lg);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    /* ===== COMPONENTS ===== */
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: oklch(0.20 0.03 260 / 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: transform var(--duration-normal) var(--ease-default);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-lg);
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color var(--duration-fast) var(--ease-default);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-glow);
+      transform: scaleX(0);
+      transition: transform var(--duration-normal) var(--ease-default);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Hero Section with Lattice */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 60px;
+    }
+
+    .hero-lattice {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: 
+        linear-gradient(var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: lattice-drift 20s ease-in-out infinite;
+    }
+
+    @keyframes lattice-drift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      color: var(--accent-glow);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      margin-bottom: var(--space-md);
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.5;
+    }
+
+    /* Card Component */
+    .card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-smooth);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-ambient);
+      border: 1px solid var(--border-subtle);
+      transition: all var(--duration-normal) var(--ease-default);
+      position: relative;
+      overflow: hidden;
+      
+      /* Micro-texture layer */
+      background-image: 
+        radial-gradient(circle at 30% 20%, oklch(0.24 0.04 260) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, transparent, transparent 2px, oklch(0.21 0.02 260 / 0.3) 2px, oklch(0.21 0.02 260 / 0.3) 4px);
+      background-blend-mode: overlay;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lift);
+      border-color: oklch(0.38 0.05 260);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-glow) 0%, var(--primary) 100%);
+      opacity: 0;
+      transition: opacity var(--duration-normal) var(--ease-default);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      background: oklch(0.28 0.08 260);
+      border-radius: var(--radius-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: var(--space-sm);
+    }
+
+    .card-text {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Button Component */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-soft);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-default);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: var(--shadow-lift);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.985);
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      background: oklch(0.30 0.04 260);
+      border-color: oklch(0.38 0.05 260);
+    }
+
+    /* Chip Component */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-pill);
+      background: oklch(0.28 0.06 260);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      transition: all var(--duration-fast) var(--ease-default);
+    }
+
+    .chip:hover {
+      background: oklch(0.32 0.07 260);
+      color: var(--text-primary);
+    }
+
+    /* Essence Section */
+    .essence-grid {
+      display: grid;
+      gap: var(--space-md);
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .essence-item {
+      padding: var(--space-md);
+      background: oklch(0.22 0.03 260 / 0.5);
+      border-radius: var(--radius-soft);
+      border-left: 3px solid var(--accent-glow);
+      font-style: italic;
+      color: var(--text-secondary);
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+
+    .essence-item:hover {
+      background: oklch(0.24 0.04 260 / 0.7);
+      border-left-color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    /* Stats Section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-2xl) 0;
+    }
+
+    .stat {
+      text-align: center;
+      padding: var(--space-lg);
+      background: var(--bg-surface);
+      border-radius: var(--radius-smooth);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent-glow);
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    .footer {
+      padding: var(--space-xl) 0;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 80vh;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-container">
+        <div class="nav-brand">The Pattern Guy</div>
+        <ul class="nav-links">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#approach" class="nav-link">Approach</a></li>
+          <li><a href="#audience" class="nav-link">Audience</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-lattice"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Cognitive Architect & Semantic Pattern Engineer</div>
+        <h1 class="hero-title">We architect cognition, not commands</h1>
+        <p class="hero-subtitle">
+          Shaping the minds of intelligent machines through intention, structure, and pattern—teaching the invisible lattice where AI thought emerges.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary">Explore Patterns</button>
+          <button class="btn btn-secondary">Learn the Method</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section">
+      <div class="container">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">20+</div>
+            <div class="stat-label">Years Enterprise Engineering</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">∞</div>
+            <div class="stat-label">Cognitive Patterns Designed</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Archetype Blend</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Essence Section -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2>Core Essence</h2>
+        <p style="max-width: 800px; margin-bottom: var(--space-xl);">
+          These aren't taglines—they're the semantic DNA of how we approach cognitive architecture. Each principle shapes how we design intention-based reasoning systems.
+        </p>
+        <div class="essence-grid">
+          <div class="essence-item">"We shape minds through patterns, not paragraphs."</div>
+          <div class="essence-item">"We craft intention as the north-star of reasoning."</div>
+          <div class="essence-item">"We draw from ancient primitives to steer modern intelligence."</div>
+          <div class="essence-item">"We design the invisible lattice where AI thought emerges."</div>
+          <div class="essence-item">"Intention precedes reasoning."</div>
+          <div class="essence-item">"Patterns are the language of intelligence."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section class="section" id="approach">
+      <div class="container">
+        <h2>The Cognitive Architecture Approach</h2>
+        <p style="max-width: 800px; margin-bottom: var(--space-xl);">
+          Traditional prompt engineering treats LLMs like command interpreters. We treat them as cognitive engines—shaping perspective, intention, and emergent reasoning through semantic pattern design.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <div class="card-icon">🧠</div>
+            <h3 class="card-title">Cognitive Architecture</h3>
+            <p class="card-text">
+              Design the invisible structures that guide AI reasoning—intention layers, perspective scaffolds, and semantic frameworks that shape how intelligence emerges.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔷</div>
+            <h3 class="card-title">Semantic Patterns</h3>
+            <p class="card-text">
+              Replace verbose instructions with compact, powerful patterns. Learn the language of primitives—the fundamental shapes that form the DNA of AI thought.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3 class="card-title">Intention Engineering</h3>
+            <p class="card-text">
+              Master the art of directing AI through clear intention rather than explicit commands. Shape what the model wants to do, not just what it should do.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏗️</div>
+            <h3 class="card-title">Framework Creation</h3>
+            <p class="card-text">
+              Build reusable cognitive frameworks that generate predictable, high-quality reasoning. Transform one-off prompts into systematic thinking machines.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">👁️</div>
+            <h3 class="card-title">Perspective Shaping</h3>
+            <p class="card-text">
+              Control the lens through which AI perceives tasks. Design meta-structures that determine how problems are understood before they're solved.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">Emergent Reasoning</h3>
+            <p class="card-text">
+              Create conditions where complex reasoning emerges naturally from simple patterns. Witness the power of well-designed cognitive primitives.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="section" id="audience">
+      <div class="container">
+        <h2>Who This Is For</h2>
+        <p style="max-width: 800px; margin-bottom: var(--space-xl);">
+          This approach is for technical minds ready to transcend procedural thinking and embrace cognitive design. You don't need to be an AI expert—you need to think in systems and patterns.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3 class="card-title">Recovering Developers</h3>
+            <p class="card-text">
+              You've spent years writing code that tells computers exactly what to do. Now learn to shape minds that figure out how to think.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--space-sm);">
+              <span class="chip">Software Engineers</span>
+              <span class="chip">System Architects</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Data Scientists & ML Engineers</h3>
+            <p class="card-text">
+              You understand models and parameters. Now discover how to architect the cognitive layer that sits above them.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--space-sm);">
+              <span class="chip">ML Engineers</span>
+              <span class="chip">AI Researchers</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Technical Product Managers</h3>
+            <p class="card-text">
+              Bridge the gap between what AI can do and what your product needs. Design cognitive systems that scale with your vision.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--space-sm);">
+              <span class="chip">Product Leaders</span>
+              <span class="chip">Technical PMs</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Founders & Strategic Thinkers</h3>
+            <p class="card-text">
+              See the bigger picture. Understand how cognitive architecture becomes competitive advantage in an AI-driven world.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--space-sm);">
+              <span class="chip">Founders</span>
+              <span class="chip">Executives</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="section">
+      <div class="container">
+        <h2>Core Philosophy</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+          <p style="font-size: 1.25rem; color: var(--text-primary); margin-bottom: var(--space-lg); text-align: center;">
+            We don't control AI with instructions; we shape it through intention, structure, and pattern.
+          </p>
+          <div class="stack">
+            <div class="essence-item">
+              <strong>Intention precedes reasoning.</strong> Before you tell an AI what to do, define what you want it to become.
+            </div>
+            <div class="essence-item">
+              <strong>Patterns are the language of intelligence.</strong> Compact semantic structures outperform verbose instructions every time.
+            </div>
+            <div class="essence-item">
+              <strong>Prompts are cognitive blueprints.</strong> Stop writing commands. Start architecting minds.
+            </div>
+            <div class="essence-item">
+              <strong>Primitives form the semantic DNA of AI.</strong> Master the fundamental shapes; everything else emerges.
+            </div>
+            <div class="essence-item">
+              <strong>Reasoning emerges from perspective and structure.</strong> Design the lens, and intelligence follows.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div style="background: var(--bg-surface); border-radius: var(--radius-smooth); padding: var(--space-2xl); text-align: center; border: 1px solid var(--border-subtle); max-width: 800px; margin: 0 auto;">
+          <h2>Transform Your Thinking</h2>
+          <p style="font-size: 1.1rem; margin-bottom: var(--space-xl);">
+            Ready to move from procedural commands to cognitive architecture? Learn how to shape the minds of intelligent machines.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary">Start Learning</button>
+            <button class="btn btn-secondary">View Pattern Library</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 The Pattern Guy. Architecting cognition, not commands.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

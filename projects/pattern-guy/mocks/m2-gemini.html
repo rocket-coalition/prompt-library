@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pattern Guy - 4 Concept Mocks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ========================================
+        VISUAL DESIGN SYSTEM - CORE VARIABLES
+        Based on specs: OKLCH primitives, pigment blending, tactile depth.
+        ========================================
+        */
+        :root {
+            /* Primitives defined in spec */
+            --color-primary: 0.62 0.10 260;   /* Deep muted blue/purple */
+            --color-secondary: 0.70 0.08 240; /* Softer blue */
+            --color-accent: 0.72 0.15 30;     /* Muted warm orange/red */
+            --color-neutral: 0.95 0.01 270;   /* Tinted white */
+            
+            /* Surface Primitives (Raw OKLCH values for manipulation) */
+            --surface-dark-raw: 0.20 0.03 260;
+            --surface-mid-raw: 0.30 0.03 260;
+            --surface-lite-raw: 0.92 0.02 270;
+
+            /* Geometry: Radius Tokens (Engineered Softness) */
+            --radius-micro: 2px;    /* Precision */
+            --radius-soft: 6px;     /* Primary surfaces */
+            --radius-smooth: 12px;  /* Larger blocks */
+            --radius-pill: 999px;   /* Accents */
+
+            /* Motion & Interaction Physics */
+            --ease-default: cubic-bezier(0.22, 1, 0.36, 1); /* Signature snap-in */
+            --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+            /* Typography */
+            --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* ========================================
+        GLOBAL RESETS & PRESENTATION LAYER
+        Tactile, printed feel.
+        ========================================
+        */
+        body {
+            font-family: var(--font-sans);
+            /* Default presentation background (mid-tone to show off both light/dark mocks) */
+            background-color: oklch(var(--surface-mid-raw));
+            padding: 4rem 1rem;
+            color: oklch(var(--color-neutral));
+        }
+
+        h1, h2, h3 {
+            letter-spacing: -0.02em; /* Slight tightness for "engineered" feel */
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Presentation wrapper styles for the mocks */
+        .mockup-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 6rem auto;
+            border-radius: var(--radius-smooth);
+            overflow: hidden;
+            /* Deep presentation shadow */
+            box-shadow: 0 30px 60px -12px oklch(var(--surface-dark-raw) / 0.5);
+            border: 1px solid oklch(var(--color-neutral) / 0.1);
+        }
+
+        .mockup-label {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+
+        /* =================================================================
+           CONCEPT A: THE BLUEPRINT (Architect / Velvet Dark Mode)
+           Vibe: Schematic, technical, engineered, precision.
+        ================================================================= */
+        .theme-blueprint {
+            /* Theme variables - Velvet Dark Mode */
+            --bg-base: oklch(var(--surface-dark-raw));
+            /* Blend 3% primary into surface for pigment harmony */
+            --bg-surface: oklch(from oklch(var(--surface-dark-raw)) l c h / calc(l + 0.03) calc(c + 0.01) h);
+            --text-primary: oklch(var(--color-neutral));
+            --text-secondary: oklch(var(--color-secondary));
+            
+            /* Pigment-tinted Shadow - Level 2 (Soft Lift) */
+            --shadow-lift: 0 4px 12px oklch(var(--color-primary) / 0.2), 0 1px 2px oklch(var(--color-primary) / 0.1);
+
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        /* Micro-texture: Noise grain overlay (Spec: <7% opacity) */
+        .theme-blueprint::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* Semantic Components for Blueprint Theme */
+        .blueprint-grid-bg {
+            /* Subtle technical grid overlay */
+            background-image: 
+                linear-gradient(to right, oklch(var(--color-primary)/0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, oklch(var(--color-primary)/0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .blueprint-mono-accent {
+            color: oklch(var(--color-secondary));
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .blueprint-card {
+            background-color: var(--bg-surface);
+            /* Engineered Soft Radius */
+            border-radius: var(--radius-soft);
+            padding: 2rem;
+            border: 1px solid oklch(var(--color-primary) / 0.1);
+            box-shadow: var(--shadow-lift);
+            /* Interaction Physics: Lift & Luminance shift */
+            transition: transform 0.2s var(--ease-default), background-color 0.2s ease;
+        }
+        
+        .blueprint-card:hover {
+            transform: translateY(-2px);
+            /* +0.5L Luminance shift on hover */
+            background-color: oklch(from var(--bg-surface) calc(l + 0.01) c h);
+        }
+
+
+        /* =================================================================
+           CONCEPT B: THE CODEX (Sage / Matte Paper Light Mode)
+           Vibe: Academic, breathable, wise, layered depth.
+        ================================================================= */
+        .theme-codex {
+            /* Theme variables - Matte Paper Light */
+            /* Blend pigment into base white (Spec: never pure white) */
+            --bg-base: oklch(from oklch(var(--surface-lite-raw)) l c h / l calc(c + 0.01) calc(h - 10));
+            --bg-surface: oklch(0.98 0.01 270); /* Slightly brighter surface */
+            --text-primary: oklch(var(--surface-dark-raw));
+            --text-secondary: oklch(var(--color-primary));
+
+            /* Pigment-tinted Shadow - Soft Ambient (Level 1) */
+            --shadow-ambient: 0 8px 24px -6px oklch(var(--color-primary) / 0.08), 0 2px 4px -2px oklch(var(--color-primary) / 0.04);
+            
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+        }
+        
+        /* Micro-texture: Paper fiber overlay */
+        .theme-codex::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='white' surfaceScale='1'%3E%3CfeDistantLight azimuth='45' elevation='60'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23paper)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .codex-hero-surface {
+            background-color: var(--bg-surface);
+            margin: 2rem;
+            padding: 4rem;
+            /* Smooth radius for larger blocks */
+            border-radius: var(--radius-smooth);
+            box-shadow: var(--shadow-ambient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .codex-btn-primary {
+            background-color: oklch(var(--color-primary));
+            color: oklch(var(--surface-lite-raw));
+            padding: 1rem 2rem;
+            border-radius: var(--radius-soft);
+            font-weight: 600;
+            /* Spec: Buttons get accent sheen (<3%) */
+            background-image: linear-gradient(135deg, oklch(var(--color-neutral)/0.08) 0%, transparent 50%);
+            transition: filter 0.15s var(--ease-soft);
+        }
+        
+        .codex-btn-primary:hover {
+            /* Slight luminance boost */
+             filter: brightness(1.1);
+        }
+
+
+        /* =================================================================
+           CONCEPT C: EMERGENCE (Magician / Hybrid Dark)
+           Vibe: Organic connections, accent sheen, reactive surfaces.
+        ================================================================= */
+        .theme-emergence {
+             /* Theme variables - Deep tinted dark */
+            --bg-base: oklch(from oklch(var(--surface-dark-raw)) calc(l - 0.02) calc(c + 0.02) calc(h - 5));
+            --bg-surface: oklch(from var(--bg-base) calc(l + 0.05) c h);
+            --text-primary: oklch(var(--color-neutral));
+            
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+             /* Spec: Ambient vignette (2-4% inset fade) */
+             background-image: radial-gradient(circle at center, transparent 20%, oklch(var(--surface-dark-raw) / 0.6) 100%);
+        }
+
+        /* Spec: Interactive Card with Directional Sheen & Depth Flicker */
+        .emergence-card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-smooth);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+            /* Directional Sheen (1-3% luminance gradient) */
+            background-image: linear-gradient(110deg, oklch(var(--color-neutral)/0.02) 0%, transparent 40%);
+            /* Physics: Soft ease */
+            transition: all 0.3s var(--ease-soft);
+        }
+
+        .emergence-card:hover {
+             /* Accent blend on hover */
+             border-color: oklch(var(--color-accent) / 0.4);
+             /* Depth flicker: Micro-luminance shift (+0.2 to +0.4 L) */
+             background-color: oklch(from var(--bg-surface) calc(l + 0.02) calc(c + 0.01) h);
+             box-shadow: 0 12px 30px -10px oklch(var(--color-accent) / 0.2);
+        }
+        
+        /* The "Sheen" effect moving across on hover */
+        .emergence-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, oklch(var(--color-accent)/0.05), transparent);
+            transition: left 0.6s var(--ease-default);
+        }
+        .emergence-card:hover::after {
+            left: 100%;
+        }
+
+
+        /* =================================================================
+           CONCEPT D: THE PROTOCOL (Guide / Strict Structure)
+           Vibe: Disciplined, functional, clear steps, high clarity.
+        ================================================================= */
+        .theme-protocol {
+            /* Theme variables - High contrast technical light */
+            --bg-base: oklch(0.95 0.01 265);
+            --bg-surface: oklch(0.99 0.005 265);
+            --text-primary: oklch(0.15 0.04 260); /* Darker text for maximum clarity */
+            --text-secondary: oklch(0.4 0.06 260);
+            --color-highlight: oklch(var(--color-accent));
+
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+        }
+
+        /* "Ink Trap" Typography Simulation (Spec: Printed, engraved feel) */
+        .protocol-ink-trap-title {
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            /* Subtle inner shadow to simulate ink spread/engraving */
+            text-shadow: 0px 1px 1px oklch(var(--bg-base) / 0.8);
+        }
+
+        .protocol-step-module {
+            background: var(--bg-surface);
+            /* Engineered Soft radius */
+            border-radius: var(--radius-soft); 
+            /* Thicker, structural border */
+            border-left: 4px solid oklch(var(--color-primary) / 0.3);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: baseline;
+            gap: 1.5rem;
+        }
+
+        .protocol-step-number {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: oklch(var(--color-primary));
+            opacity: 0.6;
+        }
+
+        /* Pill Token Usage */
+        .protocol-pill-tag {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            background-color: oklch(var(--color-primary) / 0.1);
+            color: oklch(var(--color-primary));
+            /* Pill radius token */
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mockup-label">Concept A: The Cognitive Blueprint (Architect Facet)</div>
+    <div class="mockup-wrapper theme-blueprint blueprint-grid-bg">
+        
+        <nav class="flex justify-between items-end p-8 border-b border-white/10">
+            <div>
+                <span class="blueprint-mono-accent">Identity //</span>
+                <div class="text-xl font-bold tracking-wider">THE PATTERN GUY.</div>
+            </div>
+            <div class="hidden md:flex gap-8 font-mono text-sm opacity-60">
+                <span>[Primitives]</span>
+                <span>[Structure]</span>
+                <span>[Intention]</span>
+            </div>
+        </nav>
+
+        <section class="p-8 md:p-16 max-w-4xl">
+            <span class="blueprint-mono-accent">Role: Cognitive Architect</span>
+            <h1 class="text-4xl md:text-6xl mb-8 leading-tight">
+                We design the invisible lattice where AI thought emerges.
+            </h1>
+            <p class="text-xl md:text-2xl opacity-70 max-w-2xl leading-relaxed border-l-2 border-[oklch(var(--color-accent))] pl-6">
+                Stop writing procedural code for intelligent engines. Move from instructing to architecting cognition through structure and ancient primitives.
+            </p>
+        </section>
+
+        <section class="p-8 md:px-16 md:pb-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="blueprint-card">
+                <span class="blueprint-mono-accent">01_Philosophy</span>
+                <h3 class="text-lg mb-3">Intention Precedes Reasoning.</h3>
+                <p class="text-sm opacity-70">
+                    We don’t control AI with instructions. We shape it by defining the 'why' before the 'how' as a structural constraint.
+                </p>
+            </div>
+            <div class="blueprint-card">
+                 <span class="blueprint-mono-accent">02_Capability</span>
+                 <h3 class="text-lg mb-3">Semantic Pattern Design.</h3>
+                 <p class="text-sm opacity-70">
+                     Teaching recovering developers to build reusable cognitive blueprints instead of one-off prompt tricks.
+                 </p>
+             </div>
+             <div class="blueprint-card">
+                 <span class="blueprint-mono-accent">03_Differentiator</span>
+                 <h3 class="text-lg mb-3">Engineered Cognition.</h3>
+                 <p class="text-sm opacity-70">
+                     Drawing from 20+ years of mission-critical systems to treat LLMs as high-scale reasoning engines.
+                 </p>
+             </div>
+        </section>
+    </div>
+
+
+
+    <div class="mockup-label pt-12">Concept B: The Codex (Sage Facet)</div>
+    <div class="mockup-wrapper theme-codex relative">
+        
+        <nav class="p-8 md:px-12 flex justify-between items-center">
+            <div class="text-2xl font-bold text-[oklch(var(--color-primary))]">The Pattern Guy.</div>
+            <div class="hidden md:flex gap-8 font-medium text-[oklch(var(--color-primary))] opacity-80">
+                <a href="#" class="hover:underline decoration-2 underline-offset-4">The Core Truth</a>
+                <a href="#" class="hover:underline decoration-2 underline-offset-4">Teaching</a>
+            </div>
+        </nav>
+
+        <section class="codex-hero-surface mx-4 md:mx-12">
+            <div class="max-w-3xl relative z-10">
+                <h1 class="text-5xl md:text-7xl font-bold mb-8 text-[oklch(var(--color-primary))] leading-none">
+                    Shape minds through patterns, not paragraphs.
+                </h1>
+                <p class="text-xl mb-10 leading-relaxed text-[oklch(var(--text-primary)/0.75)] max-w-2xl">
+                    A guide for the recovering software developer. We draw from ancient mental primitives to steer modern intelligence, transforming procedural thinkers into cognitive designers.
+                </p>
+                <button class="codex-btn-primary">
+                    Explore the Curriculum
+                </button>
+            </div>
+            <div class="absolute right-0 bottom-0 opacity-10">
+                <svg width="300" height="300" viewBox="0 0 100 100" fill="none" stroke="oklch(var(--color-primary))" stroke-width="0.5">
+                    <path d="M0 20 L100 20 M0 40 L100 40 M0 60 L100 60 M0 80 L100 80 M20 0 L20 100 M40 0 L40 100 M60 0 L60 100 M80 0 L80 100"/>
+                </svg>
+            </div>
+        </section>
+
+        <section class="px-8 py-16 md:px-16 flex flex-col md:flex-row gap-12">
+            <div class="flex-1">
+                <h3 class="text-xl font-bold mb-4 text-[oklch(var(--color-primary))]">Who is this for?</h3>
+                <p class="text-[oklch(var(--text-primary)/0.7)] leading-relaxed mb-4">
+                    Data Scientists, Technical Product Managers, and Founders seeking higher-order clarity and system-level framing for AI.
+                </p>
+            </div>
+            <div class="flex-1 md:border-l border-[oklch(var(--color-primary)/0.1)] md:pl-12">
+                 <h3 class="text-xl font-bold mb-4 text-[oklch(var(--color-primary))]">The Outcome.</h3>
+                 <p class="text-[oklch(var(--text-primary)/0.7)] leading-relaxed mb-4">
+                    Gain predictable emergent reasoning and the ability to design prompts like robust mental software architecture.
+                 </p>
+             </div>
+        </section>
+    </div>
+
+
+
+    <div class="mockup-label pt-12">Concept C: Emergence (Magician Facet)</div>
+    <div class="mockup-wrapper theme-emergence">
+        
+        <header class="p-12 md:p-20 text-center">
+            <div class="inline-block mb-6 px-4 py-1 rounded-full border border-[oklch(var(--color-accent)/0.3)] text-[oklch(var(--color-accent))] text-sm font-bold tracking-widest uppercase">
+                Semantic Pattern Engineer
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                Crafting intention as the <span class="text-[oklch(var(--color-accent))]">north-star</span> of reasoning.
+            </h1>
+            <p class="max-w-2xl mx-auto text-xl opacity-70 leading-relaxed">
+                We do not issue commands. We design the energetic structures and perspectives from which intelligence naturally emerges.
+            </p>
+        </header>
+
+        <section class="px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div class="emergence-card">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-[oklch(var(--color-accent))] shadow-[0_0_12px_oklch(var(--color-accent))]"></span>
+                    The Invisible Lattice.
+                </h2>
+                <p class="opacity-70 leading-relaxed">
+                    Moving beyond the surface level of "prompt engineering" to design the deep semantic structures that guide AI thought processes implicitly.
+                </p>
+            </div>
+
+            <div class="emergence-card md:mt-12">
+                 <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-[oklch(var(--color-secondary))] shadow-[0_0_12px_oklch(var(--color-secondary))]"></span>
+                    Ancient Primitives.
+                 </h2>
+                 <p class="opacity-70 leading-relaxed">
+                     Drawing from timeless mental models to steer modern, black-box intelligence systems towards predictable outcomes.
+                 </p>
+             </div>
+        </section>
+    </div>
+
+
+    <div class="mockup-label pt-12">Concept D: The Protocol (Guide Facet)</div>
+    <div class="mockup-wrapper theme-protocol">
+        
+        <div class="max-w-3xl mx-auto p-8 md:p-16">
+            <header class="mb-12 pb-8 border-b-2 border-[oklch(var(--color-primary)/0.1)]">
+                <h1 class="protocol-ink-trap-title text-6xl mb-4">The Pattern Guy.</h1>
+                 <p class="text-xl font-medium text-[oklch(var(--text-secondary))]">
+                    Cognitive Architecture for Mission-Critical Reasoning.
+                 </p>
+            </header>
+
+            <section class="mb-16">
+                <div class="protocol-pill-tag mb-6">The Mission Statement</div>
+                <h2 class="text-3xl font-bold mb-6 leading-tight">
+                    Transforming procedural thinkers into cognitive designers.
+                </h2>
+                <p class="text-lg leading-relaxed text-[oklch(var(--text-primary)/0.8)]">
+                    For 20+ years, I built enterprise systems. Then I discovered LLMs act as cognitive engines, not interpreters. This is the framework for making that transition.
+                </p>
+            </section>
+
+            <section>
+                <div class="protocol-pill-tag mb-6 bg-[oklch(var(--color-secondary)/0.1)] text-[oklch(var(--color-secondary))]">The Framework Protocol</div>
+                
+                <div class="protocol-step-module">
+                    <div class="protocol-step-number">01.</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Intention Engineering</h3>
+                        <p class="text-[oklch(var(--text-secondary))] leading-relaxed">
+                            Define the "north-star" of reasoning before a single token is generated. Crafting intention as a rigid structural constraint.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="protocol-step-module" style="border-color: oklch(var(--color-secondary)/0.3)">
+                    <div class="protocol-step-number" style="color: oklch(var(--color-secondary))">02.</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Perspective Shaping</h3>
+                        <p class="text-[oklch(var(--text-secondary))] leading-relaxed">
+                            Establishing the cognitive vantage point. Reasoning emerges based on the structure of the perspective provided.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="protocol-step-module" style="border-color: oklch(var(--color-accent)/0.3)">
+                     <div class="protocol-step-number" style="color: oklch(var(--color-accent))">03.</div>
+                     <div>
+                         <h3 class="text-xl font-bold mb-2">Pattern Design</h3>
+                         <p class="text-[oklch(var(--text-secondary))] leading-relaxed">
+                             Creating reusable conceptual scaffolds for complex AI work, rather than verbose, fragile instructions.
+                         </p>
+                     </div>
+                 </div>
+            </section>
+        </div>
+    </div>
+
+</body>
+</html>

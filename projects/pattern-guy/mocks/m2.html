@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="pattern">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pattern Guy — Cognitive Architect & Semantic Pattern Engineer</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES — OKLCH DESIGN SYSTEM
+       ============================================ */
+    :root {
+      /* Base Palette */
+      --bg-deep: oklch(0.12 0.03 270);
+      --bg-surface: oklch(0.16 0.035 265);
+      --bg-elevated: oklch(0.20 0.04 260);
+      --bg-card: oklch(0.18 0.038 262);
+      
+      /* Text */
+      --text-primary: oklch(0.92 0.02 270);
+      --text-secondary: oklch(0.72 0.03 265);
+      --text-muted: oklch(0.52 0.025 260);
+      
+      /* Accent — Gold/Amber */
+      --accent: oklch(0.78 0.14 75);
+      --accent-dim: oklch(0.65 0.12 75);
+      --accent-glow: oklch(0.85 0.16 75);
+      
+      /* Secondary — Indigo */
+      --indigo: oklch(0.55 0.15 280);
+      --indigo-dim: oklch(0.40 0.12 280);
+      
+      /* Geometry */
+      --radius-micro: 2px;
+      --radius-soft: 6px;
+      --radius-smooth: 12px;
+      --radius-pill: 9999px;
+      
+      /* Shadows — Pigment-tinted */
+      --shadow-ambient: 0 8px 32px oklch(0.08 0.02 270 / 0.5);
+      --shadow-elevated: 0 16px 48px oklch(0.06 0.03 270 / 0.6);
+      --shadow-glow: 0 0 60px oklch(0.78 0.14 75 / 0.15);
+      
+      /* Motion */
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --duration-fast: 120ms;
+      --duration-normal: 220ms;
+      --duration-slow: 380ms;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-weight: 300;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      background: linear-gradient(
+        135deg,
+        var(--text-primary) 0%,
+        oklch(0.85 0.04 270) 50%,
+        var(--accent) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      color: var(--text-secondary);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      max-width: 60ch;
+    }
+
+    /* ============================================
+       THREE.JS CANVAS
+       ============================================ */
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    #pattern-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 2rem;
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(
+        180deg,
+        oklch(0.12 0.03 270 / 0.95) 0%,
+        oklch(0.12 0.03 270 / 0) 100%
+      );
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-logo::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--duration-normal) var(--ease-out);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width var(--duration-normal) var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 8rem;
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero-label {
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: var(--bg-elevated);
+      border: 1px solid oklch(0.30 0.04 265);
+      border-radius: var(--radius-soft);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .hero-cta:hover {
+      background: var(--bg-card);
+      border-color: var(--accent-dim);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--duration-normal) var(--ease-out);
+    }
+
+    .hero-cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .scroll-indicator span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(
+        180deg,
+        var(--accent) 0%,
+        transparent 100%
+      );
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ============================================
+       PHILOSOPHY SECTION
+       ============================================ */
+    .philosophy {
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        oklch(0.10 0.025 270 / 0.5) 50%,
+        transparent 100%
+      );
+    }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .philosophy-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    .philosophy-text h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .philosophy-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    .pattern-visual {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       PRINCIPLES SECTION
+       ============================================ */
+    .principles {
+      padding: 8rem 2rem;
+    }
+
+    .principles-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .principles-header h2 {
+      margin-bottom: 1rem;
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .principle-card {
+      background: var(--bg-card);
+      border: 1px solid oklch(0.25 0.03 265);
+      border-radius: var(--radius-smooth);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .principle-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--accent) 50%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity var(--duration-normal) var(--ease-out);
+    }
+
+    .principle-card:hover {
+      border-color: oklch(0.35 0.05 270);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .principle-card:hover::before {
+      opacity: 1;
+    }
+
+    .principle-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .principle-number::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: oklch(0.30 0.03 265);
+    }
+
+    .principle-card h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 1.25rem;
+    }
+
+    .principle-card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       TRANSFORMATION SECTION
+       ============================================ */
+    .transformation {
+      padding: 8rem 2rem;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        oklch(0.14 0.04 275 / 0.3) 50%,
+        transparent 100%
+      );
+    }
+
+    .transformation-content {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .transformation-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .transformation-intro h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .outcomes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .outcome-item {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      background: var(--bg-surface);
+      border-radius: var(--radius-soft);
+      border: 1px solid oklch(0.22 0.03 265);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .outcome-item:hover {
+      border-color: var(--accent-dim);
+      background: var(--bg-card);
+    }
+
+    .outcome-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: oklch(0.20 0.04 260);
+      border-radius: var(--radius-soft);
+      flex-shrink: 0;
+    }
+
+    .outcome-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+    }
+
+    .outcome-text h4 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 1.125rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .outcome-text p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       AUDIENCE SECTION
+       ============================================ */
+    .audience {
+      padding: 8rem 2rem;
+    }
+
+    .audience-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .audience-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .chip {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid oklch(0.28 0.03 265);
+      border-radius: var(--radius-pill);
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      transition: all var(--duration-normal) var(--ease-out);
+      cursor: default;
+    }
+
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px oklch(0.78 0.14 75 / 0.1);
+    }
+
+    .chip.primary {
+      background: oklch(0.20 0.05 75 / 0.2);
+      border-color: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: 10rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(
+        circle,
+        oklch(0.78 0.14 75 / 0.08) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-content h2 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      margin-bottom: 1.5rem;
+      background: linear-gradient(
+        135deg,
+        var(--text-primary) 0%,
+        var(--accent) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-content p {
+      margin: 0 auto 3rem;
+      font-size: 1.25rem;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 2.5rem;
+      background: linear-gradient(
+        135deg,
+        var(--accent) 0%,
+        var(--accent-dim) 100%
+      );
+      border: none;
+      border-radius: var(--radius-soft);
+      color: oklch(0.15 0.03 75);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-out);
+      box-shadow: 0 4px 20px oklch(0.78 0.14 75 / 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 40px oklch(0.78 0.14 75 / 0.4);
+    }
+
+    .cta-button svg {
+      width: 18px;
+      height: 18px;
+      transition: transform var(--duration-normal) var(--ease-out);
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid oklch(0.20 0.03 265);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-left {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-right a {
+      color: var(--text-muted);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .footer-right a:hover {
+      color: var(--accent);
+    }
+
+    .footer-right svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ============================================
+       SCROLL ANIMATIONS (CSS-based fallback)
+       ============================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       CUSTOM CURSOR (Desktop only)
+       ============================================ */
+    @media (hover: hover) and (pointer: fine) {
+      .cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10001;
+        transition: transform 0.15s var(--ease-out), opacity 0.15s var(--ease-out);
+        mix-blend-mode: difference;
+        opacity: 0;
+      }
+
+      .cursor.active {
+        opacity: 1;
+      }
+
+      .cursor-dot {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10002;
+        opacity: 0;
+      }
+
+      .cursor-dot.active {
+        opacity: 1;
+      }
+
+      .cursor.hover {
+        transform: scale(2);
+        border-color: var(--accent-glow);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-dot"></div>
+
+  <!-- Three.js Canvas -->
+  <div id="canvas-container">
+    <canvas id="pattern-canvas"></canvas>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">THE PATTERN GUY</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#transformation">Outcomes</a></li>
+      <li><a href="#cta">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="content">
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <span class="label hero-label fade-in">Cognitive Architect & Semantic Pattern Engineer</span>
+        <h1 class="fade-in">We Architect Cognition,<br>Not Commands</h1>
+        <p class="hero-subtitle fade-in">
+          Shaping the minds of intelligent machines through patterns, primitives, and intention engineering.
+        </p>
+        <a href="#philosophy" class="hero-cta fade-in">
+          Discover the Pattern
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+      <div class="scroll-indicator fade-in">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy" id="philosophy">
+      <div class="container">
+        <div class="philosophy-grid">
+          <div class="philosophy-text">
+            <span class="label fade-in">The Shift</span>
+            <h2 class="fade-in">From Procedural<br>to Pattern-Based</h2>
+            <p class="fade-in">
+              After 20+ years building enterprise systems, I discovered a fundamental truth: LLMs don't execute instructions—they resonate with patterns.
+            </p>
+            <p class="fade-in">
+              We don't control AI with commands. We shape it through intention, structure, and semantic architecture. This isn't prompt engineering. This is cognitive design.
+            </p>
+          </div>
+          <div class="pattern-visual fade-in">
+            <!-- Visual handled by Three.js integration -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principles Section -->
+    <section class="principles" id="principles">
+      <div class="container">
+        <div class="principles-header">
+          <span class="label fade-in">Core Philosophy</span>
+          <h2 class="fade-in">The Five Primitives</h2>
+        </div>
+        <div class="principles-grid">
+          <div class="principle-card fade-in">
+            <span class="principle-number">01</span>
+            <h3>Intention Precedes Reasoning</h3>
+            <p>The north-star of cognition. Every pattern begins with a clear intention that guides emergent reasoning.</p>
+          </div>
+          <div class="principle-card fade-in">
+            <span class="principle-number">02</span>
+            <h3>Patterns Are the Language</h3>
+            <p>Intelligence speaks in patterns, not paragraphs. We encode meaning through structure, not verbosity.</p>
+          </div>
+          <div class="principle-card fade-in">
+            <span class="principle-number">03</span>
+            <h3>Prompts Are Blueprints</h3>
+            <p>A prompt isn't a request—it's architectural DNA. The scaffold from which cognition emerges.</p>
+          </div>
+          <div class="principle-card fade-in">
+            <span class="principle-number">04</span>
+            <h3>Primitives Form the DNA</h3>
+            <p>Ancient mental primitives—the building blocks of thought—steer modern AI toward deeper understanding.</p>
+          </div>
+          <div class="principle-card fade-in">
+            <span class="principle-number">05</span>
+            <h3>Perspective Shapes Reality</h3>
+            <p>Reasoning emerges from the vantage point we create. Control the perspective, guide the cognition.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section class="transformation" id="transformation">
+      <div class="container">
+        <div class="transformation-content">
+          <div class="transformation-intro">
+            <span class="label fade-in">What You'll Gain</span>
+            <h2 class="fade-in">The Transformation</h2>
+            <p class="fade-in">
+              Move beyond procedural thinking. Become a cognitive designer who shapes AI reasoning with precision and purpose.
+            </p>
+          </div>
+          <div class="outcomes-list">
+            <div class="outcome-item fade-in">
+              <div class="outcome-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                </svg>
+              </div>
+              <div class="outcome-text">
+                <h4>Pattern-Based Thinking</h4>
+                <p>Replace verbose prompts with semantic structures that resonate with how AI actually processes information.</p>
+              </div>
+            </div>
+            <div class="outcome-item fade-in">
+              <div class="outcome-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </div>
+              <div class="outcome-text">
+                <h4>Intention-Led Direction</h4>
+                <p>Master the art of embedding intention as the guiding force behind every AI interaction.</p>
+              </div>
+            </div>
+            <div class="outcome-item fade-in">
+              <div class="outcome-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div class="outcome-text">
+                <h4>Perspective Control</h4>
+                <p>Learn to shape the vantage point from which AI reasons, enabling predictable emergent behavior.</p>
+              </div>
+            </div>
+            <div class="outcome-item fade-in">
+              <div class="outcome-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                </svg>
+              </div>
+              <div class="outcome-text">
+                <h4>Prompts as Mental Software</h4>
+                <p>Design prompts as cognitive blueprints—executable mental architectures, not mere instructions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="audience" id="audience">
+      <div class="container">
+        <div class="audience-header">
+          <span class="label fade-in">Built For</span>
+          <h2 class="fade-in">Who This Is For</h2>
+        </div>
+        <div class="audience-chips">
+          <span class="chip primary fade-in">Recovering Developers</span>
+          <span class="chip fade-in">Data Scientists</span>
+          <span class="chip fade-in">ML Engineers</span>
+          <span class="chip primary fade-in">Technical Product Managers</span>
+          <span class="chip fade-in">UX/Cognitive Designers</span>
+          <span class="chip fade-in">Strategic Founders</span>
+          <span class="chip fade-in">Enterprise Architects</span>
+          <span class="chip primary fade-in">Automation Specialists</span>
+          <span class="chip fade-in">Knowledge Workers</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="cta">
+      <div class="cta-content">
+        <span class="label fade-in">Begin the Shift</span>
+        <h2 class="fade-in">Enter the Pattern</h2>
+        <p class="fade-in">
+          Ready to transform from procedural thinker to cognitive architect?
+        </p>
+        <a href="#" class="cta-button fade-in">
+          Start Your Journey
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          © 2025 The Pattern Guy — Cognitive Architecture
+        </div>
+        <div class="footer-right">
+          <a href="#" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Three.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- GSAP from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // ============================================
+    // INITIALIZATION - Wait for DOM
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing...');
+      
+      // Initialize all components
+      initThreeJS();
+      initScrollAnimations();
+      initCursor();
+      initSmoothScroll();
+    });
+
+    // ============================================
+    // THREE.JS PARTICLE NETWORK
+    // ============================================
+    function initThreeJS() {
+      // Check if Three.js loaded
+      if (typeof THREE === 'undefined') {
+        console.warn('Three.js not loaded, skipping particle network');
+        return;
+      }
+
+      console.log('Initializing Three.js...');
+
+      const canvas = document.getElementById('pattern-canvas');
+      if (!canvas) {
+        console.error('Canvas not found');
+        return;
+      }
+
+      // Scene setup
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );
+      
+      const renderer = new THREE.WebGLRenderer({ 
+        canvas: canvas, 
+        antialias: true, 
+        alpha: true 
+      });
+      
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      // Particle system
+      const particleCount = 150;
+      const positions = new Float32Array(particleCount * 3);
+      const velocities = [];
+      
+      // Initialize particles in a sphere distribution
+      for (let i = 0; i < particleCount; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const r = 8 + Math.random() * 4;
+        
+        positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[i * 3 + 2] = r * Math.cos(phi) - 5;
+        
+        velocities.push({
+          x: (Math.random() - 0.5) * 0.008,
+          y: (Math.random() - 0.5) * 0.008,
+          z: (Math.random() - 0.5) * 0.004
+        });
+      }
+
+      // Particle geometry and material
+      const particleGeometry = new THREE.BufferGeometry();
+      particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      const particleMaterial = new THREE.PointsMaterial({
+        color: 0xc9a227,
+        size: 0.06,
+        transparent: true,
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true
+      });
+
+      const particles = new THREE.Points(particleGeometry, particleMaterial);
+      scene.add(particles);
+
+      // Line connections
+      const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xc9a227,
+        transparent: true,
+        opacity: 0.12,
+        blending: THREE.AdditiveBlending
+      });
+
+      let linesMesh = null;
+
+      camera.position.z = 15;
+
+      // Mouse tracking
+      const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+      
+      document.addEventListener('mousemove', function(e) {
+        mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      // Scroll tracking
+      let scrollProgress = 0;
+      window.addEventListener('scroll', function() {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgress = window.scrollY / docHeight;
+      });
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Smooth mouse interpolation
+        mouse.x += (mouse.targetX - mouse.x) * 0.03;
+        mouse.y += (mouse.targetY - mouse.y) * 0.03;
+
+        // Update particle positions
+        const posArray = particles.geometry.attributes.position.array;
+        
+        for (let i = 0; i < particleCount; i++) {
+          posArray[i * 3] += velocities[i].x;
+          posArray[i * 3 + 1] += velocities[i].y;
+          posArray[i * 3 + 2] += velocities[i].z;
+
+          // Soft boundary - reverse velocity near edges
+          if (Math.abs(posArray[i * 3]) > 12) velocities[i].x *= -1;
+          if (Math.abs(posArray[i * 3 + 1]) > 12) velocities[i].y *= -1;
+          if (Math.abs(posArray[i * 3 + 2]) > 8) velocities[i].z *= -1;
+        }
+
+        particles.geometry.attributes.position.needsUpdate = true;
+
+        // Update connections
+        const linePositions = [];
+        const connectionDistance = 3;
+
+        for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+            const dx = posArray[i * 3] - posArray[j * 3];
+            const dy = posArray[i * 3 + 1] - posArray[j * 3 + 1];
+            const dz = posArray[i * 3 + 2] - posArray[j * 3 + 2];
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            if (dist < connectionDistance) {
+              linePositions.push(
+                posArray[i * 3], posArray[i * 3 + 1], posArray[i * 3 + 2],
+                posArray[j * 3], posArray[j * 3 + 1], posArray[j * 3 + 2]
+              );
+            }
+          }
+        }
+
+        // Update lines mesh
+        if (linesMesh) {
+          scene.remove(linesMesh);
+          linesMesh.geometry.dispose();
+        }
+        
+        if (linePositions.length > 0) {
+          const lineGeometry = new THREE.BufferGeometry();
+          lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+          linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+          scene.add(linesMesh);
+        }
+
+        // Camera follows mouse + scroll
+        camera.position.x += (mouse.x * 3 - camera.position.x) * 0.02;
+        camera.position.y += (mouse.y * 2 - camera.position.y) * 0.02;
+        camera.position.z = 15 + scrollProgress * 8;
+        
+        // Rotate particles
+        particles.rotation.y += 0.0004;
+        particles.rotation.x = scrollProgress * 0.3;
+
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Resize handler
+      window.addEventListener('resize', function() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      console.log('Three.js initialized successfully');
+    }
+
+    // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
+    function initScrollAnimations() {
+      // Use GSAP if available, otherwise use Intersection Observer
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        console.log('Using GSAP for animations');
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate fade-in elements
+        gsap.utils.toArray('.fade-in').forEach(function(el, i) {
+          gsap.to(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: i * 0.05,
+            ease: 'power3.out'
+          });
+        });
+
+        // Initial hero animation
+        gsap.to('.hero .fade-in', {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.15,
+          delay: 0.3,
+          ease: 'power3.out'
+        });
+
+      } else {
+        console.log('Using Intersection Observer for animations');
+        
+        // Fallback: Intersection Observer
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+          observer.observe(el);
+        });
+
+        // Trigger hero animations immediately
+        setTimeout(function() {
+          document.querySelectorAll('.hero .fade-in').forEach(function(el, i) {
+            setTimeout(function() {
+              el.classList.add('visible');
+            }, i * 150);
+          });
+        }, 300);
+      }
+    }
+
+    // ============================================
+    // CUSTOM CURSOR
+    // ============================================
+    function initCursor() {
+      // Only on devices with fine pointer (mouse)
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        return;
+      }
+
+      const cursor = document.querySelector('.cursor');
+      const cursorDot = document.querySelector('.cursor-dot');
+      
+      if (!cursor || !cursorDot) return;
+
+      let cursorX = 0, cursorY = 0;
+      let dotX = 0, dotY = 0;
+      let isVisible = false;
+
+      document.addEventListener('mousemove', function(e) {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+        
+        if (!isVisible) {
+          cursor.classList.add('active');
+          cursorDot.classList.add('active');
+          isVisible = true;
+        }
+      });
+
+      function updateCursor() {
+        dotX += (cursorX - dotX) * 0.5;
+        dotY += (cursorY - dotY) * 0.5;
+
+        cursor.style.left = cursorX - 10 + 'px';
+        cursor.style.top = cursorY - 10 + 'px';
+        
+        cursorDot.style.left = dotX - 2 + 'px';
+        cursorDot.style.top = dotY - 2 + 'px';
+
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+
+      // Hover effects
+      const hoverElements = document.querySelectorAll('a, button, .principle-card, .chip, .outcome-item');
+      hoverElements.forEach(function(el) {
+        el.addEventListener('mouseenter', function() { cursor.classList.add('hover'); });
+        el.addEventListener('mouseleave', function() { cursor.classList.remove('hover'); });
+      });
+
+      // Hide when leaving window
+      document.addEventListener('mouseleave', function() {
+        cursor.classList.remove('active');
+        cursorDot.classList.remove('active');
+        isVisible = false;
+      });
+    }
+
+    // ============================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ============================================
+    function initSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const target = document.querySelector(targetId);
+          
+          if (target) {
+            const offset = 80;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

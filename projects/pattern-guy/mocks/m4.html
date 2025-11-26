@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pattern Library — Ready-Made Cognitive Patterns for AI</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================
+       DESIGN SYSTEM — LIBRARY EDITION
+       ============================================ */
+    :root {
+      /* Refined Neutrals */
+      --bg-base: #fafafa;
+      --bg-card: #ffffff;
+      --bg-elevated: #f5f5f5;
+      --bg-dark: #1a1a1a;
+      --bg-code: #f8f9fa;
+      
+      /* Text */
+      --text-primary: #1a1a1a;
+      --text-secondary: #525252;
+      --text-muted: #8a8a8a;
+      --text-inverse: #fafafa;
+      
+      /* Accent — Deep Teal */
+      --accent: #0d9488;
+      --accent-light: #14b8a6;
+      --accent-dark: #0f766e;
+      --accent-bg: #f0fdfa;
+      
+      /* Secondary — Amber for highlights */
+      --highlight: #f59e0b;
+      --highlight-bg: #fffbeb;
+      
+      /* Borders */
+      --border-light: #e5e5e5;
+      --border-medium: #d4d4d4;
+      
+      /* Typography */
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 3rem;
+      --space-xl: 6rem;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+      
+      /* Motion */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      line-height: 1.7;
+    }
+
+    .eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    section {
+      padding: var(--space-xl) 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 250, 250, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s var(--ease);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-cta {
+      padding: 0.5rem 1rem;
+      background: var(--text-primary);
+      color: var(--text-inverse);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s var(--ease);
+    }
+
+    .nav-cta:hover {
+      background: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      padding: calc(var(--space-xl) + 4rem) 0 var(--space-xl);
+      text-align: center;
+      background: linear-gradient(180deg, var(--accent-bg) 0%, var(--bg-base) 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .hero-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.375rem 0.875rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 100px;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ============================================
+       CATEGORIES SECTION
+       ============================================ */
+    .categories {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-header h2 {
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-header p {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .category-card {
+      padding: var(--space-md);
+      background: var(--bg-base);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      transition: all 0.3s var(--ease);
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-bg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .category-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .category-card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .category-card p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .category-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* ============================================
+       PATTERN PREVIEW SECTION
+       ============================================ */
+    .preview-section {
+      background: var(--bg-base);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    @media (max-width: 900px) {
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pattern-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s var(--ease);
+    }
+
+    .pattern-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .pattern-card-header {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .pattern-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .pattern-category {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .pattern-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pattern-tag {
+      padding: 0.25rem 0.625rem;
+      background: var(--highlight-bg);
+      border-radius: 4px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--highlight);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pattern-code {
+      padding: var(--space-md);
+      background: var(--bg-dark);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: #e5e5e5;
+      overflow-x: auto;
+    }
+
+    .pattern-code .comment {
+      color: #6b7280;
+    }
+
+    .pattern-code .keyword {
+      color: var(--accent-light);
+    }
+
+    .pattern-code .string {
+      color: #fbbf24;
+    }
+
+    .pattern-code .property {
+      color: #93c5fd;
+    }
+
+    .pattern-card-footer {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg-elevated);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pattern-uses {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .pattern-uses strong {
+      color: var(--text-primary);
+    }
+
+    .pattern-copy {
+      padding: 0.375rem 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+    }
+
+    .pattern-copy:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ============================================
+       FEATURES SECTION
+       ============================================ */
+    .features {
+      background: var(--bg-dark);
+      color: var(--text-inverse);
+    }
+
+    .features .section-header h2 {
+      color: var(--text-inverse);
+    }
+
+    .features .section-header p {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .feature-item {
+      padding: var(--space-md);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .feature-item:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--accent);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .feature-item h3 {
+      color: var(--text-inverse);
+      margin-bottom: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 1.0625rem;
+    }
+
+    .feature-item p {
+      font-size: 0.9375rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ============================================
+       TESTIMONIAL / SOCIAL PROOF
+       ============================================ */
+    .social-proof {
+      background: var(--accent-bg);
+      text-align: center;
+    }
+
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quote-mark {
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+    }
+
+    .quote-text {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.5;
+      margin-bottom: var(--space-md);
+    }
+
+    .quote-author {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+    }
+
+    .quote-author strong {
+      color: var(--text-primary);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-xl) 0;
+    }
+
+    .cta-card {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: var(--space-lg);
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .cta-card h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-card p {
+      max-width: 500px;
+      margin: 0 auto var(--space-md);
+      text-align: center;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s var(--ease);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-primary);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: var(--space-lg) 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-links a {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s var(--ease);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.05s; }
+    .stagger-2 { transition-delay: 0.1s; }
+    .stagger-3 { transition-delay: 0.15s; }
+    .stagger-4 { transition-delay: 0.2s; }
+    .stagger-5 { transition-delay: 0.25s; }
+    .stagger-6 { transition-delay: 0.3s; }
+
+    /* ============================================
+       SCROLLBAR
+       ============================================ */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-medium);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-icon">P</span>
+        Pattern Library
+      </a>
+      <ul class="nav-links">
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#preview">Preview</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
+      <a href="#access" class="nav-cta">Get Access</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge fade-up">
+          <span class="hero-badge-dot"></span>
+          Now with 150+ ready-made patterns
+        </div>
+        <h1 class="fade-up stagger-1">The Complete <span>Pattern Library</span> for AI Builders</h1>
+        <p class="hero-subtitle fade-up stagger-2">
+          Stop writing prompts from scratch. Copy, customize, and deploy battle-tested cognitive patterns that actually work.
+        </p>
+        <div class="hero-stats fade-up stagger-3">
+          <div class="stat">
+            <div class="stat-number">150+</div>
+            <div class="stat-label">Patterns</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Categories</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">47</div>
+            <div class="stat-label">Frameworks</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Possibilities</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow fade-up">Browse by Category</p>
+        <h2 class="fade-up stagger-1">Patterns for Every Use Case</h2>
+        <p class="fade-up stagger-2">From reasoning frameworks to creative prompts, find the perfect pattern for your needs.</p>
+      </div>
+      
+      <div class="categories-grid">
+        <div class="category-card fade-up">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Reasoning Patterns</h3>
+          <p>Chain-of-thought, tree-of-thought, and structured reasoning frameworks.</p>
+          <span class="category-count">→ 23 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-1">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Intention Frameworks</h3>
+          <p>Goal-setting, direction-finding, and purpose-alignment patterns.</p>
+          <span class="category-count">→ 18 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-2">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+              <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>System Prompts</h3>
+          <p>Complete system architectures for agents, assistants, and chatbots.</p>
+          <span class="category-count">→ 31 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-3">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Tool Use Patterns</h3>
+          <p>Function calling, API integration, and tool orchestration templates.</p>
+          <span class="category-count">→ 15 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-4">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3v18M3 12h18" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="9"/>
+            </svg>
+          </div>
+          <h3>Creative Primitives</h3>
+          <p>Writing, ideation, brainstorming, and creative generation patterns.</p>
+          <span class="category-count">→ 27 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-5">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Code Generation</h3>
+          <p>Debugging, refactoring, documentation, and code review patterns.</p>
+          <span class="category-count">→ 19 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up stagger-6">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Persona Patterns</h3>
+          <p>Character design, role-playing, and perspective-shifting templates.</p>
+          <span class="category-count">→ 12 patterns</span>
+        </div>
+        
+        <div class="category-card fade-up">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <path d="M3 9h18M9 21V9" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Output Formatters</h3>
+          <p>JSON, markdown, tables, and structured output templates.</p>
+          <span class="category-count">→ 14 patterns</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pattern Preview Section -->
+  <section class="preview-section" id="preview">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow fade-up">See What's Inside</p>
+        <h2 class="fade-up stagger-1">Ready to Copy & Use</h2>
+        <p class="fade-up stagger-2">Each pattern is tested, documented, and ready for immediate deployment.</p>
+      </div>
+      
+      <div class="preview-grid">
+        <div class="pattern-card fade-up">
+          <div class="pattern-card-header">
+            <div class="pattern-meta">
+              <span class="pattern-category">Reasoning</span>
+              <span class="pattern-title">Chain of Thought</span>
+            </div>
+            <span class="pattern-tag">Popular</span>
+          </div>
+          <div class="pattern-code">
+            <span class="comment"># Forces step-by-step reasoning</span><br><br>
+            <span class="keyword">reasoning_pattern</span>:<br>
+            &nbsp;&nbsp;<span class="property">approach</span>: <span class="string">"sequential"</span><br>
+            &nbsp;&nbsp;<span class="property">steps</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"identify the core problem"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"break into sub-components"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"solve each systematically"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"synthesize final answer"</span><br>
+            &nbsp;&nbsp;<span class="property">output</span>: <span class="string">"show work, then conclude"</span>
+          </div>
+          <div class="pattern-card-footer">
+            <span class="pattern-uses"><strong>2,847</strong> uses this week</span>
+            <button class="pattern-copy">Copy Pattern</button>
+          </div>
+        </div>
+        
+        <div class="pattern-card fade-up stagger-1">
+          <div class="pattern-card-header">
+            <div class="pattern-meta">
+              <span class="pattern-category">System</span>
+              <span class="pattern-title">Expert Consultant</span>
+            </div>
+            <span class="pattern-tag">New</span>
+          </div>
+          <div class="pattern-code">
+            <span class="comment"># Domain expert persona</span><br><br>
+            <span class="keyword">identity</span>:<br>
+            &nbsp;&nbsp;<span class="property">role</span>: <span class="string">"Senior {domain} consultant"</span><br>
+            &nbsp;&nbsp;<span class="property">experience</span>: <span class="string">"20+ years"</span><br>
+            &nbsp;&nbsp;<span class="property">approach</span>: <span class="string">"practical, evidence-based"</span><br><br>
+            <span class="keyword">behavior</span>:<br>
+            &nbsp;&nbsp;<span class="property">first</span>: <span class="string">"clarify the real problem"</span><br>
+            &nbsp;&nbsp;<span class="property">then</span>: <span class="string">"provide actionable advice"</span><br>
+            &nbsp;&nbsp;<span class="property">always</span>: <span class="string">"cite sources when possible"</span>
+          </div>
+          <div class="pattern-card-footer">
+            <span class="pattern-uses"><strong>1,203</strong> uses this week</span>
+            <button class="pattern-copy">Copy Pattern</button>
+          </div>
+        </div>
+        
+        <div class="pattern-card fade-up stagger-2">
+          <div class="pattern-card-header">
+            <div class="pattern-meta">
+              <span class="pattern-category">Intention</span>
+              <span class="pattern-title">Goal Crystallizer</span>
+            </div>
+          </div>
+          <div class="pattern-code">
+            <span class="comment"># Clarifies ambiguous requests</span><br><br>
+            <span class="keyword">intention_framework</span>:<br>
+            &nbsp;&nbsp;<span class="property">given</span>: <span class="string">"user request"</span><br>
+            &nbsp;&nbsp;<span class="property">extract</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"explicit goals"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"implicit needs"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"success criteria"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"constraints"</span><br>
+            &nbsp;&nbsp;<span class="property">clarify_before</span>: <span class="string">"acting"</span>
+          </div>
+          <div class="pattern-card-footer">
+            <span class="pattern-uses"><strong>956</strong> uses this week</span>
+            <button class="pattern-copy">Copy Pattern</button>
+          </div>
+        </div>
+        
+        <div class="pattern-card fade-up stagger-3">
+          <div class="pattern-card-header">
+            <div class="pattern-meta">
+              <span class="pattern-category">Output</span>
+              <span class="pattern-title">Structured Response</span>
+            </div>
+          </div>
+          <div class="pattern-code">
+            <span class="comment"># Consistent output formatting</span><br><br>
+            <span class="keyword">output_structure</span>:<br>
+            &nbsp;&nbsp;<span class="property">format</span>: <span class="string">"markdown"</span><br>
+            &nbsp;&nbsp;<span class="property">sections</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"## Summary (2-3 sentences)"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"## Key Points (bullet list)"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"## Details (if needed)"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;- <span class="string">"## Next Steps (actionable)"</span><br>
+            &nbsp;&nbsp;<span class="property">tone</span>: <span class="string">"clear, professional"</span>
+          </div>
+          <div class="pattern-card-footer">
+            <span class="pattern-uses"><strong>1,582</strong> uses this week</span>
+            <button class="pattern-copy">Copy Pattern</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow fade-up" style="color: var(--accent-light);">Why This Library</p>
+        <h2 class="fade-up stagger-1">Built Different</h2>
+        <p class="fade-up stagger-2">Not just prompts—cognitive architectures designed for real results.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-item fade-up">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 4L12 14.01l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Battle-Tested</h3>
+          <p>Every pattern has been refined through thousands of real-world uses across multiple LLM providers.</p>
+        </div>
+        
+        <div class="feature-item fade-up stagger-1">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Copy & Customize</h3>
+          <p>One click to copy. Designed with clear placeholders for easy customization to your specific needs.</p>
+        </div>
+        
+        <div class="feature-item fade-up stagger-2">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Composable</h3>
+          <p>Patterns are designed to combine. Stack reasoning + persona + output patterns for powerful results.</p>
+        </div>
+        
+        <div class="feature-item fade-up stagger-3">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Documented</h3>
+          <p>Each pattern includes explanations, use cases, examples, and tips for getting the best results.</p>
+        </div>
+        
+        <div class="feature-item fade-up stagger-4">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23 6l-9.5 9.5-5-5L1 18" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17 6h6v6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Always Updated</h3>
+          <p>New patterns added weekly. Existing patterns refined as LLM capabilities evolve.</p>
+        </div>
+        
+        <div class="feature-item fade-up stagger-5">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Community Support</h3>
+          <p>Join fellow pattern practitioners. Share what works, learn from others, level up together.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="social-proof">
+    <div class="container">
+      <div class="quote-block fade-up">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">
+          I spent months writing prompts from scratch. Now I start with a pattern and customize. My AI outputs went from inconsistent to reliable overnight.
+        </p>
+        <p class="quote-author">
+          <strong>Sarah Chen</strong> · ML Engineer at Scale AI
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="access">
+    <div class="container">
+      <div class="cta-card fade-up">
+        <p class="eyebrow">Start Building Better</p>
+        <h2>Get Instant Access to 150+ Patterns</h2>
+        <p>
+          Stop reinventing the wheel. Start with proven patterns that work.
+        </p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">
+            Get Full Access
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="#" class="btn btn-secondary">
+            Browse Free Patterns
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          © 2025 The Pattern Guy · Cognitive Architecture for AI Builders
+        </div>
+        <div class="footer-links">
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // ============================================
+      // SCROLL ANIMATIONS
+      // ============================================
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // Trigger hero animations immediately
+      setTimeout(function() {
+        document.querySelectorAll('.hero .fade-up').forEach(function(el) {
+          el.classList.add('visible');
+        });
+      }, 100);
+
+      // ============================================
+      // COPY BUTTON FUNCTIONALITY
+      // ============================================
+      document.querySelectorAll('.pattern-copy').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const card = this.closest('.pattern-card');
+          const code = card.querySelector('.pattern-code').textContent;
+          
+          navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = 'Copied!';
+            btn.style.color = 'var(--accent)';
+            btn.style.borderColor = 'var(--accent)';
+            
+            setTimeout(function() {
+              btn.textContent = 'Copy Pattern';
+              btn.style.color = '';
+              btn.style.borderColor = '';
+            }, 2000);
+          });
+        });
+      });
+
+      // ============================================
+      // SMOOTH SCROLL
+      // ============================================
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            const offset = 80;
+            const position = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: position, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // ============================================
+      // ANIMATE STATS ON SCROLL
+      // ============================================
+      const stats = document.querySelectorAll('.stat-number');
+      let statsAnimated = false;
+
+      function animateStats() {
+        if (statsAnimated) return;
+        
+        stats.forEach(function(stat) {
+          const text = stat.textContent;
+          if (text === '∞') return;
+          
+          const target = parseInt(text.replace(/\D/g, ''));
+          const suffix = text.replace(/[0-9]/g, '');
+          let current = 0;
+          const increment = target / 40;
+          const duration = 1000;
+          const stepTime = duration / 40;
+          
+          const timer = setInterval(function() {
+            current += increment;
+            if (current >= target) {
+              stat.textContent = target + suffix;
+              clearInterval(timer);
+            } else {
+              stat.textContent = Math.floor(current) + suffix;
+            }
+          }, stepTime);
+        });
+        
+        statsAnimated = true;
+      }
+
+      const statsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateStats();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      const heroStats = document.querySelector('.hero-stats');
+      if (heroStats) {
+        statsObserver.observe(heroStats);
+      }
+    });
+  </script>
+</body>
+</html>

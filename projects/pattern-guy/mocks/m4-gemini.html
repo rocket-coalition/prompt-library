@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pattern Guy - The Living Lattice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ========================================
+        CORE VISUAL DESIGN SYSTEM VARIABLES
+        ========================================
+        */
+        :root {
+            --color-primary: 0.62 0.10 260;   /* Deep muted blue/purple */
+            --color-secondary: 0.70 0.08 240; /* Softer blue */
+            --color-accent: 0.72 0.15 30;     /* Muted warm orange/red */
+            --color-neutral: 0.95 0.01 270;   /* Tinted white */
+            
+            --surface-dark-raw: 0.20 0.03 260;
+            --surface-mid-raw: 0.30 0.03 260;
+
+            --radius-soft: 6px;
+            --radius-smooth: 12px;
+            --radius-pill: 999px;
+
+            /* Physics */
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+            --font-sans: ui-sans-serif, system-ui, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: oklch(var(--surface-mid-raw));
+            color: oklch(var(--color-neutral));
+            margin: 0; padding: 0; overflow: hidden;
+        }
+
+        /* =================================================================
+           STANDARD VIEW CONTAINER (Placeholder)
+        ================================================================= */
+        .standard-view-container {
+            padding: 4rem 1rem; max-width: 1200px; margin: 0 auto;
+            display: flex; height: 100vh; align-items: center; justify-content: center;
+            flex-direction: column; transition: opacity 0.5s ease;
+        }
+        .mockup-label { font-weight: 600; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;}
+
+
+        /* =================================================================
+            ULTRA-WIDE "LIVING LATTICE" LAYER
+        ================================================================= */
+        .ultrawide-live-layer {
+            display: none; /* Hidden by default */
+            position: fixed; inset: 0; z-index: 999;
+            background-color: oklch(var(--surface-dark-raw));
+            perspective: 1000px;
+            opacity: 0; transition: opacity 1s ease;
+        }
+
+        /* MEDIA QUERY TRIGGER (Approx 21:9 aspect ratio) */
+        @media (min-aspect-ratio: 20/9) and (min-width: 1200px) {
+            .standard-view-container { opacity: 0; pointer-events: none; }
+            .ultrawide-live-layer {
+                display: grid;
+                grid-template-columns: 300px 1fr 340px;
+                grid-template-rows: auto 1fr auto;
+                gap: 3rem; padding: 2rem 4rem;
+                opacity: 1;
+            }
+        }
+
+        /* --- ANIMATIONS & FX --- */
+
+        /* Background Breathing Gradients */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .uw-bg-glow {
+            position: absolute; inset: -50%; pointer-events: none;
+            background: 
+                radial-gradient(circle at 30% 40%, oklch(var(--color-primary)/0.2), transparent 50%),
+                radial-gradient(circle at 70% 60%, oklch(var(--color-secondary)/0.15), transparent 50%);
+            filter: blur(80px);
+            animation: pulseGlow 12s ease-in-out infinite alternate;
+        }
+
+        /* The Perspective Grid */
+        .uw-grid-floor {
+            position: absolute; inset: -100%; pointer-events: none;
+            background-image: 
+                linear-gradient(to right, oklch(var(--color-primary)/0.15) 1px, transparent 1px),
+                linear-gradient(to bottom, oklch(var(--color-primary)/0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(70deg) translateZ(-150px);
+            /* Add a subtle forward movement */
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 100px; } }
+
+        /* Floating Data Particles */
+        @keyframes rise {
+            0% { transform: translateY(120vh) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+        }
+        .particle {
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: oklch(var(--color-accent));
+            box-shadow: 0 0 10px oklch(var(--color-accent));
+            opacity: 0; animation: rise var(--duration) linear infinite; animation-delay: var(--delay);
+            left: var(--x); pointer-events: none;
+        }
+
+        /* Directional Sheen (Spec) */
+        .uw-panel-sheen {
+            position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(120deg, transparent 30%, oklch(var(--color-neutral)/0.05) 45%, oklch(var(--color-neutral)/0.08) 50%, oklch(var(--color-neutral)/0.05) 55%, transparent 70%);
+            background-size: 250% 100%; background-position: 100% 0;
+            transition: background-position 0.8s var(--ease-smooth);
+        }
+        .uw-interactive-panel:hover .uw-panel-sheen { background-position: 0% 0; }
+
+
+        /* --- LAYOUT COMPONENTS --- */
+
+        /* Header */
+        .uw-header { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid oklch(var(--color-primary)/0.3); font-family: var(--font-mono); text-sm; z-index: 10; }
+        .status-indicator { display: flex; align-items: center; gap: 0.5rem; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: oklch(var(--color-accent)); box-shadow: 0 0 8px oklch(var(--color-accent)); animation: pulseGlow 2s infinite; }
+
+        /* Interactive Panels (Nodes) */
+        .uw-interactive-panel {
+            position: relative; display: flex; flex-direction: column;
+            background: oklch(var(--surface-dark-raw) / 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid oklch(var(--color-primary)/0.2);
+            border-radius: var(--radius-smooth); padding: 2rem; overflow: hidden;
+            transition: border-color 0.3s ease, transform 0.3s var(--ease-out-back);
+        }
+        .uw-interactive-panel:hover {
+            border-color: oklch(var(--color-accent)/0.4);
+            transform: translateY(-4px) scale(1.01); /* Depth flicker spec */
+            box-shadow: 0 20px 40px -10px oklch(var(--color-accent)/0.1);
+        }
+
+        .panel-title { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: oklch(var(--color-secondary)); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;}
+        .panel-title::before { content:'['; opacity: 0.5; } .panel-title::after { content:']'; opacity: 0.5; }
+
+        /* The Living Core (Center) */
+        .uw-core-container { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; z-index: 10; }
+        .core-title { font-size: clamp(3rem, 6vw, 6rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; text-shadow: 0 0 30px oklch(var(--color-primary)/0.6); }
+        
+        /* Rotating Reactor Rings */
+        @keyframes rotateCW { to { transform: rotate(360deg); } }
+        @keyframes rotateCCW { to { transform: rotate(-360deg); } }
+        .reactor-ring { position: absolute; border-radius: 50%; border: 2px dashed oklch(var(--color-primary)/0.3); }
+        .ring-1 { width: 200px; height: 200px; animation: rotateCW 20s linear infinite; border-color: oklch(var(--color-secondary)/0.4); }
+        .ring-2 { width: 160px; height: 160px; animation: rotateCCW 15s linear infinite; border-style: dotted; border-color: oklch(var(--color-accent)/0.4);}
+        .ring-3 { width: 120px; height: 120px; animation: rotateCW 8s linear infinite; border: 4px solid transparent; border-top-color: oklch(var(--color-accent)); border-bottom-color: oklch(var(--color-secondary)); filter: blur(2px); }
+
+    </style>
+</head>
+<body>
+
+    <div class="standard-view-container">
+        <div class="mockup-label">Standard Viewport Detected</div>
+        <h1 class="text-3xl font-bold opacity-50">Expand browser window significantly to reveal the living lattice.</h1>
+        <p class="font-mono text-sm mt-4 text-[oklch(var(--color-accent))]">[Requires Ultra-Wide aspect ratio]</p>
+    </div>
+
+    <div class="ultrawide-live-layer">
+        /* --- Background FX --- */
+        <div class="uw-bg-glow"></div>
+        <div class="uw-grid-floor"></div>
+        <div class="particle" style="--x: 10%; --duration: 15s; --delay: 0s;"></div>
+        <div class="particle" style="--x: 30%; --duration: 12s; --delay: 2s; background: oklch(var(--color-secondary));"></div>
+        <div class="particle" style="--x: 60%; --duration: 18s; --delay: 1s;"></div>
+        <div class="particle" style="--x: 85%; --duration: 10s; --delay: 3s; background: oklch(var(--color-secondary));"></div>
+        <div class="particle" style="--x: 50%; --duration: 20s; --delay: 5s;"></div>
+
+        /* --- Header --- */
+        <header class="uw-header">
+            <div class="flex gap-4">
+                <span class="font-bold text-[oklch(var(--color-accent))]">THE PATTERN GUY //</span>
+                <span class="opacity-70">COGNITIVE ARCHITECT</span>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span class="opacity-70">LATTICE: ACTIVE FLOW</span>
+            </div>
+        </header>
+
+        /* --- Left Panel --- */
+        <aside class="uw-interactive-panel" style="grid-column: 1; grid-row: 2;">
+            <div class="uw-panel-sheen"></div> <div class="panel-title">Input: Primitives</div>
+            
+            <div class="space-y-6">
+                <div>
+                    <div class="font-mono text-xs opacity-60 mb-1">SOURCE DATA</div>
+                    <div class="text-xl font-semibold">Ancient Mental Models</div>
+                </div>
+                <div>
+                    <div class="font-mono text-xs opacity-60 mb-1">TRANSFORMATION</div>
+                    <div class="text-lg">Procedural > Semantic</div>
+                    <div class="h-1 w-full bg-gradient-to-r from-[oklch(var(--color-secondary))] to-transparent mt-2 rounded-full opacity-50"></div>
+                </div>
+            </div>
+            <div class="mt-auto pt-8 font-mono text-xs leading-relaxed opacity-70">
+                > Monitoring procedural data streams.<br>
+                > Identifying rigid instruction sets.<br>
+                > Dissolving into raw intent parameters.
+            </div>
+        </aside>
+
+        /* --- Center Core --- */
+        <main class="uw-core-container">
+            <div class="mb-6 font-mono text-[oklch(var(--color-accent))] tracking-[0.3em] uppercase text-sm font-bold">
+                // THE INVISIBLE LATTICE REVEALED
+            </div>
+            <h1 class="core-title">
+                Architecting<br>Alive Cognition.
+            </h1>
+            <p class="text-xl max-w-2xl opacity-80 leading-relaxed">
+                We design the energetic structures and perspectives from which intelligent thought naturally emerges.
+            </p>
+
+            <div class="relative mt-16 flex items-center justify-center">
+                <div class="reactor-ring ring-1"></div>
+                <div class="reactor-ring ring-2"></div>
+                <div class="reactor-ring ring-3"></div>
+                <div class="relative z-10 w-24 h-24 rounded-full bg-[oklch(var(--color-accent)/0.2)] flex items-center justify-center border-4 border-[oklch(var(--color-accent)/0.5)] shadow-[0_0_50px_oklch(var(--color-accent)/0.6)] animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[oklch(var(--color-accent))]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+            </div>
+        </main>
+
+        /* --- Right Panel --- */
+        <aside class="uw-interactive-panel" style="grid-column: 3; grid-row: 2;">
+            <div class="uw-panel-sheen"></div> <div class="panel-title" style="color: oklch(var(--color-accent))">Output: Emergence</div>
+
+            <div class="space-y-6">
+                <div class="p-4 rounded-lg border border-[oklch(var(--color-primary)/0.3)] bg-[oklch(var(--color-primary)/0.1)]">
+                    <div class="font-mono text-xs opacity-60 mb-2">PRINCIPLE 01</div>
+                    <div class="font-semibold leading-tight">Intention Precedes Reasoning.</div>
+                </div>
+                <div>
+                    <div class="font-mono text-xs opacity-60 mb-1">RESULT</div>
+                    <div class="text-xl font-semibold text-[oklch(var(--color-accent))]">Predictable Cognition</div>
+                </div>
+            </div>
+
+             <div class="mt-auto pt-8">
+                 <div class="flex items-center gap-2 font-mono text-xs">
+                     <div class="w-2 h-2 bg-[oklch(var(--color-accent))] rounded-full animate-ping"></div>
+                     Steering Intelligence...
+                 </div>
+            </div>
+        </aside>
+
+    </div>
+</body>
+</html>

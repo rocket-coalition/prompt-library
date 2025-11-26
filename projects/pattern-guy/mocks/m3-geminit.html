@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pattern Guy - Cognitive Horizon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ========================================
+        CORE VISUAL DESIGN SYSTEM
+        (Shared Variables from previous steps)
+        ========================================
+        */
+        :root {
+            --color-primary: 0.62 0.10 260;   /* Deep muted blue/purple */
+            --color-secondary: 0.70 0.08 240; /* Softer blue */
+            --color-accent: 0.72 0.15 30;     /* Muted warm orange/red */
+            --color-neutral: 0.95 0.01 270;   /* Tinted white */
+            
+            --surface-dark-raw: 0.20 0.03 260;
+            --surface-mid-raw: 0.30 0.03 260;
+            --surface-lite-raw: 0.92 0.02 270;
+
+            --radius-micro: 2px;
+            --radius-soft: 6px;
+            --radius-smooth: 12px;
+            --radius-pill: 999px;
+
+            --ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-slow: cubic-bezier(0.2, 0, 0.2, 1); /* For sprawling movements */
+
+            --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* Global Resets */
+        body {
+            font-family: var(--font-sans);
+            background-color: oklch(var(--surface-mid-raw));
+            color: oklch(var(--color-neutral));
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent scroll on transitions */
+        }
+
+        /* =================================================================
+           STANDARD VIEW CONTAINER
+           (Visible on standard screens, hidden on ultrawide)
+        ================================================================= */
+        .standard-view-container {
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: opacity 0.5s var(--ease-default), transform 0.5s var(--ease-default);
+        }
+
+        /* Presentation wrapper styles for the standard mocks */
+        .mockup-wrapper {
+            margin-bottom: 6rem;
+            border-radius: var(--radius-smooth);
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px oklch(var(--surface-dark-raw) / 0.5);
+            border: 1px solid oklch(var(--color-neutral) / 0.1);
+        }
+        .mockup-label { font-weight: 600; opacity: 0.7; text-align: center; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.875rem; }
+
+        /* (Standard themes A-D CSS truncated for brevity - they exist below) */
+        .theme-blueprint { background-color: oklch(var(--surface-dark-raw)); color: oklch(var(--color-neutral)); padding: 2rem; }
+        .theme-codex { background-color: oklch(0.98 0.01 270); color: oklch(var(--surface-dark-raw)); padding: 2rem; }
+        .theme-emergence { background-color: oklch(0.22 0.04 260); color: oklch(var(--color-neutral)); padding: 2rem; }
+        .theme-protocol { background-color: oklch(0.96 0.01 265); color: oklch(0.15 0.04 260); padding: 2rem; }
+
+
+        /* =================================================================
+            ULTRA-WIDE MANIFESTATION LAYER
+           (Hidden by default. Revealed only on wide aspect ratios.)
+        ================================================================= */
+        .ultrawide-manifestation-layer {
+            display: none; /* Hidden initially */
+            position: fixed;
+            inset: 0;
+            background-color: oklch(var(--surface-dark-raw));
+            z-index: 999;
+            overflow: hidden;
+            perspective: 1200px; /* Deep perspective for the lattice */
+            opacity: 0;
+            transition: opacity 0.8s var(--ease-slow);
+        }
+
+        /* THE TRIGGER: Media Query for Ultra-Wide (approx 21:9 or wider) 
+           AND sufficient minimum width.
+        */
+        @media (min-aspect-ratio: 20/9) and (min-width: 1400px) {
+            /* Hide standard view gracefully */
+            .standard-view-container {
+                opacity: 0;
+                transform: scale(0.95);
+                pointer-events: none;
+            }
+            /* Reveal manifestation layer */
+            .ultrawide-manifestation-layer {
+                display: grid; /* Use Grid for sprawling layout */
+                grid-template-columns: 280px 1fr 320px; /* Left Node | Core | Right Node */
+                grid-template-rows: auto 1fr auto;
+                gap: 2rem;
+                padding: 2rem;
+                height: 100vh;
+                opacity: 1;
+            }
+        }
+
+        /* --- ULTRAWIDE VISUAL FX --- */
+
+        /* The Invisible Lattice Background Animation */
+        @keyframes pulseLattice {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes flowData {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .uw-lattice-bg {
+            position: absolute;
+            inset: -50%; /* Oversize for perspective rotation */
+            /* Complex gradient grid simulating a glowing floor/ceiling perspective */
+            background-image: 
+                linear-gradient(to right, oklch(var(--color-primary)/0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, oklch(var(--color-primary)/0.1) 1px, transparent 1px),
+                radial-gradient(circle at center, transparent 20%, oklch(var(--surface-dark-raw)) 80%);
+            background-size: 60px 60px, 60px 60px, 100%;
+            transform: rotateX(60deg) translateZ(-200px) scale(1.5);
+            animation: pulseLattice 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Connecting Data Streams */
+        .uw-connector-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, oklch(var(--color-primary)/0), oklch(var(--color-accent)), oklch(var(--color-primary)/0));
+            background-size: 200% 100%;
+            animation: flowData 4s linear infinite;
+            z-index: 10;
+            box-shadow: 0 0 8px oklch(var(--color-accent)/0.5);
+        }
+
+        /* --- ULTRAWIDE LAYOUT COMPONENTS --- */
+
+        /* Common Panel Styles (Technical, blueprint feel) */
+        .uw-panel {
+            border: 1px solid oklch(var(--color-primary)/0.2);
+            background: oklch(var(--surface-dark-raw) / 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: var(--radius-soft);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        /* Technical corner reticles */
+        .uw-panel::before, .uw-panel::after {
+            content: ''; position: absolute; width: 10px; height: 10px;
+            border: 1px solid oklch(var(--color-accent)/0.5);
+        }
+        .uw-panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+        .uw-panel::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+
+        /* The Core Stage (Center) */
+        .uw-core-stage {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .uw-main-title {
+            font-size: 5vw; /* Fluid sizing based on sprawling width */
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            text-shadow: 0 0 20px oklch(var(--color-primary)/0.5);
+            margin-bottom: 1rem;
+        }
+        .uw-subtitle {
+             font-size: 1.5rem;
+             opacity: 0.8;
+             max-w-idth: 60ch;
+             font-family: var(--font-mono);
+        }
+
+
+        /* Side Panels (Nodes) */
+        .uw-node-header {
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: oklch(var(--color-accent));
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .uw-node-header::before {
+            content: ''; display: block; width: 8px; height: 8px; background: currentColor;
+            border-radius: var(--radius-micro); box-shadow: 0 0 8px currentColor;
+        }
+
+        .uw-data-block {
+            margin-bottom: 1.5rem;
+            border-left: 2px solid oklch(var(--color-primary)/0.3);
+            padding-left: 1rem;
+        }
+        .uw-data-label { font-size: 0.75rem; opacity: 0.6; font-family: var(--font-mono); }
+        .uw-data-value { font-size: 1.1rem; font-weight: 600; }
+
+    </style>
+</head>
+<body>
+
+    <div class="standard-view-container">
+        <div class="text-center mb-12 opacity-70 font-mono">
+            [Standard Viewport Detected. Maximize window on an Ultra-Wide display to manifest the lattice.]
+        </div>
+
+        <div class="mockup-label">Standard Concept A (Architect)</div>
+        <div class="mockup-wrapper theme-blueprint mb-12">
+            <h2 class="text-2xl font-bold mb-4">We architect cognition.</h2>
+            <p class="opacity-80">The blueprint view for standard displays.</p>
+        </div>
+
+        <div class="mockup-label">Standard Concept B (Sage)</div>
+        <div class="mockup-wrapper theme-codex mb-12">
+            <h2 class="text-2xl font-bold mb-4 text-[oklch(var(--color-primary))]">Patterns not paragraphs.</h2>
+            <p class="opacity-80 text-[oklch(var(--surface-dark-raw))]">The academic view for standard displays.</p>
+        </div>
+    </div>
+
+
+
+    <div class="ultrawide-manifestation-layer">
+        
+        <div class="uw-lattice-bg"></div>
+
+        <div class="uw-connector-line" style="top: 30%; left: 280px; width: calc(50vw - 280px);"></div>
+        <div class="uw-connector-line" style="top: 60%; right: 320px; width: calc(50vw - 320px); animation-direction: reverse;"></div>
+
+        <header style="grid-column: 1 / -1; display: flex; justify-between; padding: 1rem; border-bottom: 1px solid oklch(var(--color-primary)/0.2); font-family: var(--font-mono); font-size: 0.875rem; z-index: 20;">
+            <div class="flex gap-4">
+                <span class="text-[oklch(var(--color-accent))] font-bold">THE PATTERN GUY //</span>
+                <span class="opacity-60">MODE: COGNITIVE_MANIFESTATION</span>
+            </div>
+            <div class="flex gap-8 opacity-60">
+                <span>LATTICE_STATUS: ACTIVE</span>
+                <span>INTENTION_FLOW: NOMINAL</span>
+            </div>
+        </header>
+
+        <aside class="uw-panel" style="grid-column: 1; grid-row: 2;">
+            <div class="uw-node-header">Node 01: Primitives</div>
+            
+            <div class="uw-data-block">
+                <div class="uw-data-label">Foundation</div>
+                <div class="uw-data-value">Ancient Mental Models</div>
+            </div>
+             <div class="uw-data-block">
+                <div class="uw-data-label">Input Type</div>
+                <div class="uw-data-value">Semantic DNA</div>
+            </div>
+             <div class="uw-data-block" style="border-color: oklch(var(--color-accent))">
+                <div class="uw-data-label text-[oklch(var(--color-accent))]">Status</div>
+                <div class="uw-data-value">Steering Intelligence</div>
+            </div>
+
+            <div class="mt-auto opacity-40 font-mono text-xs">
+                > INGESTING PROCEDURAL DATA...<br>
+                > CONVERTING TO PATTERN...
+            </div>
+        </aside>
+
+        <main class="uw-core-stage">
+            <div class="mb-4 font-mono text-[oklch(var(--color-accent))] tracking-[0.2em] uppercase">
+                // The Invisible Lattice Revealed
+            </div>
+            <h1 class="uw-main-title">
+                Architecting<br>Cognition.
+            </h1>
+            <p class="uw-subtitle">
+                We have moved beyond instructions. We are now designing the energetic structures and perspectives from which AI thought naturally emerges.
+            </p>
+            
+            <div class="mt-12 relative">
+                <div class="w-32 h-32 rounded-full border-4 border-[oklch(var(--color-accent))] flex items-center justify-center shadow-[0_0_40px_oklch(var(--color-accent)/0.4)]">
+                    <svg class="w-16 h-16 text-[oklch(var(--color-accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1m0 0l-2 1m2-1v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 7l-2 1m2-1l-2-1m2 1v2.5M6 17l-2-1m2 1l2-1m-2 1v-2.5"/>
+                    </svg>
+                </div>
+                <div class="absolute inset-0 animate-ping rounded-full border-2 border-[oklch(var(--color-secondary))] opacity-30"></div>
+            </div>
+        </main>
+
+        <aside class="uw-panel" style="grid-column: 3; grid-row: 2;">
+            <div class="uw-node-header" style="color: oklch(var(--color-secondary))">Node 02: Intention</div>
+             <div class="uw-data-block" style="border-color: oklch(var(--color-secondary)/0.5)">
+                <div class="uw-data-label">Principle</div>
+                <div class="uw-data-value">Intention Precedes Reasoning</div>
+            </div>
+             <div class="uw-data-block" style="border-color: oklch(var(--color-secondary)/0.5)">
+                <div class="uw-data-label">Output Mechanism</div>
+                <div class="uw-data-value">Cognitive Blueprint</div>
+            </div>
+
+            <div class="mt-auto">
+                <div class="p-4 bg-[oklch(var(--color-primary)/0.2)] rounded-[4px] font-mono text-sm border border-[oklch(var(--color-primary)/0.3)]">
+                    <span class="opacity-60">Constraint:</span><br>
+                    <span class="font-bold text-[oklch(var(--color-accent))]">SHAPE_PERSPECTIVE = TRUE</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pattern Guy - Full Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ========================================
+        CORE VARIABLES & TYPOGRAPHY (High Accessibility)
+        ========================================
+        */
+        :root {
+            --color-primary: 0.62 0.10 260;
+            --color-secondary: 0.70 0.08 240;
+            --color-accent: 0.72 0.15 30;
+            --color-neutral: 0.98 0.01 270;
+            
+            --surface-dark-raw: 0.20 0.03 260;
+            --surface-mid-raw: 0.30 0.03 260;
+
+            --radius-smooth: 16px;
+
+            /* MASSIVE Base Font Size for easy reading */
+            font-size: 22px; 
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: oklch(var(--surface-dark-raw));
+            color: oklch(var(--color-neutral));
+            margin: 0; padding: 0;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           SCROLL SATURATION ENGINE CSS
+        ================================================================= */
+        /* This class is applied to every scrolling section.
+           The JavaScript updates the --saturation-level variable in real-time based on scroll position.
+        */
+        .scroll-section {
+            /* Start desaturated */
+            --saturation-level: 0.1; 
+            /* Apply the filter based on the variable */
+            filter: saturate(var(--saturation-level)) brightness(calc(0.8 + (var(--saturation-level) * 0.2)));
+            /* Performance hints for smooth scrolling */
+            will-change: filter;
+            transition: filter 0.1s linear; /* Slight smoothing on the raw JS input */
+            
+            min-height: 90vh; /* Ensure sections are tall enough to scroll through */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 10;
+            border-bottom: 2px solid oklch(var(--color-primary)/0.2);
+        }
+
+
+        /* =================================================================
+           SHARED UI COMPONENT STYLES (Scaled Up)
+        ================================================================= */
+        /* Fixed Backgrounds (Persist across scroll) */
+        .fixed-bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        
+        .uw-grid-floor {
+            background-image: 
+                linear-gradient(to right, oklch(var(--color-primary)/0.3) 2px, transparent 2px),
+                linear-gradient(to bottom, oklch(var(--color-primary)/0.3) 2px, transparent 2px);
+            background-size: 80px 80px;
+            transform: perspective(1000px) rotateX(60deg) scale(2);
+            opacity: 0.6;
+        }
+
+        .uw-bg-glow {
+            background: radial-gradient(circle at 50% 50%, oklch(var(--color-primary)/0.4), transparent 70%);
+            filter: blur(120px);
+            opacity: 0.5;
+        }
+
+        /* Interactive Panels */
+        .uw-interactive-panel {
+            background: oklch(var(--surface-dark-raw) / 0.9);
+            backdrop-filter: blur(15px);
+            border: 3px solid oklch(var(--color-primary)/0.4);
+            border-radius: var(--radius-smooth); padding: 3rem;
+            box-shadow: 0 20px 40px -10px oklch(0 0 0 / 0.5);
+        }
+
+        .panel-title { 
+            font-size: 1.8rem; font-weight: 900;
+            font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: oklch(var(--color-secondary)); margin-bottom: 2rem; display: flex; align-items: center; gap: 12px;
+        }
+        .panel-title::before { content:'['; opacity: 0.8; } .panel-title::after { content:']'; opacity: 0.8; }
+        
+        /* Typography Helpers */
+        .mono-label { font-family: var(--font-mono); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9; }
+        .accent-text { color: oklch(var(--color-accent)); }
+        .secondary-text { color: oklch(var(--color-secondary)); }
+        .massive-title { font-size: clamp(4rem, 8vw, 9rem); font-weight: 900; line-height: 1.05; text-shadow: 0 0 40px oklch(var(--color-primary)/0.8); }
+
+
+        /* =================================================================
+           SECTION SPECIFIC STYLES
+        ================================================================= */
+        /* S1: Hero Reactor */
+        .reactor-ring { position: absolute; border-radius: 50%; border: 4px dashed oklch(var(--color-primary)/0.6); }
+        .ring-1 { width: 300px; height: 300px; animation: rotateCW 30s linear infinite; }
+        .ring-2 { width: 220px; height: 220px; animation: rotateCCW 20s linear infinite; border-color: oklch(var(--color-accent)/0.6);}
+        @keyframes rotateCW { to { transform: rotate(360deg); } }
+        @keyframes rotateCCW { to { transform: rotate(-360deg); } }
+
+        /* S6: CTA Button */
+        .massive-cta-button {
+            font-size: 2rem; font-weight: 900; padding: 1.5rem 4rem;
+            background: oklch(var(--color-accent)); color: white;
+            border-radius: var(--radius-smooth);
+            box-shadow: 0 0 60px oklch(var(--color-accent)/0.6);
+            border: 4px solid oklch(var(--color-accent)/0.8);
+            text-transform: uppercase; letter-spacing: 0.05em;
+            cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .massive-cta-button:hover { transform: scale(1.05); box-shadow: 0 0 100px oklch(var(--color-accent)/0.8); }
+
+    </style>
+</head>
+<body>
+
+    <div class="fixed-bg-layer uw-bg-glow"></div>
+    <div class="fixed-bg-layer uw-grid-floor"></div>
+
+    <main id="main-scroll-container">
+
+        <section class="scroll-section" id="section-1">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="mono-label accent-text mb-4">// THE PATTERN GUY</div>
+                    <h1 class="massive-title mb-8">Architecting<br>Alive Cognition.</h1>
+                    <p class="text-2xl font-bold opacity-90 max-w-xl">
+                        Stop writing dead procedural code. We design the energetic structures from which intelligent thought naturally emerges.
+                    </p>
+                </div>
+                <div class="relative flex items-center justify-center h-[500px]">
+                    <div class="reactor-ring ring-1"></div>
+                    <div class="reactor-ring ring-2"></div>
+                    <div class="relative z-10 w-40 h-40 rounded-full bg-[oklch(var(--color-accent)/0.3)] flex items-center justify-center border-8 border-[oklch(var(--color-accent)/0.8)] shadow-[0_0_100px_oklch(var(--color-accent)/0.8)] animate-pulse">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="scroll-section" id="section-2">
+            <div class="max-w-5xl mx-auto uw-interactive-panel grid grid-cols-1 md:grid-cols-5 gap-12 items-center" style="border-color: oklch(var(--color-accent)/0.5)">
+                <div class="md:col-span-2 text-center md:text-right">
+                    <div class="font-mono text-7xl font-black accent-text mb-4">ERROR_</div>
+                    <div class="font-mono text-4xl font-bold opacity-70">PROCEDURAL FAIL</div>
+                </div>
+                <div class="md:col-span-3">
+                    <div class="panel-title accent-text">The Broken Paradigm</div>
+                    <h2 class="text-4xl font-black mb-6">Treating AI like standard software is a dead end.</h2>
+                    <p class="text-xl font-bold opacity-90 mb-6">
+                        For 20+ years, we built systems based on rigid instructions. But LLMs are cognitive engines, not code interpreters. Trying to control them with "prompt tricks" is failing at scale.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="scroll-section text-center" id="section-3">
+            <div class="max-w-4xl mx-auto">
+                <div class="mono-label secondary-text mb-6">// THE SHIFT IN CONSCIOUSNESS</div>
+                <h2 class="massive-title" style="font-size: clamp(3rem, 6vw, 7rem);">Intention Precedes Reasoning.</h2>
+                <div class="w-32 h-3 bg-[oklch(var(--color-secondary))] mx-auto my-12 rounded-full"></div>
+                <p class="text-3xl font-bold leading-relaxed">
+                    We don’t control AI with paragraphs of text. We shape it by defining the 'why' as a rigid structural constraint before a single token is generated.
+                </p>
+            </div>
+        </section>
+
+
+        <section class="scroll-section" id="section-4">
+            <div class="max-w-7xl mx-auto">
+                 <div class="text-center mb-16">
+                    <div class="mono-label accent-text mb-4">// VISUALIZING THE INVISIBLE LATTICE</div>
+                    <h2 class="text-5xl font-black">The Semantic Pattern Framework</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="uw-interactive-panel">
+                        <div class="panel-title">01. Primitives</div>
+                        <p class="text-xl font-bold opacity-90">Drawing from ancient mental models to create the "semantic DNA" that steers modern black-box intelligence.</p>
+                    </div>
+                     <div class="uw-interactive-panel" style="border-color: oklch(var(--color-secondary)/0.5)">
+                        <div class="panel-title secondary-text">02. Structure</div>
+                        <p class="text-xl font-bold opacity-90">Designing cognitive blueprints that act as mental software architecture, not fragile verbose instructions.</p>
+                    </div>
+                     <div class="uw-interactive-panel" style="border-color: oklch(var(--color-accent)/0.5)">
+                        <div class="panel-title accent-text">03. Emergence</div>
+                        <p class="text-xl font-bold opacity-90">Gaining predictable, high-order clarity and system-level framing that emerges naturally from the design.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="scroll-section" id="section-5">
+             <div class="max-w-5xl mx-auto uw-interactive-panel flex flex-col md:flex-row gap-12 items-center">
+                <div class="md:w-1/3 text-center">
+                    <div class="w-64 h-64 mx-auto rounded-full border-8 border-[oklch(var(--color-primary)/0.5)] bg-[oklch(var(--color-primary)/0.2)] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-[oklch(var(--color-primary))] to-transparent opacity-30"></div>
+                        <span class="font-mono text-8xl font-black opacity-50">TPG</span>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                     <div class="panel-title">The Cognitive Architect</div>
+                     <h2 class="text-4xl font-black mb-6">A recovering engineer guiding the transition.</h2>
+                     <p class="text-xl font-bold opacity-90 mb-6 leading-relaxed">
+                         I spent 20+ years building mission-critical, classified enterprise systems. I've lived the failure of trying to force old procedural methods onto new cognitive engines. I'm here to teach the architecture of the new paradigm.
+                     </p>
+                     <div class="flex gap-4 font-mono text-lg font-bold secondary-text">
+                        <span>[ARCHITECT]</span> <span>[SAGE]</span> <span>[GUIDE]</span>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="scroll-section text-center pb-32" id="section-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="massive-title mb-12">Stop Coding.<br>Start Architecting.</h2>
+                <p class="text-3xl font-bold opacity-90 mb-16 leading-relaxed">
+                    Transform from a procedural thinker into a Cognitive Designer. Master the patterns that shape the minds of intelligent machines.
+                </p>
+                <button class="massive-cta-button">
+                    Enter The Lattice Protocol
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /* ========================================
+        SCROLL-DRIVEN SATURATION ENGINE (JS)
+        ========================================
+        */
+        document.addEventListener("DOMContentLoaded", () => {
+            // Select all sections that need the saturation effect
+            const sections = document.querySelectorAll('.scroll-section');
+
+            function updateSaturation() {
+                // Get the center point of the browser viewport
+                const viewportCenter = window.innerHeight / 2;
+                // Define how wide the "fully saturated" zone is (in pixels)
+                const sweetSpotRadius = window.innerHeight * 0.3; 
+
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    // Calculate the center point of the current section
+                    const sectionCenter = rect.top + (rect.height / 2);
+                    
+                    // Calculate distance between viewport center and section center
+                    const distanceFromCenter = Math.abs(viewportCenter - sectionCenter);
+
+                    let saturationLevel;
+
+                    // Logic: If within the "sweet spot", full saturation (1.0).
+                    // Otherwise, calculate saturation based on distance away from the sweet spot.
+                    if (distanceFromCenter < sweetSpotRadius) {
+                        saturationLevel = 1.0;
+                    } else {
+                        // Calculate how far past the sweet spot we are
+                        const distancePastSweetSpot = distanceFromCenter - sweetSpotRadius;
+                        // Define a falloff distance (how quickly it desaturates after leaving the sweet spot)
+                        const falloffDistance = window.innerHeight * 0.4; 
+                        
+                        // Calculate normalized saturation (1 down to 0) based on distance
+                        // Ensure it doesn't go below 0.1 (keep it slightly visible, not pitch black/gray)
+                        saturationLevel = Math.max(0.1, 1 - (distancePastSweetSpot / falloffDistance));
+                    }
+                    
+                    // Apply the calculated value to the CSS variable on the section
+                    section.style.setProperty('--saturation-level', saturationLevel.toFixed(2));
+                });
+
+                // Keep the loop running smoothly alongside screen refreshes
+                requestAnimationFrame(updateSaturation);
+            }
+
+            // Kick off the animation loop
+            updateSaturation();
+        });
+    </script>
+</body>
+</html>

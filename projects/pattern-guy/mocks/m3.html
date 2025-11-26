@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pattern Guy — Architect of Cognition</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================
+       DESIGN SYSTEM — BLUEPRINT LIGHT
+       ============================================ */
+    :root {
+      /* Warm Paper Whites */
+      --bg-paper: #f8f6f1;
+      --bg-cream: #f3f0e8;
+      --bg-warm: #ebe7dc;
+      
+      /* Blueprint Blues */
+      --ink-primary: #2c3e50;
+      --ink-secondary: #5d6d7e;
+      --ink-muted: #95a5a6;
+      --ink-faint: #bdc3c7;
+      
+      /* Accent — Warm Copper/Sienna */
+      --accent: #b87333;
+      --accent-light: #d4956a;
+      --accent-dark: #8b5a2b;
+      
+      /* Nature Pattern Colors */
+      --branch-primary: rgba(44, 62, 80, 0.15);
+      --branch-secondary: rgba(184, 115, 51, 0.12);
+      --branch-tertiary: rgba(93, 109, 126, 0.08);
+      
+      /* Grid */
+      --grid-line: rgba(44, 62, 80, 0.06);
+      --grid-accent: rgba(44, 62, 80, 0.12);
+      
+      /* Typography */
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 8rem;
+      
+      /* Motion */
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration: 0.6s;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      background: var(--bg-paper);
+      color: var(--ink-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Blueprint Grid Background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(var(--grid-accent) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-accent) 1px, transparent 1px);
+      background-size: 
+        20px 20px,
+        20px 20px,
+        100px 100px,
+        100px 100px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
+    /* Paper texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--ink-primary);
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 400;
+    }
+
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--ink-secondary);
+      font-size: 1.0625rem;
+      max-width: 55ch;
+      line-height: 1.8;
+    }
+
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .serif-italic {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-xl) var(--space-md);
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       CANVAS FOR BRANCHING PATTERNS
+       ============================================ */
+    #pattern-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, var(--bg-paper) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-primary);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.3s var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      text-align: center;
+      padding-top: calc(var(--space-xl) + 4rem);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--ink-faint);
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--ink-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.875rem 1.75rem;
+      background: transparent;
+      border: 1px solid var(--ink-primary);
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .hero-cta:hover {
+      background: var(--ink-primary);
+      color: var(--bg-paper);
+    }
+
+    .hero-cta svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .hero-cta:hover svg {
+      transform: translateY(4px);
+    }
+
+    /* ============================================
+       PATTERN INSIGHT SECTION
+       ============================================ */
+    .insight {
+      background: linear-gradient(180deg, transparent, var(--bg-cream) 20%, var(--bg-cream) 80%, transparent);
+    }
+
+    .insight-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+    }
+
+    @media (max-width: 800px) {
+      .insight-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .insight-text h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .insight-text p {
+      margin-bottom: var(--space-sm);
+    }
+
+    .pattern-examples {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .pattern-example {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg-paper);
+      border-left: 2px solid var(--accent-light);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .pattern-example:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .pattern-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pattern-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .pattern-info h4 {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .pattern-info p {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      margin: 0;
+    }
+
+    /* ============================================
+       FLOW DIAGRAM SECTION
+       ============================================ */
+    .flow-section {
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    .flow-header {
+      text-align: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .flow-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .flow-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-md);
+      text-align: center;
+      position: relative;
+    }
+
+    .flow-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--ink-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+      position: relative;
+      background: var(--bg-paper);
+    }
+
+    .flow-circle::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      border: 1px dashed var(--ink-faint);
+    }
+
+    .flow-number {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--ink-muted);
+      position: absolute;
+      top: -8px;
+      background: var(--bg-paper);
+      padding: 0 4px;
+    }
+
+    .flow-icon {
+      width: 36px;
+      height: 36px;
+      stroke: var(--ink-primary);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .flow-label {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--ink-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .flow-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      max-width: 140px;
+    }
+
+    .flow-connector {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--ink-faint), var(--ink-muted), var(--ink-faint));
+      position: relative;
+    }
+
+    .flow-connector::after {
+      content: '→';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 700px) {
+      .flow-diagram {
+        flex-direction: column;
+      }
+      .flow-connector {
+        width: 2px;
+        height: 40px;
+        background: linear-gradient(180deg, var(--ink-faint), var(--ink-muted), var(--ink-faint));
+      }
+      .flow-connector::after {
+        content: '↓';
+        right: 50%;
+        top: auto;
+        bottom: -4px;
+        transform: translateX(50%);
+      }
+    }
+
+    /* ============================================
+       PRINCIPLES SECTION
+       ============================================ */
+    .principles {
+      background: linear-gradient(180deg, transparent, var(--bg-warm) 20%, var(--bg-warm) 80%, transparent);
+    }
+
+    .principles-header {
+      text-align: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .principle-card {
+      padding: var(--space-md);
+      background: var(--bg-paper);
+      border: 1px solid var(--ink-faint);
+      position: relative;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .principle-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s var(--ease-out);
+    }
+
+    .principle-card:hover {
+      border-color: var(--ink-muted);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(44, 62, 80, 0.08);
+    }
+
+    .principle-card:hover::before {
+      height: 100%;
+    }
+
+    .principle-number {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+    }
+
+    .principle-card h3 {
+      margin-bottom: var(--space-xs);
+    }
+
+    .principle-card p {
+      font-size: 0.9375rem;
+      color: var(--ink-muted);
+    }
+
+    /* ============================================
+       AUDIENCE SECTION
+       ============================================ */
+    .audience {
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    .audience-header {
+      text-align: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .audience-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-sm);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .audience-tag {
+      padding: 0.625rem 1.25rem;
+      background: transparent;
+      border: 1px solid var(--ink-faint);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-secondary);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .audience-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .audience-tag.highlight {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-paper);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      border: 1px dashed var(--ink-faint);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      border: 1px dashed var(--ink-faint);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-content h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-content h2 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .cta-content p {
+      margin: 0 auto var(--space-md);
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 1rem 2rem;
+      background: var(--ink-primary);
+      border: none;
+      color: var(--bg-paper);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .cta-button:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(184, 115, 51, 0.25);
+    }
+
+    .cta-button svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: var(--space-md);
+      border-top: 1px solid var(--ink-faint);
+      margin-top: var(--space-lg);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-left {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .footer-right a {
+      color: var(--ink-muted);
+      transition: color 0.3s var(--ease-out);
+    }
+
+    .footer-right a:hover {
+      color: var(--accent);
+    }
+
+    .footer-right svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays */
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+    .stagger-5 { transition-delay: 0.5s; }
+  </style>
+</head>
+<body>
+  <!-- Branching Pattern Canvas -->
+  <canvas id="pattern-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">THE PATTERN GUY</a>
+    <ul class="nav-links">
+      <li><a href="#insight">Insight</a></li>
+      <li><a href="#flow">The Flow</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="content">
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow fade-up">
+          <span class="label" style="margin: 0;">Cognitive Architect</span>
+        </div>
+        <h1 class="fade-up stagger-1">When You See <em>Patterns</em>,<br>The World Makes Sense</h1>
+        <p class="hero-subtitle fade-up stagger-2">
+          From thought to intention to manifestation—the same branching pattern<br>
+          that shapes rivers, trees, lightning, and the vessels of life.
+        </p>
+        <a href="#insight" class="hero-cta fade-up stagger-3">
+          Discover the Pattern
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Pattern Insight Section -->
+    <section class="insight" id="insight">
+      <div class="container">
+        <div class="insight-content">
+          <div class="insight-text">
+            <span class="label fade-up">Nature's Blueprint</span>
+            <h2 class="fade-up stagger-1">One Pattern,<br>Infinite Expressions</h2>
+            <p class="fade-up stagger-2">
+              Look closely at a river delta. Now look at a tree. A bolt of lightning. The vessels carrying blood through your body. The same branching architecture appears everywhere.
+            </p>
+            <p class="fade-up stagger-3">
+              Nature discovered the optimal pattern for distributing energy and resources billions of years ago. When we architect cognition, we follow the same blueprint.
+            </p>
+          </div>
+          <div class="pattern-examples">
+            <div class="pattern-example fade-up stagger-1">
+              <div class="pattern-icon">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 44V24M24 24c-4-8-12-12-12-20M24 24c4-8 12-12 12-20M24 24c-2 4-8 6-14 4M24 24c2 4 8 6 14 4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="pattern-info">
+                <h4>Trees & Roots</h4>
+                <p>Distributing nutrients from soil to sky</p>
+              </div>
+            </div>
+            <div class="pattern-example fade-up stagger-2">
+              <div class="pattern-icon">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 4c0 8-8 12-8 20s8 12 8 20M24 4c0 8 8 12 8 20s-8 12-8 20M8 24h8M32 24h8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="pattern-info">
+                <h4>Rivers & Deltas</h4>
+                <p>Channeling water to the sea</p>
+              </div>
+            </div>
+            <div class="pattern-example fade-up stagger-3">
+              <div class="pattern-icon">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 4l-4 10 6-2-2 12-6-4 4 14 8-6-2 16" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="pattern-info">
+                <h4>Lightning</h4>
+                <p>Finding the path of least resistance</p>
+              </div>
+            </div>
+            <div class="pattern-example fade-up stagger-4">
+              <div class="pattern-icon">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="8"/>
+                  <path d="M16 24c-6 0-8-4-12-4M16 24c-6 2-10 0-12 4M32 24c6 0 8-4 12-4M32 24c6 2 10 0 12 4M24 16c0-6-4-8-4-12M24 16c2-6 0-10 4-12M24 32c0 6-4 8-4 12M24 32c2 6 0 10 4 12" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="pattern-info">
+                <h4>Capillaries</h4>
+                <p>Delivering life to every cell</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flow Diagram Section -->
+    <section class="flow-section" id="flow">
+      <div class="container">
+        <div class="flow-header">
+          <span class="label fade-up">The Architecture</span>
+          <h2 class="fade-up stagger-1">From Thought to Manifestation</h2>
+          <p class="fade-up stagger-2" style="max-width: 50ch; margin: var(--space-sm) auto 0;">
+            The same branching pattern that governs nature governs cognition. Each stage flows into the next.
+          </p>
+        </div>
+        
+        <div class="flow-diagram">
+          <div class="flow-node fade-up stagger-1">
+            <div class="flow-circle">
+              <span class="flow-number">01</span>
+              <svg class="flow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="flow-label">Thought</span>
+            <span class="flow-desc">The seed of cognition</span>
+          </div>
+          
+          <div class="flow-connector fade-up stagger-2"></div>
+          
+          <div class="flow-node fade-up stagger-2">
+            <div class="flow-circle">
+              <span class="flow-number">02</span>
+              <svg class="flow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="flow-label">Intention</span>
+            <span class="flow-desc">Direction crystallized</span>
+          </div>
+          
+          <div class="flow-connector fade-up stagger-3"></div>
+          
+          <div class="flow-node fade-up stagger-3">
+            <div class="flow-circle">
+              <span class="flow-number">03</span>
+              <svg class="flow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64L5.64 18.36" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="flow-label">Pattern</span>
+            <span class="flow-desc">Structure emerges</span>
+          </div>
+          
+          <div class="flow-connector fade-up stagger-4"></div>
+          
+          <div class="flow-node fade-up stagger-4">
+            <div class="flow-circle">
+              <span class="flow-number">04</span>
+              <svg class="flow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M3 9h18M9 3v18" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="flow-label">Manifestation</span>
+            <span class="flow-desc">Reality shaped</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principles Section -->
+    <section class="principles" id="principles">
+      <div class="container">
+        <div class="principles-header">
+          <span class="label fade-up">Core Philosophy</span>
+          <h2 class="fade-up stagger-1">The Five Primitives</h2>
+        </div>
+        <div class="principles-grid">
+          <div class="principle-card fade-up">
+            <span class="principle-number">01</span>
+            <h3>Intention Precedes Reasoning</h3>
+            <p>Every pattern begins with direction. Like a river seeking the sea, cognition flows toward its intended destination.</p>
+          </div>
+          <div class="principle-card fade-up">
+            <span class="principle-number">02</span>
+            <h3>Patterns Are the Language</h3>
+            <p>Intelligence speaks in structure, not verbosity. The branching pattern is nature's universal grammar.</p>
+          </div>
+          <div class="principle-card fade-up">
+            <span class="principle-number">03</span>
+            <h3>Prompts Are Blueprints</h3>
+            <p>A prompt isn't a request—it's architectural DNA. The scaffold from which cognition emerges.</p>
+          </div>
+          <div class="principle-card fade-up">
+            <span class="principle-number">04</span>
+            <h3>Primitives Form the DNA</h3>
+            <p>Ancient mental primitives—the building blocks of thought—encode the same efficiency nature discovered.</p>
+          </div>
+          <div class="principle-card fade-up">
+            <span class="principle-number">05</span>
+            <h3>Perspective Shapes Reality</h3>
+            <p>From where you stand, the pattern reveals itself. Control the vantage point, guide the cognition.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="audience" id="audience">
+      <div class="container">
+        <div class="audience-header">
+          <span class="label fade-up">Built For</span>
+          <h2 class="fade-up stagger-1">Who This Is For</h2>
+        </div>
+        <div class="audience-grid">
+          <span class="audience-tag highlight fade-up">Recovering Developers</span>
+          <span class="audience-tag fade-up">Data Scientists</span>
+          <span class="audience-tag fade-up">ML Engineers</span>
+          <span class="audience-tag highlight fade-up">Technical Product Managers</span>
+          <span class="audience-tag fade-up">UX Designers</span>
+          <span class="audience-tag fade-up">Strategic Founders</span>
+          <span class="audience-tag fade-up">Enterprise Architects</span>
+          <span class="audience-tag highlight fade-up">Automation Specialists</span>
+          <span class="audience-tag fade-up">Knowledge Workers</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="connect">
+      <div class="cta-content">
+        <span class="label fade-up">Begin the Shift</span>
+        <h2 class="fade-up stagger-1">Enter the <em>Pattern</em></h2>
+        <p class="fade-up stagger-2">
+          Ready to see the architecture beneath everything?
+        </p>
+        <a href="#" class="cta-button fade-up stagger-3">
+          Start Your Journey
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          © 2025 The Pattern Guy — Cognitive Architecture
+        </div>
+        <div class="footer-right">
+          <a href="#" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================
+    // BRANCHING PATTERN GENERATOR
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('pattern-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas size
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Branch class - creates organic branching structures
+      class Branch {
+        constructor(x, y, angle, length, depth, maxDepth, color) {
+          this.x = x;
+          this.y = y;
+          this.angle = angle;
+          this.length = length;
+          this.depth = depth;
+          this.maxDepth = maxDepth;
+          this.color = color;
+          this.grown = 0;
+          this.children = [];
+          this.growing = true;
+          this.speed = 0.02 + Math.random() * 0.02;
+        }
+
+        grow() {
+          if (this.growing) {
+            this.grown += this.speed;
+            if (this.grown >= 1) {
+              this.grown = 1;
+              this.growing = false;
+              
+              // Spawn children if not at max depth
+              if (this.depth < this.maxDepth) {
+                const numChildren = 2 + Math.floor(Math.random() * 2);
+                const angleSpread = 0.4 + Math.random() * 0.3;
+                
+                for (let i = 0; i < numChildren; i++) {
+                  const childAngle = this.angle + (i - (numChildren - 1) / 2) * angleSpread + (Math.random() - 0.5) * 0.2;
+                  const childLength = this.length * (0.6 + Math.random() * 0.2);
+                  const endX = this.x + Math.cos(this.angle) * this.length;
+                  const endY = this.y + Math.sin(this.angle) * this.length;
+                  
+                  this.children.push(new Branch(
+                    endX, endY, childAngle, childLength,
+                    this.depth + 1, this.maxDepth, this.color
+                  ));
+                }
+              }
+            }
+          }
+
+          // Grow children
+          this.children.forEach(child => child.grow());
+        }
+
+        draw(ctx) {
+          if (this.grown > 0) {
+            const endX = this.x + Math.cos(this.angle) * this.length * this.grown;
+            const endY = this.y + Math.sin(this.angle) * this.length * this.grown;
+            
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(endX, endY);
+            
+            // Thinner lines for deeper branches
+            const baseWidth = 2;
+            ctx.lineWidth = Math.max(0.5, baseWidth - this.depth * 0.3);
+            ctx.strokeStyle = this.color;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+          }
+
+          // Draw children
+          this.children.forEach(child => child.draw(ctx));
+        }
+      }
+
+      // Create multiple root branches from different positions
+      const branches = [];
+      const colors = [
+        'rgba(44, 62, 80, 0.12)',   // Ink blue
+        'rgba(184, 115, 51, 0.10)', // Copper
+        'rgba(93, 109, 126, 0.08)'  // Muted blue
+      ];
+
+      function createBranches() {
+        branches.length = 0;
+        
+        // Bottom branches (like trees/roots)
+        for (let i = 0; i < 3; i++) {
+          const x = canvas.width * (0.15 + i * 0.35) + (Math.random() - 0.5) * 100;
+          branches.push(new Branch(
+            x, canvas.height + 20,
+            -Math.PI / 2 + (Math.random() - 0.5) * 0.3,
+            80 + Math.random() * 40,
+            0, 6,
+            colors[i % colors.length]
+          ));
+        }
+
+        // Side branches (like rivers/capillaries)
+        branches.push(new Branch(
+          -20, canvas.height * 0.3,
+          0.1 + Math.random() * 0.2,
+          60 + Math.random() * 30,
+          0, 5,
+          colors[1]
+        ));
+
+        branches.push(new Branch(
+          canvas.width + 20, canvas.height * 0.6,
+          Math.PI - 0.1 - Math.random() * 0.2,
+          60 + Math.random() * 30,
+          0, 5,
+          colors[0]
+        ));
+
+        // Top branches (like lightning)
+        branches.push(new Branch(
+          canvas.width * 0.7, -20,
+          Math.PI / 2 + (Math.random() - 0.5) * 0.4,
+          50 + Math.random() * 30,
+          0, 4,
+          colors[2]
+        ));
+      }
+
+      createBranches();
+
+      // Animation loop
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        branches.forEach(branch => {
+          branch.grow();
+          branch.draw(ctx);
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      // Recreate on resize
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(createBranches, 500);
+      });
+
+      // ============================================
+      // SCROLL ANIMATIONS
+      // ============================================
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // Trigger hero animations immediately
+      setTimeout(function() {
+        document.querySelectorAll('.hero .fade-up').forEach(function(el, i) {
+          setTimeout(function() {
+            el.classList.add('visible');
+          }, i * 150);
+        });
+      }, 300);
+
+      // ============================================
+      // SMOOTH SCROLL
+      // ============================================
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            const offset = 80;
+            const position = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: position, behavior: 'smooth' });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
