@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ForgeNode — Hugo Web</title>
+
+<style>
+/* -------------------------------------------------------------
+   FORGENODE: PERSONAL SITE OF HUGO WEB
+   Minimalistic, engineered, OKLCH micro-gradients, subtle depth
+------------------------------------------------------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* OKLCH Precision Colors */
+:root {
+  --graphite: oklch(40% 0.02 255);
+  --graphite-soft: oklch(43% 0.02 255);
+  --graphite-surface: oklch(46% 0.017 255);
+  --edge: oklch(60% 0.01 255 / 0.22);
+
+  --text-strong: oklch(94% 0.015 260);
+  --text-soft: oklch(82% 0.015 260);
+
+  --accent-blue: oklch(72% 0.1 240);
+  --accent-red: oklch(68% 0.12 25);
+
+  --radius: 8px;
+  --slow-release: cubic-bezier(0.15, 0.9, 0.3, 1);
+}
+
+/* Background — nearly invisible engineered gradient */
+body {
+  font-family: "Inter", "IBM Plex Sans", sans-serif;
+  background: linear-gradient(
+    to bottom right,
+    var(--graphite),
+    var(--graphite-soft)
+  );
+  color: var(--text-strong);
+  -webkit-font-smoothing: antialiased;
+  padding: 40px 0;
+}
+
+/* Container */
+.wrapper {
+  width: 92%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  padding: 18px 0 34px 0;
+  border-bottom: 1px solid var(--edge);
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(
+    to bottom,
+    var(--text-strong),
+    oklch(88% 0.015 260)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+header p {
+  margin-top: 10px;
+  color: var(--text-soft);
+}
+
+/* Section Titles */
+section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  margin-top: 40px;
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(
+    to bottom right,
+    var(--graphite-surface),
+    var(--graphite-soft)
+  );
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--edge);
+  margin-bottom: 16px;
+  box-shadow:
+    inset 0 0 1px oklch(100% 0 0 / 0.06),
+    0 2px 4px oklch(0% 0 0 / 0.2);
+
+  transition:
+    transform 400ms var(--slow-release),
+    box-shadow 400ms var(--slow-release),
+    background 400ms var(--slow-release);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 14px oklch(0% 0 0 / 0.28),
+    inset 0 0 1px oklch(100% 0 0 / 0.08);
+}
+
+/* Card Titles */
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+/* Text content */
+.card p,
+section p {
+  color: var(--text-soft);
+  line-height: 1.5;
+  max-width: 720px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1px solid var(--edge);
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <h1>ForgeNode</h1>
+    <p>The personal workshop of <strong>Hugo Web</strong> — Static Engineer, Hugo Systems Architect, Maker of Hypermedia Interfaces.</p>
+  </header>
+
+  <!-- ABOUT -->
+  <section>
+    <h2>The Engineer</h2>
+    <p>I build static systems that behave like applications. I specialize in Hugo, HTMX, and Alpine.js — crafting precise, minimalistic structures that emphasize clarity, durability, and seamless interaction.</p>
+  </section>
+
+  <!-- SKILLS -->
+  <section>
+    <h2>Core Expertise</h2>
+
+    <div class="card">
+      <h3>Static Application Engineering</h3>
+      <p>Designing static-first systems with dynamic capability using fragment-based rendering, local-state UX, and edge-safe architecture.</p>
+    </div>
+
+    <div class="card">
+      <h3>Hugo Platform Mastery</h3>
+      <p>Building component engines, data orchestration layers, static APIs, and high-performance build pipelines.</p>
+    </div>
+
+    <div class="card">
+      <h3>HTMX Interaction Patterns</h3>
+      <p>Crafting deterministic UX flows through hypermedia-driven interfaces and precision swap strategies.</p>
+    </div>
+
+    <div class="card">
+      <h3>Alpine.js Local Architectures</h3>
+      <p>Lightweight state machines for UI behavior, with no frameworks and zero overhead.</p>
+    </div>
+
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <h2>Selected Builds</h2>
+
+    <div class="card">
+      <h3>Static API Dashboard</h3>
+      <p>A fragment-driven HTMX system powered entirely by pre-rendered Hugo JSON endpoints.</p>
+    </div>
+
+    <div class="card">
+      <h3>Local-First Analytics Kit</h3>
+      <p>An Alpine-enhanced data viewer supporting offline processing and user-side transforms.</p>
+    </div>
+
+    <div class="card">
+      <h3>Hugo Component Engine v2</h3>
+      <p>A modular library of deeply structured partials for scalable static systems.</p>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 ForgeNode — Crafted by Hugo Web.  
+    Static First. Engineered Always.
+  </footer>
+
+</div>
+
+</body>
+</html>

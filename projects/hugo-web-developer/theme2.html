@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="classic-hugo" data-section="forge">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Web — Complete Theme Architecture</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║   HUGO WEB — THEME ARCHITECTURE v3.0                                      ║
+   ║   Ultra-Fine 1000 Grit Texture | All Themes Working                      ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CLASSIC HUGO (Light Theme)
+═══════════════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="classic-hugo"] {
+  --bg-base: #f8f7f5;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f3f1ee;
+  --bg-inset: #eceae6;
+  
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-muted: rgba(0, 0, 0, 0.06);
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  
+  --text-primary: #1a1816;
+  --text-secondary: #5c5652;
+  --text-tertiary: #847b74;
+  --text-muted: #a69d95;
+  --text-inverse: #ffffff;
+  
+  --accent: #d45a78;
+  --accent-hover: #c44a68;
+  --accent-soft: rgba(212, 90, 120, 0.1);
+  --accent-muted: rgba(212, 90, 120, 0.05);
+  --accent-border: rgba(212, 90, 120, 0.2);
+  --accent-glow: rgba(212, 90, 120, 0.2);
+  --bg-accent: #fef8f9;
+  
+  --success: #3d9a6d;
+  --success-soft: rgba(61, 154, 109, 0.1);
+  --warning: #c4923a;
+  --warning-soft: rgba(196, 146, 58, 0.1);
+  --error: #c45a5a;
+  --error-soft: rgba(196, 90, 90, 0.1);
+  --info: #4a8ac4;
+  --info-soft: rgba(74, 138, 196, 0.1);
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --shadow-glow: 0 0 20px var(--accent-glow);
+  
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --grain-opacity: 0.025;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEVELOPER ZONE (Dark Theme) — Refined Graphite, NOT Black
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="developer-zone"] {
+  --bg-base: #1c1c20;
+  --bg-surface: #242428;
+  --bg-elevated: #2a2a2e;
+  --bg-muted: #202024;
+  --bg-inset: #18181c;
+  
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-muted: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  
+  --text-primary: #eaeaec;
+  --text-secondary: #a4a4aa;
+  --text-tertiary: #74747a;
+  --text-muted: #54545a;
+  --text-inverse: #18181c;
+  
+  --accent: #e87a94;
+  --accent-hover: #f08aa4;
+  --accent-soft: rgba(232, 122, 148, 0.12);
+  --accent-muted: rgba(232, 122, 148, 0.06);
+  --accent-border: rgba(232, 122, 148, 0.25);
+  --accent-glow: rgba(232, 122, 148, 0.25);
+  --bg-accent: #28242a;
+  
+  --success: #5aba88;
+  --success-soft: rgba(90, 186, 136, 0.12);
+  --warning: #e0a850;
+  --warning-soft: rgba(224, 168, 80, 0.12);
+  --error: #e87a7a;
+  --error-soft: rgba(232, 122, 122, 0.12);
+  --info: #6aaae8;
+  --info-soft: rgba(106, 170, 232, 0.12);
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.15);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2);
+  --shadow-glow: 0 0 24px var(--accent-glow);
+  
+  --glass-bg: rgba(28, 28, 32, 0.85);
+  --grain-opacity: 0.035;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION THEMES — Forge (Rose)
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="classic-hugo"][data-section="forge"] {
+  --accent: #d45a78;
+  --accent-hover: #c44a68;
+  --accent-soft: rgba(212, 90, 120, 0.1);
+  --accent-muted: rgba(212, 90, 120, 0.05);
+  --accent-border: rgba(212, 90, 120, 0.2);
+  --accent-glow: rgba(212, 90, 120, 0.2);
+  --bg-accent: #fef8f9;
+}
+
+[data-theme="developer-zone"][data-section="forge"] {
+  --accent: #e87a94;
+  --accent-hover: #f08aa4;
+  --accent-soft: rgba(232, 122, 148, 0.12);
+  --accent-muted: rgba(232, 122, 148, 0.06);
+  --accent-border: rgba(232, 122, 148, 0.25);
+  --accent-glow: rgba(232, 122, 148, 0.25);
+  --bg-accent: #28242a;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION THEMES — Components (Teal)
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="classic-hugo"][data-section="components"] {
+  --accent: #3a9a9a;
+  --accent-hover: #2a8a8a;
+  --accent-soft: rgba(58, 154, 154, 0.1);
+  --accent-muted: rgba(58, 154, 154, 0.05);
+  --accent-border: rgba(58, 154, 154, 0.2);
+  --accent-glow: rgba(58, 154, 154, 0.2);
+  --bg-accent: #f6fafa;
+}
+
+[data-theme="developer-zone"][data-section="components"] {
+  --accent: #5ababa;
+  --accent-hover: #6acaca;
+  --accent-soft: rgba(90, 186, 186, 0.12);
+  --accent-muted: rgba(90, 186, 186, 0.06);
+  --accent-border: rgba(90, 186, 186, 0.25);
+  --accent-glow: rgba(90, 186, 186, 0.25);
+  --bg-accent: #222828;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION THEMES — Patterns (Violet)
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="classic-hugo"][data-section="patterns"] {
+  --accent: #8a6aaa;
+  --accent-hover: #7a5a9a;
+  --accent-soft: rgba(138, 106, 170, 0.1);
+  --accent-muted: rgba(138, 106, 170, 0.05);
+  --accent-border: rgba(138, 106, 170, 0.2);
+  --accent-glow: rgba(138, 106, 170, 0.2);
+  --bg-accent: #faf8fc;
+}
+
+[data-theme="developer-zone"][data-section="patterns"] {
+  --accent: #aa8aca;
+  --accent-hover: #ba9ada;
+  --accent-soft: rgba(170, 138, 202, 0.12);
+  --accent-muted: rgba(170, 138, 202, 0.06);
+  --accent-border: rgba(170, 138, 202, 0.25);
+  --accent-glow: rgba(170, 138, 202, 0.25);
+  --bg-accent: #26242c;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION THEMES — Systems (Amber)
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="classic-hugo"][data-section="systems"] {
+  --accent: #c4923a;
+  --accent-hover: #b4822a;
+  --accent-soft: rgba(196, 146, 58, 0.1);
+  --accent-muted: rgba(196, 146, 58, 0.05);
+  --accent-border: rgba(196, 146, 58, 0.2);
+  --accent-glow: rgba(196, 146, 58, 0.2);
+  --bg-accent: #fcfaf6;
+}
+
+[data-theme="developer-zone"][data-section="systems"] {
+  --accent: #e0b860;
+  --accent-hover: #e8c870;
+  --accent-soft: rgba(224, 184, 96, 0.12);
+  --accent-muted: rgba(224, 184, 96, 0.06);
+  --accent-border: rgba(224, 184, 96, 0.25);
+  --accent-glow: rgba(224, 184, 96, 0.25);
+  --bg-accent: #282622;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION THEMES — Docs (Slate)
+═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="classic-hugo"][data-section="docs"] {
+  --accent: #5a7a9a;
+  --accent-hover: #4a6a8a;
+  --accent-soft: rgba(90, 122, 154, 0.1);
+  --accent-muted: rgba(90, 122, 154, 0.05);
+  --accent-border: rgba(90, 122, 154, 0.2);
+  --accent-glow: rgba(90, 122, 154, 0.2);
+  --bg-accent: #f8fafc;
+}
+
+[data-theme="developer-zone"][data-section="docs"] {
+  --accent: #7a9aba;
+  --accent-hover: #8aaaca;
+  --accent-soft: rgba(122, 154, 186, 0.12);
+  --accent-muted: rgba(122, 154, 186, 0.06);
+  --accent-border: rgba(122, 154, 186, 0.25);
+  --accent-glow: rgba(122, 154, 186, 0.25);
+  --bg-accent: #222426;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+═══════════════════════════════════════════════════════════════════════════ */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* 
+ * ULTRA-FINE 1000 GRIT GRAIN
+ * Very high frequency (3.2), low opacity — barely perceptible dusty matte
+ */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: var(--grain-opacity);
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+a { color: inherit; text-decoration: none; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════════════════════ */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.header-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.main {
+  flex: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+  width: 100%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOGO
+═══════════════════════════════════════════════════════════════════════════ */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo:hover .logo-mark {
+  transform: scale(1.05) rotate(-3deg);
+}
+
+.logo-mark svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-inverse);
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logo-text span {
+  color: var(--accent);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════════════════════════ */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-item {
+  position: relative;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--accent-muted);
+}
+
+.nav-item.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding-left: 24px;
+}
+
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTROLS
+═══════════════════════════════════════════════════════════════════════════ */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+}
+
+.switcher-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 8px;
+}
+
+.switch-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.switch-btn:hover {
+  transform: scale(1.12);
+}
+
+.switch-btn.active {
+  border-color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Theme button colors */
+.switch-btn[data-theme="classic-hugo"] {
+  background: linear-gradient(135deg, #d45a78, #c44a68);
+}
+
+.switch-btn[data-theme="developer-zone"] {
+  background: linear-gradient(135deg, #2c2c32, #1c1c20);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Section button colors */
+.switch-btn[data-section="forge"] { background: linear-gradient(135deg, #d45a78, #c44a68); }
+.switch-btn[data-section="components"] { background: linear-gradient(135deg, #3a9a9a, #2a8a8a); }
+.switch-btn[data-section="patterns"] { background: linear-gradient(135deg, #8a6aaa, #7a5a9a); }
+.switch-btn[data-section="systems"] { background: linear-gradient(135deg, #c4923a, #b4822a); }
+.switch-btn[data-section="docs"] { background: linear-gradient(135deg, #5a7a9a, #4a6a8a); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════════════════════ */
+.hero {
+  background: var(--bg-accent);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 80px 48px;
+  margin-bottom: 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 25% 30%, var(--accent-muted), transparent 50%),
+    radial-gradient(ellipse at 75% 70%, var(--accent-muted), transparent 50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.hero-title {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-title .accent {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  background: var(--accent-muted);
+  color: var(--accent);
+}
+
+.btn-sm { padding: 8px 14px; font-size: 12px; }
+.btn-lg { padding: 14px 24px; font-size: 15px; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════════════════════════════════════════ */
+.section-header {
+  margin-bottom: 28px;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 560px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GRIDS
+═══════════════════════════════════════════════════════════════════════════ */
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-soft);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.card-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAGS & BADGES
+═══════════════════════════════════════════════════════════════════════════ */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.tag-accent {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-success { background: var(--success-soft); color: var(--success); }
+.badge-warning { background: var(--warning-soft); color: var(--warning); }
+.badge-error { background: var(--error-soft); color: var(--error); }
+.badge-info { background: var(--info-soft); color: var(--info); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════════════════════════════ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--accent-border);
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════════════════════════════════════════ */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 480px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-avatar svg {
+  width: 36px;
+  height: 36px;
+  color: var(--accent);
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.profile-title {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 12px;
+  background: var(--success-soft);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORMS
+═══════════════════════════════════════════════════════════════════════════ */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CODE BLOCK
+═══════════════════════════════════════════════════════════════════════════ */
+.code-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dot:nth-child(1) { background: var(--error); }
+.code-dot:nth-child(2) { background: var(--warning); }
+.code-dot:nth-child(3) { background: var(--success); }
+
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.code-body {
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+}
+
+.code-body .keyword { color: var(--accent); }
+.code-body .string { color: var(--success); }
+.code-body .comment { color: var(--text-muted); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PALETTE
+═══════════════════════════════════════════════════════════════════════════ */
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.swatch {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.swatch-color {
+  height: 64px;
+}
+
+.swatch-info {
+  padding: 10px 12px;
+}
+
+.swatch-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.swatch-var {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHOWCASE
+═══════════════════════════════════════════════════════════════════════════ */
+.showcase {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.showcase-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.showcase-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.showcase-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INDICATOR
+═══════════════════════════════════════════════════════════════════════════ */
+.indicator {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+}
+
+.indicator-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.indicator-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .showcase { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .main { padding: 24px 16px; }
+  .header-inner { padding: 0 16px; }
+  .nav { display: none; }
+  .switcher-label { display: none; }
+  .hero { padding: 48px 24px; }
+  .hero-title { font-size: 36px; }
+  .showcase { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .profile { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+        </svg>
+      </div>
+      <span class="logo-text">Hugo<span>Web</span></span>
+    </a>
+    
+    <nav class="nav">
+      <div class="nav-item active" data-section="forge">Forge</div>
+      <div class="nav-item" data-section="components">Components</div>
+      <div class="nav-item" data-section="patterns">Patterns</div>
+      <div class="nav-item" data-section="systems">Systems</div>
+      <div class="nav-item" data-section="docs">Docs</div>
+    </nav>
+    
+    <div class="controls">
+      <div class="switcher">
+        <span class="switcher-label">Section</span>
+        <button class="switch-btn active" data-section="forge" title="Forge"></button>
+        <button class="switch-btn" data-section="components" title="Components"></button>
+        <button class="switch-btn" data-section="patterns" title="Patterns"></button>
+        <button class="switch-btn" data-section="systems" title="Systems"></button>
+        <button class="switch-btn" data-section="docs" title="Docs"></button>
+      </div>
+      
+      <div class="switcher">
+        <span class="switcher-label">Theme</span>
+        <button class="switch-btn active" data-theme="classic-hugo" title="Classic Hugo"></button>
+        <button class="switch-btn" data-theme="developer-zone" title="Developer Zone"></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span id="section-name">Forge</span> · Theme System v3.0
+      </div>
+      <h1 class="hero-title">
+        Precision-Engineered<br>
+        <span class="accent">Theme Architecture</span>
+      </h1>
+      <p class="hero-subtitle">
+        Classic Hugo & Developer Zone themes with 5 section sub-themes.
+        Ultra-fine 1000 grit texture. Complete component library.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg">
+          Explore System
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </button>
+        <button class="btn btn-secondary btn-lg">Documentation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <div class="section-header">
+    <div class="section-badge">Developer Profile</div>
+    <h2 class="section-title">Hugo Web</h2>
+    <p class="section-desc">Static App Architect — Building dynamic experiences without servers.</p>
+  </div>
+  
+  <div class="profile" style="margin-bottom: 48px;">
+    <div class="profile-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+      </svg>
+    </div>
+    <div>
+      <div class="profile-name">Hugo Web</div>
+      <div class="profile-title">Static App Architect & Platform Innovator</div>
+      <div class="profile-status">
+        <span class="status-dot"></span>
+        Available for projects
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="section-header">
+    <h2 class="section-title">Track Record</h2>
+  </div>
+  
+  <div class="stats-grid" style="margin-bottom: 48px;">
+    <div class="stat-card">
+      <div class="stat-value">47</div>
+      <div class="stat-label">Projects Shipped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">12K</div>
+      <div class="stat-label">GitHub Stars</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">8+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">&lt;40ms</div>
+      <div class="stat-label">Avg. Load Time</div>
+    </div>
+  </div>
+
+  <!-- SHOWCASE -->
+  <div class="section-header">
+    <h2 class="section-title">Component Library</h2>
+    <p class="section-desc">All components adapt automatically to theme and section.</p>
+  </div>
+  
+  <div class="showcase" style="margin-bottom: 48px;">
+    <div class="showcase-item">
+      <div class="showcase-label">Buttons</div>
+      <div class="showcase-content">
+        <button class="btn btn-primary btn-sm">Primary</button>
+        <button class="btn btn-secondary btn-sm">Secondary</button>
+        <button class="btn btn-ghost btn-sm">Ghost</button>
+      </div>
+    </div>
+    
+    <div class="showcase-item">
+      <div class="showcase-label">Tags</div>
+      <div class="showcase-content">
+        <span class="tag">Hugo</span>
+        <span class="tag">HTMX</span>
+        <span class="tag tag-accent">Alpine.js</span>
+      </div>
+    </div>
+    
+    <div class="showcase-item">
+      <div class="showcase-label">Badges</div>
+      <div class="showcase-content">
+        <span class="badge badge-success">● Success</span>
+        <span class="badge badge-warning">● Warning</span>
+        <span class="badge badge-error">● Error</span>
+      </div>
+    </div>
+    
+    <div class="showcase-item">
+      <div class="showcase-label">Input</div>
+      <div class="showcase-content" style="width: 100%;">
+        <input type="text" class="form-input" placeholder="Enter text..." style="width: 100%;">
+      </div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="section-header">
+    <h2 class="section-title">Core Expertise</h2>
+  </div>
+  
+  <div class="grid grid-3" style="margin-bottom: 48px;">
+    <article class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+      </div>
+      <h3 class="card-title">Hugo Expertise</h3>
+      <p class="card-desc">Deep understanding of Hugo's templating engine, Page Bundles, assets pipeline, and build optimization.</p>
+      <div class="card-tags">
+        <span class="tag">Go Templates</span>
+        <span class="tag">Shortcodes</span>
+      </div>
+    </article>
+    
+    <article class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <h3 class="card-title">HTMX Integration</h3>
+      <p class="card-desc">Hypermedia-driven UI updates that make static sites feel dynamic without JavaScript frameworks.</p>
+      <div class="card-tags">
+        <span class="tag">hx-get</span>
+        <span class="tag">hx-swap</span>
+      </div>
+    </article>
+    
+    <article class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <h3 class="card-title">Alpine.js State</h3>
+      <p class="card-desc">Lightweight reactivity for component state, conditionals, and client-side calculations.</p>
+      <div class="card-tags">
+        <span class="tag">x-data</span>
+        <span class="tag">$store</span>
+      </div>
+    </article>
+  </div>
+
+  <!-- PALETTE -->
+  <div class="section-header">
+    <h2 class="section-title">Active Palette</h2>
+    <p class="section-desc">Colors update dynamically per theme and section.</p>
+  </div>
+  
+  <div class="palette" style="margin-bottom: 48px;">
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--accent);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Accent</div>
+        <div class="swatch-var">--accent</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--accent-soft);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Accent Soft</div>
+        <div class="swatch-var">--accent-soft</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--bg-surface); border-bottom: 1px solid var(--border-default);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Surface</div>
+        <div class="swatch-var">--bg-surface</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--text-primary);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Text Primary</div>
+        <div class="swatch-var">--text-primary</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--success);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Success</div>
+        <div class="swatch-var">--success</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--warning);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Warning</div>
+        <div class="swatch-var">--warning</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--error);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Error</div>
+        <div class="swatch-var">--error</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background: var(--info);"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Info</div>
+        <div class="swatch-var">--info</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="section-header">
+    <h2 class="section-title">Contact Form</h2>
+  </div>
+  
+  <div style="max-width: 560px; margin-bottom: 48px;">
+    <div class="grid grid-2" style="margin-bottom: 16px;">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-primary">Send Message</button>
+      <button class="btn btn-secondary">Cancel</button>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="section-header">
+    <h2 class="section-title">Code Preview</h2>
+  </div>
+  
+  <div class="code-block" style="max-width: 640px;">
+    <div class="code-header">
+      <div class="code-dots">
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+      </div>
+      <span class="code-filename">layouts/partials/htmx-fragment.html</span>
+    </div>
+    <div class="code-body">
+      <span class="comment">{{/* HTMX Fragment Pattern */}}</span><br>
+      <span class="keyword">&lt;div</span> hx-get=<span class="string">"/api/data.json"</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hx-trigger=<span class="string">"load"</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hx-swap=<span class="string">"innerHTML"</span><span class="keyword">&gt;</span><br>
+      <br>
+      &nbsp;&nbsp;<span class="keyword">&lt;template</span> x-for=<span class="string">"item in items"</span><span class="keyword">&gt;</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;article</span> class=<span class="string">"card"</span><span class="keyword">&gt;</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;h3</span> x-text=<span class="string">"item.title"</span><span class="keyword">&gt;&lt;/h3&gt;</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;/article&gt;</span><br>
+      &nbsp;&nbsp;<span class="keyword">&lt;/template&gt;</span><br>
+      <br>
+      <span class="keyword">&lt;/div&gt;</span>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- INDICATOR -->
+<div class="indicator">
+  <div class="indicator-label">Active Section</div>
+  <div class="indicator-value" id="indicator-value">Forge</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+const sectionNames = {
+  forge: 'Forge',
+  components: 'Components',
+  patterns: 'Patterns',
+  systems: 'Systems',
+  docs: 'Docs'
+};
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.querySelectorAll('.switch-btn[data-theme]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === theme);
+  });
+  localStorage.setItem('hw-theme', theme);
+}
+
+function setSection(section) {
+  document.documentElement.setAttribute('data-section', section);
+  
+  document.querySelectorAll('.switch-btn[data-section]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.section === section);
+  });
+  
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.section === section);
+  });
+  
+  const name = sectionNames[section];
+  document.getElementById('section-name').textContent = name;
+  document.getElementById('indicator-value').textContent = name;
+  
+  localStorage.setItem('hw-section', section);
+}
+
+// Event listeners
+document.querySelectorAll('.switch-btn[data-theme]').forEach(btn => {
+  btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+});
+
+document.querySelectorAll('.switch-btn[data-section]').forEach(btn => {
+  btn.addEventListener('click', () => setSection(btn.dataset.section));
+});
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => setSection(item.dataset.section));
+});
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  setTheme(localStorage.getItem('hw-theme') || 'classic-hugo');
+  setSection(localStorage.getItem('hw-section') || 'forge');
+});
+</script>
+
+</body>
+</html>

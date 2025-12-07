@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Web — Static App Architect & Hugo Platform Innovator</title>
+<meta name="description" content="Hugo Web is a boundary-breaking Hugo static site expert who treats Hugo less like a templating engine and more like a full application platform.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   HUGO WEB — STATIC APP FORGE (LIGHT EDITION)
+   German-Engineered Precision Design System
+   OKLCH Color Architecture | Ceramic Surfaces | Slow-Release Motion
+═══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   OKLCH COLOR SYSTEM — Light Theme, Precision-Calibrated
+───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Primary Ceramic Surfaces */
+  --surface-base: oklch(97% 0.005 260);
+  --surface-elevated: oklch(99% 0.003 260);
+  --surface-panel: oklch(95% 0.008 258);
+  --surface-hover: oklch(92% 0.012 256);
+  --surface-inset: oklch(93% 0.01 260);
+  
+  /* Gradient Terminus Points */
+  --grad-start: oklch(98% 0.004 262);
+  --grad-end: oklch(95% 0.008 258);
+  --grad-panel-start: oklch(96% 0.006 260);
+  --grad-panel-end: oklch(93% 0.01 258);
+  
+  /* Edge & Border System */
+  --edge-subtle: oklch(85% 0.012 260 / 0.5);
+  --edge-visible: oklch(78% 0.015 258 / 0.6);
+  --edge-strong: oklch(70% 0.018 256 / 0.4);
+  --edge-glow: oklch(50% 0.02 255 / 0.06);
+  
+  /* Typography Hierarchy */
+  --text-primary: oklch(22% 0.02 260);
+  --text-secondary: oklch(42% 0.015 258);
+  --text-tertiary: oklch(55% 0.012 256);
+  --text-muted: oklch(68% 0.01 260);
+  
+  /* Accents — Engineering Blue & Signal Colors */
+  --accent-blue: oklch(52% 0.18 245);
+  --accent-blue-soft: oklch(52% 0.18 245 / 0.1);
+  --accent-blue-hover: oklch(48% 0.2 245);
+  --accent-red: oklch(55% 0.22 25);
+  --accent-green: oklch(58% 0.16 145);
+  --accent-amber: oklch(65% 0.16 75);
+  
+  /* Motion Engineering */
+  --ease-slow-release: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-precision: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-settle: cubic-bezier(0.33, 1, 0.68, 1);
+  
+  /* Spatial System */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  
+  /* Layout Constants */
+  --header-height: 60px;
+  --sidebar-width: 280px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BASE DOCUMENT
+───────────────────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(165deg, var(--grad-start), var(--grad-end));
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+}
+
+/* Subtle paper texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 15%, oklch(100% 0 0 / 0.7), transparent 50%),
+    radial-gradient(ellipse at 80% 85%, oklch(92% 0.01 255 / 0.3), transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Micro-grain texture */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HEADER — Fixed Navigation Bar
+───────────────────────────────────────────────────────────────────────── */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: linear-gradient(180deg, 
+    oklch(99% 0.003 260 / 0.92),
+    oklch(97% 0.005 258 / 0.88)
+  );
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border-bottom: 1px solid var(--edge-subtle);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  z-index: 100;
+  animation: header-settle 0.8s var(--ease-slow-release) both;
+}
+
+@keyframes header-settle {
+  from { 
+    opacity: 0; 
+    transform: translateY(-8px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Logo Mark */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-right: auto;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  position: relative;
+}
+
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logo-text span {
+  color: var(--accent-blue);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  transition: 
+    color 280ms var(--ease-precision),
+    background 280ms var(--ease-precision);
+}
+
+nav a:hover {
+  color: var(--text-primary);
+  background: var(--edge-glow);
+}
+
+nav a.active {
+  color: var(--accent-blue);
+  background: var(--accent-blue-soft);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYOUT CONTAINER
+───────────────────────────────────────────────────────────────────────── */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SIDEBAR — Profile & Navigation Panel
+───────────────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: calc(100vh - var(--header-height));
+  background: linear-gradient(180deg,
+    var(--grad-panel-start),
+    var(--grad-panel-end)
+  );
+  border-right: 1px solid var(--edge-subtle);
+  padding: 28px 20px;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  animation: sidebar-enter 0.9s var(--ease-slow-release) 0.1s both;
+}
+
+@keyframes sidebar-enter {
+  from { 
+    opacity: 0; 
+    transform: translateX(-12px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PROFILE CARD
+───────────────────────────────────────────────────────────────────────── */
+
+.profile-card {
+  background: linear-gradient(165deg,
+    var(--surface-elevated),
+    var(--surface-panel)
+  );
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 2px 8px oklch(0% 0 0 / 0.04),
+    0 1px 2px oklch(0% 0 0 / 0.03),
+    inset 0 1px 0 oklch(100% 0 0 / 0.6);
+}
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    oklch(100% 0 0 / 0.8),
+    transparent
+  );
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, 
+    var(--accent-blue-soft),
+    oklch(52% 0.18 245 / 0.05)
+  );
+  border-radius: var(--radius-md);
+  border: 2px solid var(--accent-blue-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 
+    0 4px 12px oklch(52% 0.18 245 / 0.15),
+    inset 0 1px 0 oklch(100% 0 0 / 0.3);
+}
+
+.profile-avatar svg {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-blue);
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  letter-spacing: -0.02em;
+}
+
+.profile-title {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 450;
+  line-height: 1.4;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--accent-green);
+  font-weight: 500;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: oklch(58% 0.16 145 / 0.1);
+  border-radius: 20px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+/* Profile Stats */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--edge-subtle);
+  margin-top: 4px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Profile Bio */
+.profile-bio {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--edge-subtle);
+}
+
+/* Profile Links */
+.profile-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.profile-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--surface-inset);
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  transition: 
+    background 240ms var(--ease-precision),
+    border-color 240ms var(--ease-precision),
+    color 240ms var(--ease-precision);
+}
+
+.profile-link:hover {
+  background: var(--surface-hover);
+  border-color: var(--edge-visible);
+  color: var(--text-primary);
+}
+
+.profile-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SUBMIT REQUEST FORM
+───────────────────────────────────────────────────────────────────────── */
+
+.request-form {
+  background: linear-gradient(165deg,
+    var(--surface-elevated),
+    var(--surface-panel)
+  );
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 
+    0 2px 8px oklch(0% 0 0 / 0.04),
+    inset 0 1px 0 oklch(100% 0 0 / 0.5);
+}
+
+.request-form h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.request-form h4 svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-blue);
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface-base);
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  transition: 
+    border-color 240ms var(--ease-precision),
+    box-shadow 240ms var(--ease-precision);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px var(--accent-blue-soft);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(180deg,
+    var(--accent-blue),
+    var(--accent-blue-hover)
+  );
+  border: none;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 
+    transform 320ms var(--ease-slow-release),
+    box-shadow 320ms var(--ease-slow-release),
+    background 280ms var(--ease-precision);
+  box-shadow: 
+    0 2px 8px oklch(52% 0.18 245 / 0.3),
+    inset 0 1px 0 oklch(100% 0 0 / 0.15);
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 16px oklch(52% 0.18 245 / 0.35),
+    inset 0 1px 0 oklch(100% 0 0 / 0.2);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SIDEBAR NAVIGATION
+───────────────────────────────────────────────────────────────────────── */
+
+.sidebar-nav {
+  margin-bottom: 20px;
+}
+
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  padding-left: 12px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 450;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  transition: 
+    color 240ms var(--ease-precision),
+    background 240ms var(--ease-precision),
+    transform 320ms var(--ease-slow-release);
+}
+
+.sidebar-nav a:hover {
+  color: var(--text-primary);
+  background: oklch(0% 0 0 / 0.03);
+  transform: translateX(2px);
+}
+
+.sidebar-nav a.active {
+  color: var(--accent-blue);
+  background: var(--accent-blue-soft);
+}
+
+.sidebar-nav a svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MAIN CONTENT AREA
+───────────────────────────────────────────────────────────────────────── */
+
+main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 44px 52px 80px;
+  max-width: 1000px;
+  animation: content-settle 1s var(--ease-slow-release) 0.2s both;
+}
+
+@keyframes content-settle {
+  from { 
+    opacity: 0; 
+    transform: translateY(16px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Hero Section */
+.hero {
+  margin-bottom: 48px;
+}
+
+.hero-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-blue);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-tagline::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), transparent);
+  border-radius: 1px;
+}
+
+.hero h1 {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+  background: linear-gradient(180deg,
+    var(--text-primary),
+    oklch(35% 0.015 260)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.7;
+}
+
+.hero-description strong {
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  margin-top: 48px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--edge-visible), transparent);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SKILL CARDS
+───────────────────────────────────────────────────────────────────────── */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.skill-card {
+  background: linear-gradient(165deg,
+    var(--surface-elevated),
+    var(--surface-panel)
+  );
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: 
+    transform 420ms var(--ease-slow-release),
+    box-shadow 420ms var(--ease-slow-release),
+    border-color 280ms var(--ease-precision);
+  opacity: 0;
+  animation: card-enter 0.8s var(--ease-slow-release) forwards;
+}
+
+.skill-card:nth-child(1) { animation-delay: 0.3s; }
+.skill-card:nth-child(2) { animation-delay: 0.38s; }
+.skill-card:nth-child(3) { animation-delay: 0.46s; }
+
+@keyframes card-enter {
+  from { 
+    opacity: 0; 
+    transform: translateY(12px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    oklch(100% 0 0 / 0.8),
+    transparent
+  );
+}
+
+.skill-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--edge-visible);
+  box-shadow: 
+    0 8px 24px oklch(0% 0 0 / 0.08),
+    0 2px 8px oklch(0% 0 0 / 0.05),
+    inset 0 1px 0 oklch(100% 0 0 / 0.5);
+}
+
+.skill-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, 
+    var(--accent-blue-soft),
+    oklch(52% 0.18 245 / 0.05)
+  );
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-blue-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.3);
+}
+
+.skill-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--accent-blue);
+}
+
+.skill-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.skill-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.skill-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--surface-inset);
+  border: 1px solid var(--edge-subtle);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   APPROACH CARDS
+───────────────────────────────────────────────────────────────────────── */
+
+.approaches-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.approach-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--edge-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  transition: 
+    background 280ms var(--ease-precision),
+    border-color 280ms var(--ease-precision),
+    box-shadow 320ms var(--ease-slow-release);
+  opacity: 0;
+  animation: card-enter 0.8s var(--ease-slow-release) forwards;
+}
+
+.approach-card:nth-child(1) { animation-delay: 0.5s; }
+.approach-card:nth-child(2) { animation-delay: 0.56s; }
+.approach-card:nth-child(3) { animation-delay: 0.62s; }
+.approach-card:nth-child(4) { animation-delay: 0.68s; }
+
+.approach-card:hover {
+  background: var(--surface-base);
+  border-color: var(--edge-visible);
+  box-shadow: 0 4px 12px oklch(0% 0 0 / 0.06);
+}
+
+.approach-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin-bottom: 6px;
+}
+
+.approach-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.approach-card p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PHILOSOPHY SECTION
+───────────────────────────────────────────────────────────────────────── */
+
+.philosophy {
+  background: linear-gradient(135deg,
+    oklch(94% 0.015 245 / 0.4),
+    oklch(96% 0.01 250 / 0.3)
+  );
+  border: 1px solid oklch(52% 0.18 245 / 0.15);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-top: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.philosophy::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 10%, 
+    oklch(52% 0.18 245 / 0.2) 50%,
+    transparent 90%
+  );
+}
+
+.philosophy h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  letter-spacing: -0.01em;
+}
+
+.principles-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 28px;
+}
+
+.principle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.principle::before {
+  content: "→";
+  color: var(--accent-blue);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CODE SNIPPET PREVIEW
+───────────────────────────────────────────────────────────────────────── */
+
+.code-preview {
+  background: oklch(22% 0.015 260);
+  border: 1px solid oklch(35% 0.02 258);
+  border-radius: var(--radius-md);
+  margin-top: 36px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: oklch(18% 0.012 260);
+  border-bottom: 1px solid oklch(30% 0.018 258);
+}
+
+.code-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.code-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dots span:nth-child(1) { background: oklch(62% 0.2 25); }
+.code-dots span:nth-child(2) { background: oklch(75% 0.15 85); }
+.code-dots span:nth-child(3) { background: oklch(70% 0.15 145); }
+
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: oklch(65% 0.01 260);
+}
+
+.code-body {
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  overflow-x: auto;
+  color: oklch(85% 0.01 260);
+}
+
+.code-body .comment { color: oklch(55% 0.01 260); }
+.code-body .keyword { color: oklch(70% 0.12 235); }
+.code-body .string { color: oklch(72% 0.14 145); }
+.code-body .function { color: oklch(78% 0.12 75); }
+.code-body .variable { color: oklch(88% 0.01 260); }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────────────────────── */
+
+footer {
+  margin-left: var(--sidebar-width);
+  padding: 36px 52px;
+  border-top: 1px solid var(--edge-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: content-settle 1s var(--ease-slow-release) 0.6s both;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-brand {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 240ms var(--ease-precision);
+}
+
+.footer-links a:hover {
+  color: var(--accent-blue);
+}
+
+.footer-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RESPONSIVE ADJUSTMENTS
+───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 260px;
+  }
+  
+  main, footer {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  .approaches-grid,
+  .principles-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+  
+  .sidebar {
+    display: none;
+  }
+  
+  main, footer {
+    margin-left: 0;
+    padding: 32px 24px;
+  }
+  
+  .hero h1 {
+    font-size: 30px;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  header {
+    padding: 0 20px;
+  }
+  
+  nav a {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════════════════ -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none" style="color: oklch(52% 0.18 245)"/>
+        <rect x="20" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none" style="color: oklch(42% 0.12 255)"/>
+        <rect x="2" y="20" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none" style="color: oklch(42% 0.12 255)"/>
+        <rect x="20" y="20" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none" style="color: oklch(52% 0.18 245)"/>
+        <line x1="18" y1="9" x2="18" y2="27" stroke="currentColor" stroke-width="1.5" style="color: oklch(70% 0.05 260)"/>
+        <line x1="9" y1="18" x2="27" y2="18" stroke="currentColor" stroke-width="1.5" style="color: oklch(70% 0.05 260)"/>
+      </svg>
+    </div>
+    <span class="logo-text">Static App <span>Forge</span></span>
+  </a>
+  
+  <nav>
+    <a href="#" class="active">Forge</a>
+    <a href="#">Components</a>
+    <a href="#">Patterns</a>
+    <a href="#">Docs</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     LAYOUT
+═══════════════════════════════════════════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+          </svg>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">Hugo Web</div>
+          <div class="profile-title">Static App Architect<br>Hugo Platform Innovator</div>
+          <div class="profile-status">
+            <span class="status-dot"></span>
+            Available
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat-item">
+          <div class="stat-value">47</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">12k</div>
+          <div class="stat-label">Stars</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">8yr</div>
+          <div class="stat-label">Exp</div>
+        </div>
+      </div>
+      
+      <p class="profile-bio">
+        I turn static sites into dynamic possibilities. Building application-like experiences with Hugo, HTMX, and Alpine.js — no servers required.
+      </p>
+      
+      <div class="profile-links">
+        <a href="#" class="profile-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a href="#" class="profile-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          Twitter
+        </a>
+      </div>
+    </div>
+    
+    <!-- SUBMIT REQUEST FORM -->
+    <div class="request-form">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Submit a Request
+      </h4>
+      
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" placeholder="John Doe">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="john@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Project Type</label>
+        <select class="form-select">
+          <option value="">Select type...</option>
+          <option value="hugo-site">Hugo Site Build</option>
+          <option value="htmx-integration">HTMX Integration</option>
+          <option value="component-library">Component Library</option>
+          <option value="consulting">Technical Consulting</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+      </div>
+      
+      <button type="submit" class="submit-btn">Send Request</button>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Navigation</div>
+      <a href="#" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+        Overview
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Components
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Patterns
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Documentation
+      </a>
+    </nav>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section class="hero">
+      <div class="hero-tagline">STATIC APP ARCHITECT</div>
+      <h1>Static Engineering for<br>People Who Build Things</h1>
+      <p class="hero-description">
+        I treat <strong>Hugo</strong> less like a templating engine and more like a full application platform. 
+        By combining <strong>HTMX</strong>, <strong>Alpine.js</strong>, and highly optimized front-end patterns, 
+        I achieve features normally requiring dynamic backends—all with minimal hosting complexity.
+      </p>
+    </section>
+
+    <!-- CORE SKILLS -->
+    <div class="section-header">
+      <h2>Core Technical Skills</h2>
+    </div>
+
+    <div class="skills-grid">
+      <article class="skill-card">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <h3>Hugo Expertise</h3>
+        <p>Deep understanding of Hugo's internals: templating engine, Page Bundles, resources, assets pipeline, caching logic, and build graph.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Go Templates</span>
+          <span class="skill-tag">Page Bundles</span>
+          <span class="skill-tag">Shortcodes</span>
+          <span class="skill-tag">Render Hooks</span>
+        </div>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>HTMX Integration</h3>
+        <p>Hypermedia-driven UI updates that make Hugo sites feel app-like. Partial swaps, lazy loading, modal systems, and inline editing.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">hx-get</span>
+          <span class="skill-tag">hx-swap</span>
+          <span class="skill-tag">Fragments</span>
+          <span class="skill-tag">OOB Swaps</span>
+        </div>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Alpine.js State</h3>
+        <p>Local component state, conditionals, dynamic lists, and client-side calculations. User preferences via localStorage.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">x-data</span>
+          <span class="skill-tag">x-show</span>
+          <span class="skill-tag">$store</span>
+          <span class="skill-tag">Reactivity</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- UNCONVENTIONAL METHODS -->
+    <div class="section-header">
+      <h2>Signature Approaches</h2>
+    </div>
+
+    <div class="approaches-grid">
+      <article class="approach-card">
+        <div class="approach-number">01</div>
+        <h4>Local-API Pattern</h4>
+        <p>Hugo generates /api/*.json bundles that behave like API endpoints. Powers search engines and dashboards.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">02</div>
+        <h4>Hugo as Data-Orchestrator</h4>
+        <p>Import content from external sources at build time. CSV → JSON conversions, schema-driven automation.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">03</div>
+        <h4>Faux Server Architecture</h4>
+        <p>HTMX + Alpine.js mimics server logic client-side. User accounts via localStorage, static side effects.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">04</div>
+        <h4>Fragment-Driven UI</h4>
+        <p>Hugo outputs html-fragments/ and json-api/. HTMX loads on-demand, creating an active backend illusion.</p>
+      </article>
+    </div>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+      <h3>Engineering Philosophy</h3>
+      <div class="principles-list">
+        <div class="principle">Local-first, server-last — only use a backend when essential</div>
+        <div class="principle">Performance is UX — fast always beats complex</div>
+        <div class="principle">Static ≠ simple — static sites can behave like apps</div>
+        <div class="principle">Data belongs in structures, not in templates</div>
+        <div class="principle">HTML-first design — let HTML do the work</div>
+        <div class="principle">If Hugo doesn't support it… extend Hugo</div>
+      </div>
+    </section>
+
+    <!-- CODE PREVIEW -->
+    <div class="code-preview">
+      <div class="code-header">
+        <div class="code-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="code-filename">layouts/partials/api-fragment.html</span>
+      </div>
+      <div class="code-body">
+        <span class="comment">{{/* Static API Fragment — loaded via HTMX */}}</span><br>
+        <span class="keyword">&lt;div</span> <span class="variable">hx-get</span>=<span class="string">"/api/data.json"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">hx-trigger</span>=<span class="string">"load"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">hx-swap</span>=<span class="string">"innerHTML"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">x-data</span>=<span class="string">"{ items: [] }"</span><span class="keyword">&gt;</span><br>
+        <br>
+        &nbsp;&nbsp;<span class="keyword">&lt;template</span> <span class="variable">x-for</span>=<span class="string">"item in items"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;article</span> <span class="variable">class</span>=<span class="string">"card"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;h3</span> <span class="variable">x-text</span>=<span class="string">"item.title"</span><span class="keyword">&gt;&lt;/h3&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;/article&gt;</span><br>
+        &nbsp;&nbsp;<span class="keyword">&lt;/template&gt;</span><br>
+        <br>
+        <span class="keyword">&lt;/div&gt;</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">© 2025 Hugo Web</span>
+    <div class="footer-links">
+      <a href="#">GitHub</a>
+      <a href="#">Twitter</a>
+      <a href="#">RSS</a>
+    </div>
+  </div>
+  <span class="footer-tagline">"Dynamic apps, without dynamic servers."</span>
+</footer>
+
+</body>
+</html>

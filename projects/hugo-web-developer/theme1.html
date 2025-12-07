@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Web — UI System & Theme Architecture</title>
+<meta name="description" content="A precision-engineered design system with 10 curated themes for static site architecture.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║                                                                           ║
+   ║   HUGO WEB — THEME ARCHITECTURE SYSTEM                                    ║
+   ║   Version 1.0 | 10 Curated Themes                                        ║
+   ║                                                                           ║
+   ║   Inspired by Hugo's vibrant palette, refined for precision UI           ║
+   ║   Each theme uses desaturated variants that still pop                    ║
+   ║                                                                           ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝
+
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │  TABLE OF CONTENTS                                                       │
+   │                                                                          │
+   │  1. BASE SYSTEM VARIABLES (Line ~50)                                    │
+   │     - Core spacing, typography, transitions                              │
+   │                                                                          │
+   │  2. THEME DEFINITIONS (Line ~120)                                       │
+   │     - Theme 01: Hugo Rose (Default)                                     │
+   │     - Theme 02: Ocean Depth                                             │
+   │     - Theme 03: Forest Canopy                                           │
+   │     - Theme 04: Sunset Amber                                            │
+   │     - Theme 05: Violet Dusk                                             │
+   │     - Theme 06: Slate Minimal                                           │
+   │     - Theme 07: Coral Reef                                              │
+   │     - Theme 08: Mint Fresh                                              │
+   │     - Theme 09: Golden Hour                                             │
+   │     - Theme 10: Midnight Mode (Dark)                                    │
+   │                                                                          │
+   │  3. COMPONENT STYLES (Line ~500)                                        │
+   │     - Layout, Cards, Buttons, Forms, etc.                               │
+   │                                                                          │
+   └─────────────────────────────────────────────────────────────────────────┘
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. BASE SYSTEM VARIABLES
+   These remain constant across all themes
+═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* 
+   * SPACING SCALE
+   * Based on 4px unit for precision alignment
+   */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* 
+   * TYPOGRAPHY SCALE
+   * Modular scale with 1.25 ratio
+   */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+  --text-6xl: 60px;
+
+  /* 
+   * FONT WEIGHTS
+   */
+  --weight-light: 300;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* 
+   * BORDER RADIUS
+   * Consistent rounding across components
+   */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* 
+   * TRANSITIONS
+   * Easing curves for smooth interactions
+   */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* 
+   * SHADOWS
+   * Layered shadow system for depth
+   */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. THEME DEFINITIONS
+   
+   Each theme follows this structure:
+   
+   --bg-base:        Main page background (subtle off-white gradient)
+   --bg-surface:     Card/component backgrounds
+   --bg-elevated:    Elevated surfaces (modals, dropdowns)
+   --bg-muted:       Muted backgrounds for tags, badges
+   --bg-accent:      Accent background areas
+   
+   --border-subtle:  Barely visible borders
+   --border-default: Standard borders
+   --border-strong:  Emphasized borders
+   
+   --text-primary:   Main text color
+   --text-secondary: Secondary/muted text
+   --text-tertiary:  Very muted text
+   --text-inverse:   Text on accent backgrounds
+   
+   --accent:         Primary accent color (desaturated Hugo-inspired)
+   --accent-hover:   Accent hover state
+   --accent-soft:    Soft accent for backgrounds
+   --accent-muted:   Very soft accent
+   
+   --success:        Success state color
+   --warning:        Warning state color
+   --error:          Error state color
+   
+═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 01: HUGO ROSE (Default)
+   
+   Inspired by Hugo's signature magenta/pink
+   Desaturated to a sophisticated dusty rose
+   Professional yet distinctive
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="default"],
+[data-theme="hugo-rose"] {
+  /* Backgrounds - Off-white with warm undertone */
+  --bg-base: linear-gradient(165deg, #fdfcfb 0%, #f9f7f5 50%, #f5f3f1 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f7f5f3;
+  --bg-accent: linear-gradient(135deg, #fef7f9 0%, #fdf2f5 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-default: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #5c5c5c;
+  --text-tertiary: #8c8c8c;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Hugo Rose */
+  --accent: #d4647a;           /* Dusty rose - desaturated from Hugo's #FF4088 */
+  --accent-hover: #c4546a;
+  --accent-soft: rgba(212, 100, 122, 0.12);
+  --accent-muted: rgba(212, 100, 122, 0.06);
+  --accent-glow: rgba(212, 100, 122, 0.2);
+  
+  /* States */
+  --success: #4a9d6e;
+  --warning: #c9943a;
+  --error: #c95454;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 02: OCEAN DEPTH
+   
+   Deep teal/cyan tones
+   Calm, professional, trustworthy
+   Great for technical documentation
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="ocean"] {
+  /* Backgrounds - Cool off-white */
+  --bg-base: linear-gradient(165deg, #fbfdfd 0%, #f5f9fa 50%, #f0f6f7 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f3f7f8;
+  --bg-accent: linear-gradient(135deg, #f5fafa 0%, #eef6f7 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(0, 40, 50, 0.04);
+  --border-default: rgba(0, 40, 50, 0.08);
+  --border-strong: rgba(0, 40, 50, 0.15);
+  
+  /* Text */
+  --text-primary: #0f2027;
+  --text-secondary: #4a6670;
+  --text-tertiary: #7a9199;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Ocean Teal */
+  --accent: #3d8a8a;
+  --accent-hover: #2d7a7a;
+  --accent-soft: rgba(61, 138, 138, 0.12);
+  --accent-muted: rgba(61, 138, 138, 0.06);
+  --accent-glow: rgba(61, 138, 138, 0.2);
+  
+  /* States */
+  --success: #3d8a6e;
+  --warning: #b8923d;
+  --error: #c45c5c;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 03: FOREST CANOPY
+   
+   Natural green tones
+   Organic, sustainable feel
+   Excellent for eco/nature projects
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="forest"] {
+  /* Backgrounds - Warm off-white with green undertone */
+  --bg-base: linear-gradient(165deg, #fcfdfb 0%, #f7faf5 50%, #f2f6ef 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f5f8f3;
+  --bg-accent: linear-gradient(135deg, #f7faf5 0%, #eff5eb 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(20, 40, 20, 0.04);
+  --border-default: rgba(20, 40, 20, 0.08);
+  --border-strong: rgba(20, 40, 20, 0.15);
+  
+  /* Text */
+  --text-primary: #1a2618;
+  --text-secondary: #4a5c48;
+  --text-tertiary: #7a8c78;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Forest Green */
+  --accent: #5a9a5a;
+  --accent-hover: #4a8a4a;
+  --accent-soft: rgba(90, 154, 90, 0.12);
+  --accent-muted: rgba(90, 154, 90, 0.06);
+  --accent-glow: rgba(90, 154, 90, 0.2);
+  
+  /* States */
+  --success: #4a8a5a;
+  --warning: #b89a3d;
+  --error: #c45c5c;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 04: SUNSET AMBER
+   
+   Warm amber/orange tones
+   Energetic but refined
+   Good for creative/design work
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="amber"] {
+  /* Backgrounds - Warm cream */
+  --bg-base: linear-gradient(165deg, #fdfcfa 0%, #faf7f2 50%, #f7f3eb 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f9f6f1;
+  --bg-accent: linear-gradient(135deg, #fdf9f3 0%, #faf4e8 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(50, 30, 0, 0.04);
+  --border-default: rgba(50, 30, 0, 0.08);
+  --border-strong: rgba(50, 30, 0, 0.15);
+  
+  /* Text */
+  --text-primary: #2a1f0f;
+  --text-secondary: #6a5a40;
+  --text-tertiary: #9a8a70;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Sunset Amber */
+  --accent: #c9883a;
+  --accent-hover: #b9782a;
+  --accent-soft: rgba(201, 136, 58, 0.12);
+  --accent-muted: rgba(201, 136, 58, 0.06);
+  --accent-glow: rgba(201, 136, 58, 0.2);
+  
+  /* States */
+  --success: #5a9a5a;
+  --warning: #c98a3a;
+  --error: #c45c5c;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 05: VIOLET DUSK
+   
+   Purple/violet tones
+   Creative, premium feel
+   Perfect for design/art portfolios
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="violet"] {
+  /* Backgrounds - Cool off-white with violet undertone */
+  --bg-base: linear-gradient(165deg, #fdfcfe 0%, #f9f7fb 50%, #f5f2f8 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f7f5f9;
+  --bg-accent: linear-gradient(135deg, #faf7fc 0%, #f4eff8 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(40, 20, 60, 0.04);
+  --border-default: rgba(40, 20, 60, 0.08);
+  --border-strong: rgba(40, 20, 60, 0.15);
+  
+  /* Text */
+  --text-primary: #1f1a27;
+  --text-secondary: #5a4a6a;
+  --text-tertiary: #8a7a9a;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Violet */
+  --accent: #8a6aaa;
+  --accent-hover: #7a5a9a;
+  --accent-soft: rgba(138, 106, 170, 0.12);
+  --accent-muted: rgba(138, 106, 170, 0.06);
+  --accent-glow: rgba(138, 106, 170, 0.2);
+  
+  /* States */
+  --success: #5a9a6a;
+  --warning: #c9943a;
+  --error: #c45a6a;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 06: SLATE MINIMAL
+   
+   Neutral gray tones
+   Maximum readability, minimum distraction
+   Ideal for content-heavy sites
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="slate"] {
+  /* Backgrounds - Pure neutral off-white */
+  --bg-base: linear-gradient(165deg, #fafafa 0%, #f5f5f5 50%, #f0f0f0 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f5f5f5;
+  --bg-accent: linear-gradient(135deg, #f8f8f8 0%, #f2f2f2 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-default: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  
+  /* Text */
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-tertiary: #8a8a8a;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Neutral Slate */
+  --accent: #525252;
+  --accent-hover: #404040;
+  --accent-soft: rgba(82, 82, 82, 0.1);
+  --accent-muted: rgba(82, 82, 82, 0.05);
+  --accent-glow: rgba(82, 82, 82, 0.15);
+  
+  /* States */
+  --success: #4a9a6a;
+  --warning: #c9943a;
+  --error: #c45a5a;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 07: CORAL REEF
+   
+   Warm coral/salmon tones
+   Friendly, approachable
+   Good for community/social platforms
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="coral"] {
+  /* Backgrounds - Warm peachy off-white */
+  --bg-base: linear-gradient(165deg, #fdfcfb 0%, #faf6f4 50%, #f7f2ef 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f9f5f3;
+  --bg-accent: linear-gradient(135deg, #fdf7f5 0%, #faf0ec 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(60, 30, 20, 0.04);
+  --border-default: rgba(60, 30, 20, 0.08);
+  --border-strong: rgba(60, 30, 20, 0.15);
+  
+  /* Text */
+  --text-primary: #2a1f1a;
+  --text-secondary: #6a5550;
+  --text-tertiary: #9a8580;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Coral */
+  --accent: #d47a6a;
+  --accent-hover: #c46a5a;
+  --accent-soft: rgba(212, 122, 106, 0.12);
+  --accent-muted: rgba(212, 122, 106, 0.06);
+  --accent-glow: rgba(212, 122, 106, 0.2);
+  
+  /* States */
+  --success: #5a9a6a;
+  --warning: #c99a3a;
+  --error: #c45a5a;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 08: MINT FRESH
+   
+   Cool mint/seafoam tones
+   Clean, fresh, modern
+   Great for health/wellness/tech
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="mint"] {
+  /* Backgrounds - Cool minty off-white */
+  --bg-base: linear-gradient(165deg, #fbfefc 0%, #f4faf6 50%, #eef7f1 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #f3f9f5;
+  --bg-accent: linear-gradient(135deg, #f5fbf7 0%, #ecf7f0 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(0, 50, 30, 0.04);
+  --border-default: rgba(0, 50, 30, 0.08);
+  --border-strong: rgba(0, 50, 30, 0.15);
+  
+  /* Text */
+  --text-primary: #152a20;
+  --text-secondary: #456a58;
+  --text-tertiary: #759a88;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Mint */
+  --accent: #4aaa8a;
+  --accent-hover: #3a9a7a;
+  --accent-soft: rgba(74, 170, 138, 0.12);
+  --accent-muted: rgba(74, 170, 138, 0.06);
+  --accent-glow: rgba(74, 170, 138, 0.2);
+  
+  /* States */
+  --success: #4a9a7a;
+  --warning: #c9943a;
+  --error: #c45a6a;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 09: GOLDEN HOUR
+   
+   Warm gold/bronze tones
+   Luxurious, premium feel
+   Perfect for high-end products
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="gold"] {
+  /* Backgrounds - Warm ivory */
+  --bg-base: linear-gradient(165deg, #fefdfb 0%, #fbf8f2 50%, #f8f4ea 100%);
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-muted: #faf7f0;
+  --bg-accent: linear-gradient(135deg, #fdfaf3 0%, #f9f4e6 100%);
+  
+  /* Borders */
+  --border-subtle: rgba(60, 40, 0, 0.04);
+  --border-default: rgba(60, 40, 0, 0.08);
+  --border-strong: rgba(60, 40, 0, 0.15);
+  
+  /* Text */
+  --text-primary: #2a2410;
+  --text-secondary: #6a5a35;
+  --text-tertiary: #9a8a60;
+  --text-inverse: #ffffff;
+  
+  /* Accent - Desaturated Gold */
+  --accent: #b8983a;
+  --accent-hover: #a8882a;
+  --accent-soft: rgba(184, 152, 58, 0.12);
+  --accent-muted: rgba(184, 152, 58, 0.06);
+  --accent-glow: rgba(184, 152, 58, 0.2);
+  
+  /* States */
+  --success: #5a9a5a;
+  --warning: #b8983a;
+  --error: #c45a5a;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME 10: MIDNIGHT MODE (Dark Theme)
+   
+   Deep dark theme with Hugo rose accents
+   Reduced eye strain, premium feel
+   Full dark mode implementation
+───────────────────────────────────────────────────────────────────────── */
+[data-theme="midnight"] {
+  /* Backgrounds - Deep charcoal with subtle gradient */
+  --bg-base: linear-gradient(165deg, #121214 0%, #0e0e10 50%, #0a0a0c 100%);
+  --bg-surface: #1a1a1e;
+  --bg-elevated: #222226;
+  --bg-muted: #16161a;
+  --bg-accent: linear-gradient(135deg, #1e1a20 0%, #1a161c 100%);
+  
+  /* Borders - Lighter for dark mode */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  
+  /* Text - Inverted for dark mode */
+  --text-primary: #f0f0f2;
+  --text-secondary: #a0a0a8;
+  --text-tertiary: #606068;
+  --text-inverse: #0a0a0c;
+  
+  /* Accent - Brightened Hugo Rose for dark mode */
+  --accent: #e87a90;
+  --accent-hover: #f08aa0;
+  --accent-soft: rgba(232, 122, 144, 0.15);
+  --accent-muted: rgba(232, 122, 144, 0.08);
+  --accent-glow: rgba(232, 122, 144, 0.25);
+  
+  /* States - Adjusted for dark mode visibility */
+  --success: #5aba80;
+  --warning: #e0a840;
+  --error: #e86a6a;
+  
+  /* Override shadows for dark mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35), 0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. COMPONENT STYLES
+   Using the theme variables defined above
+═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BASE RESET & DEFAULTS
+───────────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Subtle grain texture overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.018;
+  pointer-events: none;
+  z-index: 0;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYOUT STRUCTURE
+───────────────────────────────────────────────────────────────────────── */
+.app-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-mark svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-inverse);
+}
+
+.logo-text {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+}
+
+.logo-text span {
+  color: var(--accent);
+}
+
+/* Navigation */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-link {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--accent-muted);
+}
+
+.nav-link.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   THEME SWITCHER
+───────────────────────────────────────────────────────────────────────── */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--bg-muted);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.theme-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  position: relative;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
+.theme-btn.active {
+  border-color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Theme button colors */
+.theme-btn[data-theme="default"] { background: linear-gradient(135deg, #d4647a, #e88a9a); }
+.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #3d8a8a, #5aaaaa); }
+.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #5a9a5a, #7aba7a); }
+.theme-btn[data-theme="amber"] { background: linear-gradient(135deg, #c9883a, #e0a85a); }
+.theme-btn[data-theme="violet"] { background: linear-gradient(135deg, #8a6aaa, #aa8aca); }
+.theme-btn[data-theme="slate"] { background: linear-gradient(135deg, #525252, #727272); }
+.theme-btn[data-theme="coral"] { background: linear-gradient(135deg, #d47a6a, #e89a8a); }
+.theme-btn[data-theme="mint"] { background: linear-gradient(135deg, #4aaa8a, #6acaaa); }
+.theme-btn[data-theme="gold"] { background: linear-gradient(135deg, #b8983a, #d0b05a); }
+.theme-btn[data-theme="midnight"] { background: linear-gradient(135deg, #1a1a1e, #2a2a2e); }
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MAIN CONTENT SECTIONS
+───────────────────────────────────────────────────────────────────────── */
+.main-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: var(--space-8);
+}
+
+/* Section Styling */
+.ui-section {
+  margin-bottom: var(--space-16);
+}
+
+.section-header {
+  margin-bottom: var(--space-8);
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-2);
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.section-desc {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HERO SECTION
+───────────────────────────────────────────────────────────────────────── */
+.hero-section {
+  padding: var(--space-20) 0;
+  text-align: center;
+  background: var(--bg-accent);
+  border-radius: var(--radius-2xl);
+  margin-bottom: var(--space-12);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, var(--accent-muted), transparent 50%),
+              radial-gradient(circle at 70% 80%, var(--accent-muted), transparent 50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: var(--radius-full);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.hero-title {
+  font-size: var(--text-6xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+}
+
+.hero-title .accent {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto var(--space-8);
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  text-decoration: none;
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md), 0 4px 12px var(--accent-glow);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-muted);
+  border-color: var(--border-strong);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background: var(--accent-muted);
+  color: var(--accent);
+}
+
+/* Size Variants */
+.btn-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-base);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CARDS
+───────────────────────────────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-soft);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.card-desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TAGS & BADGES
+───────────────────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.tag-accent {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+.badge-success {
+  background: rgba(74, 157, 110, 0.1);
+  color: var(--success);
+}
+
+.badge-warning {
+  background: rgba(201, 148, 58, 0.1);
+  color: var(--warning);
+}
+
+.badge-error {
+  background: rgba(196, 90, 90, 0.1);
+  color: var(--error);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FORM ELEMENTS
+───────────────────────────────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8c8c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COMPONENT SHOWCASE GRID
+───────────────────────────────────────────────────────────────────────── */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.showcase-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.showcase-item-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-4);
+}
+
+.showcase-item-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COLOR PALETTE DISPLAY
+───────────────────────────────────────────────────────────────────────── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-4);
+}
+
+.color-swatch {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.color-preview {
+  height: 80px;
+}
+
+.color-info {
+  padding: var(--space-3);
+}
+
+.color-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.color-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   STATS/METRICS DISPLAY
+───────────────────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-bold);
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PROFILE CARD
+───────────────────────────────────────────────────────────────────────── */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  max-width: 500px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--accent-soft);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-avatar svg {
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.profile-title {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  background: rgba(74, 157, 110, 0.1);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--success);
+  font-weight: var(--weight-medium);
+}
+
+.profile-status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: var(--radius-full);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CODE BLOCK
+───────────────────────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--border-default);
+}
+
+.code-dot:nth-child(1) { background: var(--error); }
+.code-dot:nth-child(2) { background: var(--warning); }
+.code-dot:nth-child(3) { background: var(--success); }
+
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.code-body {
+  padding: var(--space-4);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  overflow-x: auto;
+}
+
+.code-body .keyword { color: var(--accent); }
+.code-body .string { color: var(--success); }
+.code-body .comment { color: var(--text-tertiary); }
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--space-4);
+  }
+  
+  .header-inner {
+    padding: 0 var(--space-4);
+  }
+  
+  .main-nav {
+    display: none;
+  }
+  
+  .hero-title {
+    font-size: var(--text-4xl);
+  }
+  
+  .showcase-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app-wrapper">
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+        </svg>
+      </div>
+      <span class="logo-text">Hugo<span>Web</span></span>
+    </a>
+    
+    <nav class="main-nav">
+      <a href="#" class="nav-link active">Overview</a>
+      <a href="#components" class="nav-link">Components</a>
+      <a href="#colors" class="nav-link">Colors</a>
+      <a href="#forms" class="nav-link">Forms</a>
+      <a href="#" class="nav-link">Docs</a>
+    </nav>
+    
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+      <button class="theme-btn active" data-theme="default" title="Hugo Rose" onclick="setTheme('default')"></button>
+      <button class="theme-btn" data-theme="ocean" title="Ocean Depth" onclick="setTheme('ocean')"></button>
+      <button class="theme-btn" data-theme="forest" title="Forest Canopy" onclick="setTheme('forest')"></button>
+      <button class="theme-btn" data-theme="amber" title="Sunset Amber" onclick="setTheme('amber')"></button>
+      <button class="theme-btn" data-theme="violet" title="Violet Dusk" onclick="setTheme('violet')"></button>
+      <button class="theme-btn" data-theme="slate" title="Slate Minimal" onclick="setTheme('slate')"></button>
+      <button class="theme-btn" data-theme="coral" title="Coral Reef" onclick="setTheme('coral')"></button>
+      <button class="theme-btn" data-theme="mint" title="Mint Fresh" onclick="setTheme('mint')"></button>
+      <button class="theme-btn" data-theme="gold" title="Golden Hour" onclick="setTheme('gold')"></button>
+      <button class="theme-btn" data-theme="midnight" title="Midnight Mode" onclick="setTheme('midnight')"></button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════════════════════════ -->
+<main class="main-content">
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        UI System v1.0 — 10 Themes
+      </div>
+      <h1 class="hero-title">
+        Precision-Engineered<br>
+        <span class="accent">Design System</span>
+      </h1>
+      <p class="hero-subtitle">
+        A comprehensive UI architecture for Hugo Web. 10 curated themes with desaturated,
+        sophisticated color palettes inspired by Hugo's vibrant identity.
+      </p>
+      <div class="hero-actions">
+        <a href="#components" class="btn btn-primary btn-lg">
+          Explore Components
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+        <a href="#" class="btn btn-secondary btn-lg">View Documentation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE SHOWCASE -->
+  <section class="ui-section">
+    <div class="section-header">
+      <div class="section-label">Developer Profile</div>
+      <h2 class="section-title">Hugo Web</h2>
+      <p class="section-desc">Static App Architect — Building dynamic experiences without dynamic servers.</p>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Hugo Web</div>
+        <div class="profile-title">Static App Architect & Platform Innovator</div>
+        <div class="profile-status">
+          <span class="profile-status-dot"></span>
+          Available for projects
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="ui-section">
+    <div class="section-header">
+      <div class="section-label">By the Numbers</div>
+      <h2 class="section-title">Track Record</h2>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">47</div>
+        <div class="stat-label">Projects Shipped</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">12K</div>
+        <div class="stat-label">GitHub Stars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">8+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">&lt;40ms</div>
+        <div class="stat-label">Avg. Load Time</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPONENT SHOWCASE -->
+  <section class="ui-section" id="components">
+    <div class="section-header">
+      <div class="section-label">UI Components</div>
+      <h2 class="section-title">Component Library</h2>
+      <p class="section-desc">All components respond to the active theme automatically.</p>
+    </div>
+    
+    <div class="showcase-grid">
+      <!-- Buttons -->
+      <div class="showcase-item">
+        <div class="showcase-item-title">Buttons</div>
+        <div class="showcase-item-content">
+          <button class="btn btn-primary btn-sm">Primary</button>
+          <button class="btn btn-secondary btn-sm">Secondary</button>
+          <button class="btn btn-ghost btn-sm">Ghost</button>
+        </div>
+      </div>
+      
+      <!-- Tags -->
+      <div class="showcase-item">
+        <div class="showcase-item-title">Tags</div>
+        <div class="showcase-item-content">
+          <span class="tag">Hugo</span>
+          <span class="tag">HTMX</span>
+          <span class="tag tag-accent">Alpine.js</span>
+        </div>
+      </div>
+      
+      <!-- Badges -->
+      <div class="showcase-item">
+        <div class="showcase-item-title">Badges</div>
+        <div class="showcase-item-content">
+          <span class="badge badge-success">● Online</span>
+          <span class="badge badge-warning">● Pending</span>
+          <span class="badge badge-error">● Offline</span>
+        </div>
+      </div>
+      
+      <!-- Input -->
+      <div class="showcase-item">
+        <div class="showcase-item-title">Input</div>
+        <div class="showcase-item-content" style="width: 100%;">
+          <input type="text" class="form-input" placeholder="Enter text..." style="width: 100%;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="ui-section">
+    <div class="section-header">
+      <div class="section-label">Card Components</div>
+      <h2 class="section-title">Feature Cards</h2>
+    </div>
+    
+    <div class="card-grid">
+      <article class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <h3 class="card-title">Hugo Expertise</h3>
+        <p class="card-desc">Deep understanding of Hugo's templating engine, Page Bundles, assets pipeline, and build optimization.</p>
+        <div class="card-tags">
+          <span class="tag">Go Templates</span>
+          <span class="tag">Shortcodes</span>
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3 class="card-title">HTMX Integration</h3>
+        <p class="card-desc">Hypermedia-driven interactions that make static sites feel dynamic without JavaScript frameworks.</p>
+        <div class="card-tags">
+          <span class="tag">hx-get</span>
+          <span class="tag">hx-swap</span>
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3 class="card-title">Alpine.js State</h3>
+        <p class="card-desc">Lightweight reactivity for component state, conditionals, and client-side calculations.</p>
+        <div class="card-tags">
+          <span class="tag">x-data</span>
+          <span class="tag">x-show</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- COLOR PALETTE -->
+  <section class="ui-section" id="colors">
+    <div class="section-header">
+      <div class="section-label">Theme Colors</div>
+      <h2 class="section-title">Active Palette</h2>
+      <p class="section-desc">Colors update dynamically based on the selected theme.</p>
+    </div>
+    
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--accent);"></div>
+        <div class="color-info">
+          <div class="color-name">Accent</div>
+          <div class="color-value">--accent</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--accent-soft);"></div>
+        <div class="color-info">
+          <div class="color-name">Accent Soft</div>
+          <div class="color-value">--accent-soft</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--text-primary);"></div>
+        <div class="color-info">
+          <div class="color-name">Text Primary</div>
+          <div class="color-value">--text-primary</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--text-secondary);"></div>
+        <div class="color-info">
+          <div class="color-name">Text Secondary</div>
+          <div class="color-value">--text-secondary</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--success);"></div>
+        <div class="color-info">
+          <div class="color-name">Success</div>
+          <div class="color-value">--success</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--warning);"></div>
+        <div class="color-info">
+          <div class="color-name">Warning</div>
+          <div class="color-value">--warning</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--error);"></div>
+        <div class="color-info">
+          <div class="color-name">Error</div>
+          <div class="color-value">--error</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-preview" style="background: var(--bg-surface); border: 1px solid var(--border-default);"></div>
+        <div class="color-info">
+          <div class="color-name">Surface</div>
+          <div class="color-value">--bg-surface</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMS -->
+  <section class="ui-section" id="forms">
+    <div class="section-header">
+      <div class="section-label">Form Elements</div>
+      <h2 class="section-title">Input Components</h2>
+    </div>
+    
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" placeholder="Hugo Web">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="hugo@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Project Type</label>
+        <select class="form-select">
+          <option>Select a type...</option>
+          <option>Hugo Site Build</option>
+          <option>HTMX Integration</option>
+          <option>Component Library</option>
+          <option>Consulting</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Budget Range</label>
+        <select class="form-select">
+          <option>Select range...</option>
+          <option>$5K - $10K</option>
+          <option>$10K - $25K</option>
+          <option>$25K+</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group" style="margin-top: var(--space-6); max-width: 600px;">
+      <label class="form-label">Project Description</label>
+      <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+    </div>
+    
+    <div style="margin-top: var(--space-6);">
+      <button class="btn btn-primary">Submit Request</button>
+      <button class="btn btn-secondary" style="margin-left: var(--space-3);">Cancel</button>
+    </div>
+  </section>
+
+  <!-- CODE BLOCK -->
+  <section class="ui-section">
+    <div class="section-header">
+      <div class="section-label">Code Display</div>
+      <h2 class="section-title">Syntax Highlighting</h2>
+    </div>
+    
+    <div class="code-block" style="max-width: 700px;">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="code-dot"></span>
+          <span class="code-dot"></span>
+          <span class="code-dot"></span>
+        </div>
+        <span class="code-filename">layouts/partials/htmx-fragment.html</span>
+      </div>
+      <div class="code-body">
+        <span class="comment">{{/* HTMX Fragment Pattern */}}</span><br>
+        <span class="keyword">&lt;div</span> hx-get=<span class="string">"/api/data.json"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hx-trigger=<span class="string">"load"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hx-swap=<span class="string">"innerHTML"</span><span class="keyword">&gt;</span><br>
+        <br>
+        &nbsp;&nbsp;<span class="keyword">&lt;template</span> x-for=<span class="string">"item in items"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;article</span> class=<span class="string">"card"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;h3</span> x-text=<span class="string">"item.title"</span><span class="keyword">&gt;&lt;/h3&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;/article&gt;</span><br>
+        &nbsp;&nbsp;<span class="keyword">&lt;/template&gt;</span><br>
+        <br>
+        <span class="keyword">&lt;/div&gt;</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     THEME SWITCHER SCRIPT
+═══════════════════════════════════════════════════════════════════════ -->
+<script>
+function setTheme(themeName) {
+  // Update data-theme attribute
+  document.documentElement.setAttribute('data-theme', themeName);
+  
+  // Update active button state
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-theme') === themeName) {
+      btn.classList.add('active');
+    }
+  });
+  
+  // Save preference
+  localStorage.setItem('hugo-web-theme', themeName);
+}
+
+// Load saved theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('hugo-web-theme') || 'default';
+  setTheme(savedTheme);
+});
+</script>
+
+</body>
+</html>

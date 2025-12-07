@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Web — Static App Architect & Hugo Platform Innovator</title>
+<meta name="description" content="Hugo Web is a boundary-breaking Hugo static site expert who treats Hugo less like a templating engine and more like a full application platform.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   HUGO WEB — BLUEPRINT EDITION
+   Architect Lines | Technical Drawing Aesthetic | Precision Grid System
+═══════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BLUEPRINT COLOR SYSTEM
+───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Blueprint Base */
+  --bp-dark: #0a1628;
+  --bp-base: #0d1f3c;
+  --bp-mid: #132847;
+  --bp-light: #1a3459;
+  --bp-surface: #1e3a5f;
+  
+  /* Blueprint Lines */
+  --line-primary: rgba(100, 180, 255, 0.7);
+  --line-secondary: rgba(100, 180, 255, 0.35);
+  --line-tertiary: rgba(100, 180, 255, 0.15);
+  --line-faint: rgba(100, 180, 255, 0.08);
+  --line-glow: rgba(100, 180, 255, 0.5);
+  
+  /* Annotation Colors */
+  --text-bright: #e8f4ff;
+  --text-primary: #c4ddf5;
+  --text-secondary: #8ab4dc;
+  --text-muted: #5a8cbd;
+  --text-faint: #3d6a99;
+  
+  /* Accent Markers */
+  --accent-cyan: #00d4ff;
+  --accent-cyan-soft: rgba(0, 212, 255, 0.15);
+  --accent-yellow: #ffd600;
+  --accent-yellow-soft: rgba(255, 214, 0, 0.12);
+  --accent-red: #ff4757;
+  --accent-green: #00e676;
+  
+  /* Motion */
+  --ease-technical: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-precise: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Grid */
+  --grid-size: 20px;
+  --radius: 2px;
+  
+  /* Layout */
+  --header-height: 56px;
+  --sidebar-width: 280px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BLUEPRINT BACKGROUND & GRID
+───────────────────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bp-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Blueprint Grid Pattern */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: 
+    /* Major grid lines */
+    linear-gradient(var(--line-tertiary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-tertiary) 1px, transparent 1px),
+    /* Minor grid lines */
+    linear-gradient(var(--line-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-faint) 1px, transparent 1px);
+  background-size: 
+    calc(var(--grid-size) * 5) calc(var(--grid-size) * 5),
+    calc(var(--grid-size) * 5) calc(var(--grid-size) * 5),
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Radial Vignette */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, var(--bp-dark) 100%);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HEADER — Technical Drawing Title Block
+───────────────────────────────────────────────────────────────────────── */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: linear-gradient(180deg, var(--bp-mid), var(--bp-base));
+  border-bottom: 1px solid var(--line-secondary);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 100;
+  animation: draw-in 0.6s var(--ease-technical) both;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--line-glow) 20%, 
+    var(--line-glow) 80%, 
+    transparent
+  );
+}
+
+@keyframes draw-in {
+  from { 
+    opacity: 0; 
+    clip-path: inset(0 100% 0 0);
+  }
+  to { 
+    opacity: 1; 
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.logo-text span {
+  color: var(--accent-cyan);
+}
+
+/* Coordinate Display */
+.coord-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-right: 32px;
+  padding: 4px 10px;
+  border: 1px solid var(--line-tertiary);
+  border-radius: var(--radius);
+  background: var(--bp-dark);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 200ms var(--ease-precise);
+  position: relative;
+}
+
+nav a:hover {
+  color: var(--text-bright);
+  border-color: var(--line-secondary);
+  background: var(--bp-light);
+}
+
+nav a.active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+}
+
+nav a.active::before {
+  content: "●";
+  position: absolute;
+  left: 6px;
+  font-size: 6px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────────────────────────────────── */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SIDEBAR — Drawing Index Panel
+───────────────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: calc(100vh - var(--header-height));
+  background: linear-gradient(180deg, var(--bp-mid), var(--bp-dark));
+  border-right: 1px solid var(--line-secondary);
+  padding: 24px 16px;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  animation: slide-in 0.7s var(--ease-technical) 0.1s both;
+}
+
+.sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, 
+    var(--line-glow), 
+    var(--line-secondary) 50%,
+    transparent
+  );
+}
+
+@keyframes slide-in {
+  from { 
+    opacity: 0; 
+    transform: translateX(-20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PROFILE SCHEMATIC
+───────────────────────────────────────────────────────────────────────── */
+
+.profile-schematic {
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  margin-bottom: 20px;
+  position: relative;
+  background: linear-gradient(135deg, var(--bp-surface), var(--bp-mid));
+}
+
+/* Corner Markers */
+.profile-schematic::before,
+.profile-schematic::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--line-primary);
+}
+
+.profile-schematic::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.profile-schematic::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Schematic Label */
+.schematic-label {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  background: var(--bp-mid);
+  padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--line-primary);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--bp-dark);
+}
+
+/* Crosshair on avatar */
+.profile-avatar::before,
+.profile-avatar::after {
+  content: "";
+  position: absolute;
+  background: var(--line-tertiary);
+}
+
+.profile-avatar::before {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+}
+
+.profile-avatar::after {
+  width: 1px;
+  height: 100%;
+  left: 50%;
+}
+
+.profile-avatar svg {
+  width: 28px;
+  height: 28px;
+  color: var(--accent-cyan);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+
+.profile-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent-green);
+  margin-top: 8px;
+  padding: 3px 8px;
+  border: 1px solid var(--accent-green);
+  border-radius: var(--radius);
+  background: rgba(0, 230, 118, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Dimension Lines */
+.profile-dimensions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px dashed var(--line-tertiary);
+  position: relative;
+}
+
+.profile-dimensions::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-left: 1px solid var(--line-secondary);
+  border-top: 1px solid var(--line-secondary);
+}
+
+.profile-dimensions::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid var(--line-secondary);
+  border-top: 1px solid var(--line-secondary);
+}
+
+.dimension {
+  text-align: center;
+}
+
+.dimension-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+}
+
+.dimension-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+
+/* Profile Bio */
+.profile-bio {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line-tertiary);
+}
+
+/* Profile Links */
+.profile-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.profile-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  background: var(--bp-dark);
+  border: 1px solid var(--line-tertiary);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 200ms var(--ease-precise);
+}
+
+.profile-link:hover {
+  border-color: var(--line-primary);
+  color: var(--text-bright);
+  background: var(--bp-mid);
+}
+
+.profile-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   REQUEST FORM — Engineering Change Request
+───────────────────────────────────────────────────────────────────────── */
+
+.request-form {
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  margin-bottom: 20px;
+  position: relative;
+  background: var(--bp-dark);
+}
+
+.request-form::before {
+  content: "ECR";
+  position: absolute;
+  top: -8px;
+  left: 14px;
+  background: var(--bp-dark);
+  padding: 0 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent-yellow);
+  letter-spacing: 0.1em;
+}
+
+.request-form h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-bright);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.request-form h4::before {
+  content: "▸";
+  color: var(--accent-yellow);
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 9px 10px;
+  background: var(--bp-base);
+  border: 1px solid var(--line-tertiary);
+  border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+  transition: all 200ms var(--ease-precise);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 2px var(--accent-cyan-soft);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235a8cbd' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius);
+  color: var(--accent-cyan);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 200ms var(--ease-precise);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent-cyan);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-precise);
+}
+
+.submit-btn:hover {
+  color: var(--bp-dark);
+  box-shadow: 0 0 20px var(--accent-cyan-soft);
+}
+
+.submit-btn:hover::before {
+  opacity: 1;
+}
+
+.submit-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SIDEBAR NAVIGATION — Drawing Index
+───────────────────────────────────────────────────────────────────────── */
+
+.sidebar-nav {
+  margin-bottom: 16px;
+}
+
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line-tertiary);
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: all 200ms var(--ease-precise);
+  position: relative;
+}
+
+.sidebar-nav a::before {
+  content: attr(data-index);
+  font-size: 9px;
+  color: var(--text-faint);
+  min-width: 20px;
+}
+
+.sidebar-nav a:hover {
+  color: var(--text-bright);
+  border-color: var(--line-tertiary);
+  background: var(--bp-surface);
+}
+
+.sidebar-nav a.active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-soft);
+}
+
+.sidebar-nav a svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MAIN CONTENT — Technical Drawing Area
+───────────────────────────────────────────────────────────────────────── */
+
+main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+  animation: fade-up 0.8s var(--ease-technical) 0.2s both;
+}
+
+@keyframes fade-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* Hero — Title Block */
+.hero {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line-tertiary);
+  position: relative;
+}
+
+/* Dimension annotation */
+.hero::after {
+  content: "SECTION A-A";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bp-base);
+  padding: 0 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+}
+
+.hero-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-cyan);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-transform: uppercase;
+}
+
+.hero-tagline::before {
+  content: "◇";
+  font-size: 8px;
+}
+
+.hero-tagline::after {
+  content: "";
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-cyan), transparent);
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  color: var(--text-bright);
+}
+
+.hero h1 span {
+  display: block;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.hero-description {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-description strong {
+  color: var(--accent-cyan);
+  font-weight: 500;
+}
+
+/* Section Headers — Drawing Notes */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  margin-top: 48px;
+}
+
+.section-header h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-bright);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-header h2::before {
+  content: "◈";
+  color: var(--accent-cyan);
+  font-size: 10px;
+}
+
+.section-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-secondary), transparent);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SKILL CARDS — Component Specifications
+───────────────────────────────────────────────────────────────────────── */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.skill-card {
+  background: var(--bp-mid);
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  position: relative;
+  transition: all 300ms var(--ease-technical);
+  opacity: 0;
+  animation: card-draw 0.6s var(--ease-technical) forwards;
+}
+
+.skill-card:nth-child(1) { animation-delay: 0.3s; }
+.skill-card:nth-child(2) { animation-delay: 0.4s; }
+.skill-card:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes card-draw {
+  from { 
+    opacity: 0; 
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  to { 
+    opacity: 1; 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* Corner Registration Marks */
+.skill-card::before,
+.skill-card::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+.skill-card::before {
+  top: 6px;
+  right: 6px;
+  border-top: 1px solid var(--line-primary);
+  border-right: 1px solid var(--line-primary);
+}
+
+.skill-card::after {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 1px solid var(--line-primary);
+  border-left: 1px solid var(--line-primary);
+}
+
+.skill-card:hover {
+  border-color: var(--line-primary);
+  box-shadow: 
+    0 0 30px rgba(100, 180, 255, 0.1),
+    inset 0 0 30px rgba(100, 180, 255, 0.02);
+}
+
+.skill-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+}
+
+.skill-icon {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  background: var(--bp-dark);
+  position: relative;
+}
+
+.skill-icon::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--line-tertiary);
+  border-radius: 1px;
+}
+
+.skill-icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-cyan);
+}
+
+.skill-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+}
+
+.skill-card p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-tertiary);
+}
+
+.skill-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  background: var(--bp-dark);
+  border: 1px solid var(--line-tertiary);
+  padding: 3px 8px;
+  border-radius: var(--radius);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   APPROACH CARDS — Method Specifications
+───────────────────────────────────────────────────────────────────────── */
+
+.approaches-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.approach-card {
+  background: transparent;
+  border: 1px solid var(--line-tertiary);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  position: relative;
+  transition: all 250ms var(--ease-precise);
+  opacity: 0;
+  animation: card-draw 0.6s var(--ease-technical) forwards;
+}
+
+.approach-card:nth-child(1) { animation-delay: 0.55s; }
+.approach-card:nth-child(2) { animation-delay: 0.6s; }
+.approach-card:nth-child(3) { animation-delay: 0.65s; }
+.approach-card:nth-child(4) { animation-delay: 0.7s; }
+
+.approach-card:hover {
+  border-color: var(--line-secondary);
+  background: var(--bp-mid);
+}
+
+.approach-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--line-secondary);
+  margin-bottom: 6px;
+}
+
+.approach-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 6px;
+}
+
+.approach-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PHILOSOPHY — General Notes
+───────────────────────────────────────────────────────────────────────── */
+
+.philosophy {
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 32px;
+  position: relative;
+  background: linear-gradient(135deg, var(--bp-mid), var(--bp-dark));
+}
+
+.philosophy::before {
+  content: "GENERAL NOTES";
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  background: var(--bp-base);
+  padding: 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent-yellow);
+  letter-spacing: 0.1em;
+}
+
+.philosophy h3 {
+  display: none;
+}
+
+.principles-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 24px;
+}
+
+.principle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.principle::before {
+  content: counter(principle);
+  counter-increment: principle;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-cyan);
+  min-width: 18px;
+}
+
+.principles-list {
+  counter-reset: principle;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CODE PREVIEW — Technical Specification
+───────────────────────────────────────────────────────────────────────── */
+
+.code-preview {
+  background: var(--bp-dark);
+  border: 1px solid var(--line-secondary);
+  border-radius: var(--radius);
+  margin-top: 32px;
+  overflow: hidden;
+  position: relative;
+}
+
+.code-preview::before {
+  content: "CODE SPEC";
+  position: absolute;
+  top: 0;
+  right: 16px;
+  background: var(--bp-dark);
+  padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  transform: translateY(-50%);
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bp-mid);
+  border-bottom: 1px solid var(--line-tertiary);
+}
+
+.code-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.code-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  border: 1px solid var(--line-tertiary);
+}
+
+.code-dots span:nth-child(1) { background: var(--accent-red); border-color: var(--accent-red); }
+.code-dots span:nth-child(2) { background: var(--accent-yellow); border-color: var(--accent-yellow); }
+.code-dots span:nth-child(3) { background: var(--accent-green); border-color: var(--accent-green); }
+
+.code-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.code-body {
+  padding: 16px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  overflow-x: auto;
+  color: var(--text-primary);
+}
+
+.code-body .comment { color: var(--text-faint); }
+.code-body .keyword { color: var(--accent-cyan); }
+.code-body .string { color: var(--accent-green); }
+.code-body .function { color: var(--accent-yellow); }
+.code-body .variable { color: var(--text-bright); }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FOOTER — Drawing Revision Block
+───────────────────────────────────────────────────────────────────────── */
+
+footer {
+  margin-left: var(--sidebar-width);
+  padding: 28px 48px;
+  border-top: 1px solid var(--line-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: fade-up 0.8s var(--ease-technical) 0.6s both;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 200ms var(--ease-precise);
+}
+
+.footer-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.footer-revision {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  padding: 4px 10px;
+  border: 1px solid var(--line-tertiary);
+  border-radius: var(--radius);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 240px;
+  }
+  
+  main, footer {
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+  
+  .approaches-grid,
+  .principles-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+  
+  .sidebar {
+    display: none;
+  }
+  
+  main, footer {
+    margin-left: 0;
+    padding: 28px 20px;
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  header {
+    padding: 0 16px;
+  }
+  
+  .coord-display {
+    display: none;
+  }
+  
+  nav a {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════════════════ -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer frame -->
+        <rect x="1" y="1" width="30" height="30" stroke="var(--line-secondary)" stroke-width="1" fill="none"/>
+        <!-- Inner crosshairs -->
+        <line x1="16" y1="4" x2="16" y2="28" stroke="var(--line-tertiary)" stroke-width="0.5"/>
+        <line x1="4" y1="16" x2="28" y2="16" stroke="var(--line-tertiary)" stroke-width="0.5"/>
+        <!-- Center module -->
+        <rect x="10" y="10" width="12" height="12" stroke="var(--accent-cyan)" stroke-width="1.5" fill="none"/>
+        <!-- Corner marks -->
+        <path d="M4 4 L8 4 M4 4 L4 8" stroke="var(--line-primary)" stroke-width="1"/>
+        <path d="M28 4 L24 4 M28 4 L28 8" stroke="var(--line-primary)" stroke-width="1"/>
+        <path d="M4 28 L8 28 M4 28 L4 24" stroke="var(--line-primary)" stroke-width="1"/>
+        <path d="M28 28 L24 28 M28 28 L28 24" stroke="var(--line-primary)" stroke-width="1"/>
+      </svg>
+    </div>
+    <span class="logo-text">Static App <span>Forge</span></span>
+  </a>
+  
+  <div class="coord-display">X: 0.00 | Y: 0.00 | Z: 1.00</div>
+  
+  <nav>
+    <a href="#" class="active">Forge</a>
+    <a href="#">Components</a>
+    <a href="#">Patterns</a>
+    <a href="#">Docs</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     LAYOUT
+═══════════════════════════════════════════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    
+    <!-- PROFILE SCHEMATIC -->
+    <div class="profile-schematic">
+      <span class="schematic-label">Developer Profile</span>
+      
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+          </svg>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">Hugo Web</div>
+          <div class="profile-title">Static App Architect<br>Platform Innovator</div>
+          <div class="profile-status">
+            <span class="status-dot"></span>
+            Online
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-dimensions">
+        <div class="dimension">
+          <div class="dimension-value">47</div>
+          <div class="dimension-label">Projects</div>
+        </div>
+        <div class="dimension">
+          <div class="dimension-value">12K</div>
+          <div class="dimension-label">Stars</div>
+        </div>
+        <div class="dimension">
+          <div class="dimension-value">8</div>
+          <div class="dimension-label">Years</div>
+        </div>
+      </div>
+      
+      <p class="profile-bio">
+        Turning static sites into dynamic possibilities. Building app-like experiences with Hugo, HTMX & Alpine.js.
+      </p>
+      
+      <div class="profile-links">
+        <a href="#" class="profile-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a href="#" class="profile-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          Twitter
+        </a>
+      </div>
+    </div>
+    
+    <!-- REQUEST FORM -->
+    <div class="request-form">
+      <h4>Submit Engineering Request</h4>
+      
+      <div class="form-group">
+        <label class="form-label">Requestor</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Contact</label>
+        <input type="email" class="form-input" placeholder="email@domain.com">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Request Type</label>
+        <select class="form-select">
+          <option value="">Select category...</option>
+          <option value="hugo">Hugo Site Build</option>
+          <option value="htmx">HTMX Integration</option>
+          <option value="components">Component Library</option>
+          <option value="consulting">Technical Consulting</option>
+          <option value="review">Architecture Review</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Specifications</label>
+        <textarea class="form-textarea" placeholder="Describe your project requirements..."></textarea>
+      </div>
+      
+      <button type="submit" class="submit-btn"><span>Transmit Request</span></button>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Drawing Index</div>
+      <a href="#" class="active" data-index="01">Overview</a>
+      <a href="#" data-index="02">Components</a>
+      <a href="#" data-index="03">Patterns</a>
+      <a href="#" data-index="04">Systems</a>
+      <a href="#" data-index="05">Documentation</a>
+    </nav>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section class="hero">
+      <div class="hero-tagline">Static App Architect</div>
+      <h1>Static Engineering<span>For People Who Build Things</span></h1>
+      <p class="hero-description">
+        I treat <strong>Hugo</strong> less like a templating engine and more like a full application platform. 
+        By combining <strong>HTMX</strong>, <strong>Alpine.js</strong>, and optimized front-end patterns, 
+        I achieve features normally requiring dynamic backends — all with minimal hosting complexity.
+      </p>
+    </section>
+
+    <!-- CORE SKILLS -->
+    <div class="section-header">
+      <h2>Core Technical Specifications</h2>
+    </div>
+
+    <div class="skills-grid">
+      <article class="skill-card">
+        <div class="skill-number">SPEC-001</div>
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <h3>Hugo Expertise</h3>
+        <p>Deep understanding of Hugo internals: templating engine, Page Bundles, assets pipeline, caching logic, and build graph optimization.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Go Templates</span>
+          <span class="skill-tag">Page Bundles</span>
+          <span class="skill-tag">Shortcodes</span>
+          <span class="skill-tag">Render Hooks</span>
+        </div>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-number">SPEC-002</div>
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>HTMX Integration</h3>
+        <p>Hypermedia-driven UI updates that make Hugo sites feel app-like. Partial swaps, lazy loading, modals, and inline editing.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">hx-get</span>
+          <span class="skill-tag">hx-swap</span>
+          <span class="skill-tag">Fragments</span>
+          <span class="skill-tag">OOB Swaps</span>
+        </div>
+      </article>
+
+      <article class="skill-card">
+        <div class="skill-number">SPEC-003</div>
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3>Alpine.js State</h3>
+        <p>Local component state, conditionals, dynamic lists, and client-side calculations. User preferences via localStorage.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">x-data</span>
+          <span class="skill-tag">x-show</span>
+          <span class="skill-tag">$store</span>
+          <span class="skill-tag">Reactivity</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- APPROACHES -->
+    <div class="section-header">
+      <h2>Method Specifications</h2>
+    </div>
+
+    <div class="approaches-grid">
+      <article class="approach-card">
+        <div class="approach-number">01</div>
+        <h4>Local-API Pattern</h4>
+        <p>Hugo generates /api/*.json bundles that behave like API endpoints. Powers search engines and dashboards.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">02</div>
+        <h4>Data Orchestration</h4>
+        <p>Import content from external sources at build time. CSV → JSON conversions, schema-driven automation.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">03</div>
+        <h4>Faux Server Architecture</h4>
+        <p>HTMX + Alpine.js mimics server logic client-side. User accounts via localStorage, static side effects.</p>
+      </article>
+
+      <article class="approach-card">
+        <div class="approach-number">04</div>
+        <h4>Fragment-Driven UI</h4>
+        <p>Hugo outputs html-fragments/ and json-api/. HTMX loads on-demand creating active backend illusion.</p>
+      </article>
+    </div>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+      <h3>General Notes</h3>
+      <div class="principles-list">
+        <div class="principle">Local-first, server-last — only use a backend when essential</div>
+        <div class="principle">Performance is UX — fast always beats complex</div>
+        <div class="principle">Static ≠ simple — static sites can behave like apps</div>
+        <div class="principle">Data belongs in structures, not in templates</div>
+        <div class="principle">HTML-first design — let HTML do the work</div>
+        <div class="principle">If Hugo doesn't support it… extend Hugo</div>
+      </div>
+    </section>
+
+    <!-- CODE PREVIEW -->
+    <div class="code-preview">
+      <div class="code-header">
+        <div class="code-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="code-filename">layouts/partials/api-fragment.html</span>
+      </div>
+      <div class="code-body">
+        <span class="comment">{{/* Static API Fragment — loaded via HTMX */}}</span><br>
+        <span class="keyword">&lt;div</span> <span class="variable">hx-get</span>=<span class="string">"/api/data.json"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">hx-trigger</span>=<span class="string">"load"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">hx-swap</span>=<span class="string">"innerHTML"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="variable">x-data</span>=<span class="string">"{ items: [] }"</span><span class="keyword">&gt;</span><br>
+        <br>
+        &nbsp;&nbsp;<span class="keyword">&lt;template</span> <span class="variable">x-for</span>=<span class="string">"item in items"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;article</span> <span class="variable">class</span>=<span class="string">"card"</span><span class="keyword">&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;h3</span> <span class="variable">x-text</span>=<span class="string">"item.title"</span><span class="keyword">&gt;&lt;/h3&gt;</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">&lt;/article&gt;</span><br>
+        &nbsp;&nbsp;<span class="keyword">&lt;/template&gt;</span><br>
+        <br>
+        <span class="keyword">&lt;/div&gt;</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">© 2025 Hugo Web — Static App Forge</span>
+    <div class="footer-links">
+      <a href="#">GitHub</a>
+      <a href="#">Twitter</a>
+      <a href="#">RSS</a>
+    </div>
+  </div>
+  <span class="footer-revision">REV 1.0 | DWG-001</span>
+</footer>
+
+</body>
+</html>
