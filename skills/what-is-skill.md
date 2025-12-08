@@ -1,5 +1,17 @@
 
 
+## BIG PICTURE AGENT
+
+
+
+
+
+## WHTA IT IS REALLY
+- 
+
+
+
+
 
 General Architcture for General Agents
 - Skills are a new paradigm for shipping and sharing new capabilities
@@ -74,6 +86,27 @@ Base prompt templates (like abstract classes)
 Composable prompt fragments (like mixins or interfaces)
 Context injection patterns (dependency injection but for AI context)
 Prompt chains (like middleware or pipelines)
+
+
+
+
+
+
+
+
+
+
+[SkillName]           # Semantic identifier
+description:          # What cognitive capability this provides
+intent:              # Semantic category/purpose (taxonomy)
+instructions:        # The actual cognitive content/prompt text
+context_needs:       # What semantic context it requires
+cognitive_weight:    # How much "thinking" it demands
+combines_with:       # What other semantic bits it works well with
+
+
+
+
 
 
 
